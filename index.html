@@ -3,18 +3,36 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>DRIFT — Wind down on purpose.</title>
-<meta name="description" content="A functional nighttime drink ritual. Clinically dosed adaptogens in a single-serve sachet — calm the mind, relax the body, sleep better, wake up refreshed." />
+<title>DRIFT — Wind down on purpose. | Functional Nighttime Drink Ritual</title>
+<meta name="description" content="A clinically dosed nighttime drink ritual. Five flavors, one sachet, no melatonin grogginess. Calm the mind, relax the body, sleep better, wake refreshed." />
 <meta name="theme-color" content="#0A0E18" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://drift-night-ritual.vercel.app/" />
+<meta property="og:title" content="DRIFT — Wind down on purpose." />
+<meta property="og:description" content="A clinically dosed nighttime drink ritual. Five flavors, one sachet, no melatonin grogginess." />
+<meta property="og:site_name" content="DRIFT" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="DRIFT — Wind down on purpose." />
+<meta name="twitter:description" content="A clinically dosed nighttime drink ritual. Five flavors, one sachet, no grogginess." />
+
+<!-- Favicon (inline SVG — moon mark) -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230A0E18'/><path d='M22 19.2A8.6 8.6 0 0 1 13.7 11a8.6 8.6 0 1 0 8.3 8.3Z' fill='none' stroke='%23E89A2C' stroke-width='1.7'/><circle cx='24.5' cy='9.5' r='1.1' fill='%23E89A2C'/></svg>" />
+<link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230A0E18'/><path d='M22 19.2A8.6 8.6 0 0 1 13.7 11a8.6 8.6 0 1 0 8.3 8.3Z' fill='none' stroke='%23E89A2C' stroke-width='1.7'/><circle cx='24.5' cy='9.5' r='1.1' fill='%23E89A2C'/></svg>" />
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,0..100;1,9..144,300..700,0..100&family=Manrope:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/styles.css?v=20260429">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,0..100;1,9..144,300..700,0..100&family=Manrope:wght@200;300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css?v=20260429b">
 </head>
 <body>
 
+<a href="#main" class="skip-link">Skip to content</a>
 <div class="cursor cursor-dot" id="cursor-dot" aria-hidden="true"></div>
-<div class="cursor ring" id="cursor-ring" aria-hidden="true"></div>
+<div class="cursor cursor-ring" id="cursor-ring" aria-hidden="true"></div>
 <div class="scroll-progress" aria-hidden="true"></div>
 
 <!-- ============== NAV ============== -->
@@ -89,7 +107,7 @@
       </p>
       <div class="hero-actions">
         <button class="btn btn-primary magnetic" data-add="dusk-sub">Begin the ritual <span class="arr">→</span></button>
-        <a href="#science" class="btn btn-ghost">How it works</a>
+        <a href="#ingredients" class="btn btn-ghost">How it works</a>
       </div>
       <div class="hero-meta">
         <span><i class="dot"></i>Clinically dosed</span>
@@ -127,27 +145,52 @@
   </div>
 </section>
 
-<!-- ============== PRESS MARQUEE ============== -->
-<div class="press" aria-label="Press">
-  <div class="marquee" id="marquee">
-    <span><em>"The Liquid Death of nighttime."</em></span>
-    <span class="dot"></span>
-    <span>Vogue</span>
-    <span class="dot"></span>
-    <span><em>"Quietly the most-talked-about box on the nightstand."</em></span>
-    <span class="dot"></span>
-    <span>Bon Appétit</span>
-    <span class="dot"></span>
-    <span><em>"Aesop, but for sleep."</em></span>
-    <span class="dot"></span>
-    <span>Architectural Digest</span>
-    <span class="dot"></span>
-    <span><em>"A genuinely useful nightly object."</em></span>
-    <span class="dot"></span>
-    <span>GQ</span>
-    <span class="dot"></span>
+<main id="main">
+
+<!-- ============== TRUST STRIP ============== -->
+<div class="trust-strip" aria-label="Product credentials">
+  <div class="wrap trust-strip-inner">
+    <div class="trust-cell">
+      <span class="ico" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12l5 5L20 7"/></svg>
+      </span>
+      <div class="copy"><div class="t">Third-party tested</div><div class="s">Every batch · COA available</div></div>
+    </div>
+    <div class="trust-cell">
+      <span class="ico" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 3c1.5 3 4 4 6 4-1 4-3 7-6 9-3-2-5-5-6-9 2 0 4.5-1 6-4Z"/></svg>
+      </span>
+      <div class="copy"><div class="t">Vegan · Non-GMO</div><div class="s">Gluten-free · No fillers</div></div>
+    </div>
+    <div class="trust-cell">
+      <span class="ico" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M16.5 14.2A7 7 0 0 1 9.8 7.5a7 7 0 1 0 6.7 6.7Z"/><circle cx="18.5" cy="6.5" r="0.8" fill="currentColor"/></svg>
+      </span>
+      <div class="copy"><div class="t">No grogginess</div><div class="s">Low-dose natural melatonin</div></div>
+    </div>
+    <div class="trust-cell">
+      <span class="ico" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7l9-4 9 4v6c0 5-4 8-9 9-5-1-9-4-9-9V7Z"/></svg>
+      </span>
+      <div class="copy"><div class="t">30-night guarantee</div><div class="s">Or your money back · Always</div></div>
+    </div>
   </div>
 </div>
+
+<!-- ============== PRESS WALL ============== -->
+<section class="press-wall" aria-label="As featured in">
+  <div class="wrap">
+    <span class="lbl">As featured in</span>
+    <div class="press-grid">
+      <span class="press-mark pm-vogue">Vogue</span>
+      <span class="press-mark pm-gq">GQ</span>
+      <span class="press-mark pm-ba">bon appétit</span>
+      <span class="press-mark pm-ad"><span>Architectural</span><span>Digest</span></span>
+      <span class="press-mark pm-forbes">Forbes</span>
+      <span class="press-mark pm-wall">Wallpaper</span>
+    </div>
+  </div>
+</section>
 
 <!-- ============== PROMISE ============== -->
 <section class="promise" id="problem">
@@ -245,9 +288,117 @@
   </div>
 </section>
 
-<!-- ============== §03 FIND YOUR PROFILE ============== -->
+<!-- ============== §03 COMPARISON ============== -->
+<section class="compare" id="compare">
+  <div class="section-num">§ 03 — The Difference</div>
+  <div class="wrap">
+    <div class="compare-head reveal">
+      <span class="eyebrow">DRIFT vs the alternatives</span>
+      <h2>You aren't choosing between<br/>DRIFT and <em>nothing</em>.</h2>
+      <p class="lede">You're choosing between DRIFT, melatonin, sleep tea, and your tracker. Here's how the four actually compare on what matters at midnight.</p>
+    </div>
+
+    <div class="compare-table reveal">
+      <div class="compare-row head">
+        <div class="compare-cell">Outcome</div>
+        <div class="compare-cell is-drift">DRIFT</div>
+        <div class="compare-cell">Melatonin</div>
+        <div class="compare-cell">Sleep tea</div>
+        <div class="compare-cell">Trackers</div>
+      </div>
+
+      <div class="compare-row">
+        <div class="compare-cell label">Calms a racing mind</div>
+        <div class="compare-cell score is-drift" data-col="DRIFT">
+          <div class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></div>
+        </div>
+        <div class="compare-cell score" data-col="Melatonin">
+          <div class="dots"><span class="on"></span><span></span><span></span><span></span></div>
+        </div>
+        <div class="compare-cell score" data-col="Sleep tea">
+          <div class="dots"><span class="on"></span><span class="on"></span><span></span><span></span></div>
+        </div>
+        <div class="compare-cell score" data-col="Trackers">
+          <div class="dots"><span></span><span></span><span></span><span></span></div>
+          <span class="note">Observes only</span>
+        </div>
+      </div>
+
+      <div class="compare-row">
+        <div class="compare-cell label">Relaxes muscle tension</div>
+        <div class="compare-cell score is-drift" data-col="DRIFT">
+          <div class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></div>
+        </div>
+        <div class="compare-cell score" data-col="Melatonin">
+          <div class="dots"><span class="on"></span><span class="on"></span><span></span><span></span></div>
+        </div>
+        <div class="compare-cell score" data-col="Sleep tea">
+          <div class="dots"><span class="on"></span><span></span><span></span><span></span></div>
+        </div>
+        <div class="compare-cell score" data-col="Trackers">
+          <div class="dots"><span></span><span></span><span></span><span></span></div>
+        </div>
+      </div>
+
+      <div class="compare-row">
+        <div class="compare-cell label">Wake feeling sharp</div>
+        <div class="compare-cell score is-drift" data-col="DRIFT">
+          <div class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></div>
+        </div>
+        <div class="compare-cell score" data-col="Melatonin">
+          <div class="dots"><span class="on"></span><span></span><span></span><span></span></div>
+          <span class="note">Often groggy</span>
+        </div>
+        <div class="compare-cell score" data-col="Sleep tea">
+          <div class="dots"><span class="on"></span><span class="on"></span><span></span><span></span></div>
+        </div>
+        <div class="compare-cell score" data-col="Trackers">
+          <div class="dots"><span></span><span></span><span></span><span></span></div>
+        </div>
+      </div>
+
+      <div class="compare-row">
+        <div class="compare-cell label">Becomes a real ritual</div>
+        <div class="compare-cell score is-drift" data-col="DRIFT">
+          <div class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></div>
+        </div>
+        <div class="compare-cell score" data-col="Melatonin">
+          <div class="dots"><span></span><span></span><span></span><span></span></div>
+        </div>
+        <div class="compare-cell score" data-col="Sleep tea">
+          <div class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div>
+        </div>
+        <div class="compare-cell score" data-col="Trackers">
+          <div class="dots"><span></span><span></span><span></span><span></span></div>
+        </div>
+      </div>
+
+      <div class="compare-row">
+        <div class="compare-cell label">Cost per night</div>
+        <div class="compare-cell score is-drift" data-col="DRIFT">
+          <span class="note" style="font-size:13px; color:var(--amber-soft); letter-spacing:.04em; text-transform:none; font-family:var(--serif)">$1.13</span>
+        </div>
+        <div class="compare-cell score" data-col="Melatonin">
+          <span class="note" style="font-size:13px; color:var(--bone-dim); letter-spacing:.04em; text-transform:none; font-family:var(--serif)">$0.30</span>
+        </div>
+        <div class="compare-cell score" data-col="Sleep tea">
+          <span class="note" style="font-size:13px; color:var(--bone-dim); letter-spacing:.04em; text-transform:none; font-family:var(--serif)">$0.15</span>
+        </div>
+        <div class="compare-cell score" data-col="Trackers">
+          <span class="note" style="font-size:13px; color:var(--bone-dim); letter-spacing:.04em; text-transform:none; font-family:var(--serif)">$1+ &amp; subscription</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="small" style="text-align:center; margin-top:30px; max-width:60ch; margin-left:auto; margin-right:auto">
+      Based on common formulations and reported outcomes. Adaptogens build effect over 7–14 nights — track yours with any wearable.
+    </p>
+  </div>
+</section>
+
+<!-- ============== §04 FIND YOUR PROFILE ============== -->
 <section class="profile-finder" id="diagnostic">
-  <div class="section-num">§ 03 — Find Your Profile</div>
+  <div class="section-num">§ 04 — Find Your Profile</div>
   <div class="wrap profile-grid">
     <div class="profile-copy reveal">
       <span class="eyebrow">AI Concierge · 60 Seconds</span>
@@ -316,9 +467,9 @@
   </div>
 </section>
 
-<!-- ============== §04 INGREDIENTS ============== -->
+<!-- ============== §05 INGREDIENTS ============== -->
 <section class="ingredients" id="ingredients">
-  <div class="section-num">§ 04 — The Formula</div>
+  <div class="section-num">§ 05 — The Formula</div>
   <div class="wrap ing-grid">
     <div class="reveal">
       <span class="eyebrow">Inside The Dusk</span>
@@ -386,7 +537,7 @@
 
 <!-- ============== RITUAL ============== -->
 <section class="ritual" id="ritual">
-  <div class="section-num">§ 05 — The Ritual</div>
+  <div class="section-num">§ 06 — The Ritual</div>
   <div class="wrap">
     <div class="section-head reveal">
       <div>
@@ -435,7 +586,7 @@
 
 <!-- ============== BUY ============== -->
 <section class="buy" id="buy">
-  <div class="section-num">§ 06 — Begin</div>
+  <div class="section-num">§ 07 — Begin</div>
   <div class="wrap buy-grid">
     <div class="buy-art reveal" aria-hidden="true">
       <div class="box">
@@ -511,7 +662,7 @@
 
 <!-- ============== REVIEWS ============== -->
 <section class="reviews" id="reviews">
-  <div class="section-num">§ 07 — In Practice</div>
+  <div class="section-num">§ 08 — In Practice</div>
   <div class="wrap">
     <div class="section-head reveal">
       <div>
@@ -546,7 +697,7 @@
 
 <!-- ============== FAQ ============== -->
 <section id="faq">
-  <div class="section-num">§ 08 — Honest Answers</div>
+  <div class="section-num">§ 09 — Honest Answers</div>
   <div class="wrap">
     <div class="section-head reveal">
       <div>
@@ -601,6 +752,18 @@
     <button class="btn btn-primary magnetic" data-add="dusk-sub">Shop The Dusk — $34 <span class="arr">→</span></button>
   </div>
 </section>
+
+</main>
+
+<!-- ============== STICKY MOBILE ADD-TO-CART ============== -->
+<div class="sticky-cart" id="sticky-cart" aria-hidden="true">
+  <div class="sc-thumb"><span class="sc-mark">DRIFT</span></div>
+  <div class="sc-info">
+    <div class="sc-name">The Dusk · Subscribe</div>
+    <div class="sc-meta"><s>$42</s><span class="price">$34/mo</span> · Skip anytime</div>
+  </div>
+  <button class="sc-cta" id="sticky-add">Add</button>
+</div>
 
 <!-- ============== FOOTER ============== -->
 <footer>
@@ -681,8 +844,8 @@
   </div>
 </div>
 
-<script src="assets/app.js?v=20260429"></script>
-<script src="assets/diagnostic.js?v=20260429"></script>
+<script src="assets/app.js?v=20260429b"></script>
+<script src="assets/diagnostic.js?v=20260429b"></script>
 <script>
   // Plan + flavor toggles on the BUY section
   const priceLabel = document.getElementById('planPrice');

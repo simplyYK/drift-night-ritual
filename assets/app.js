@@ -255,63 +255,88 @@ function setupNavStuck(){
   document.addEventListener('scroll', onScroll, { passive:true }); onScroll();
 }
 
-/* ----------- Custom cursor ----------- */
+/* ----------- Custom cursor — bulletproof ----------- */
 function setupCursor(){
   const dot = document.getElementById('cursor-dot');
   const ring = document.getElementById('cursor-ring');
   if(!dot || !ring) return;
-  if(window.matchMedia('(hover: none)').matches) return;
-
-  let mx = -100, my = -100, rx = -100, ry = -100;
-  let ticking = false;
-
-  const onMove = (e) => {
-    mx = e.clientX; my = e.clientY;
-    dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%,-50%)`;
-    if(!ticking){
-      ticking = true;
-      requestAnimationFrame(animate);
-    }
-  };
-  function animate(){
-    rx += (mx - rx) * 0.18;
-    ry += (my - ry) * 0.18;
-    ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%,-50%)`;
-    if(Math.abs(mx - rx) > 0.1 || Math.abs(my - ry) > 0.1){
-      requestAnimationFrame(animate);
-    } else {
-      ticking = false;
-    }
+  if(window.matchMedia('(hover: none)').matches){
+    dot.style.display = 'none'; ring.style.display = 'none';
+    return;
   }
 
-  document.addEventListener('mousemove', onMove, { passive:true });
+  // Target (mouse) and follower positions
+  let tx = -100, ty = -100;
+  let dx = -100, dy = -100;  // dot — tight follow
+  let rx = -100, ry = -100;  // ring — lazy follow
+  let synced = false;
+
+  // Continuous RAF loop — smoother than starting/stopping
+  function loop(){
+    dx += (tx - dx) * 0.55;
+    dy += (ty - dy) * 0.55;
+    rx += (tx - rx) * 0.18;
+    ry += (ty - ry) * 0.18;
+    dot.style.transform  = `translate3d(${dx}px, ${dy}px, 0) translate(-50%, -50%)`;
+    ring.style.transform = `translate3d(${rx}px, ${ry}px, 0) translate(-50%, -50%)`;
+    requestAnimationFrame(loop);
+  }
+  loop();
+
+  // First touch ever → permanently disable (handles hybrid devices)
+  document.addEventListener('touchstart', () => {
+    dot.style.display = 'none'; ring.style.display = 'none';
+    document.body.style.cursor = 'auto';
+  }, { once: true, passive: true });
+
+  document.addEventListener('mousemove', (e) => {
+    tx = e.clientX; ty = e.clientY;
+    if(!synced){
+      // Sync immediately on first move so there's no flying-from-corner
+      dx = rx = tx; dy = ry = ty;
+      synced = true;
+      dot.classList.remove('is-hidden');
+      ring.classList.remove('is-hidden');
+    }
+  }, { passive: true });
+
+  // Hide when cursor leaves window, restore on entry
   document.addEventListener('mouseleave', () => {
-    dot.classList.add('is-hidden'); ring.classList.add('is-hidden');
+    dot.classList.add('is-hidden');
+    ring.classList.add('is-hidden');
   });
   document.addEventListener('mouseenter', () => {
-    dot.classList.remove('is-hidden'); ring.classList.remove('is-hidden');
+    dot.classList.remove('is-hidden');
+    ring.classList.remove('is-hidden');
+  });
+
+  // Active state on click
+  document.addEventListener('mousedown', () => ring.classList.add('is-active'), { passive: true });
+  document.addEventListener('mouseup',   () => ring.classList.remove('is-active'), { passive: true });
+
+  // Hover/text states via event delegation — survives DOM changes
+  const HOVER_SEL = 'a, button, [role="button"], .plan-opt, .flavor, .ing-item, summary, .cart-line, .pillar, .step, .review, .archetype-tags span, .pcard-dots .d, .compare-row.head .compare-cell.is-drift, .pay-btn';
+  const TEXT_SEL = 'input[type="text"], input[type="email"], input[type="tel"], input[type="search"], input[type="number"], textarea';
+
+  document.addEventListener('mouseover', (e) => {
+    const text = e.target.closest(TEXT_SEL);
+    const hover = e.target.closest(HOVER_SEL);
+    ring.classList.toggle('is-text', !!text);
+    dot.classList.toggle('is-text', !!text);
+    ring.classList.toggle('is-hover', !!hover && !text);
+    dot.classList.toggle('is-hover', !!hover && !text);
+  });
+  document.addEventListener('mouseout', (e) => {
+    // Only clear when actually leaving an interactive area
+    if(!e.relatedTarget || !e.relatedTarget.closest || (!e.relatedTarget.closest(HOVER_SEL) && !e.relatedTarget.closest(TEXT_SEL))){
+      ring.classList.remove('is-hover','is-text');
+      dot.classList.remove('is-hover','is-text');
+    }
   });
 }
 
-function bindHoverables(){
-  const ring = document.getElementById('cursor-ring');
-  const dot = document.getElementById('cursor-dot');
-  if(!ring || !dot) return;
-  const items = document.querySelectorAll('a, button, [role="button"], .plan-opt, .flavor, .ing-item, summary, .cart-line, .pillar, .step, .review');
-  items.forEach(el => {
-    if(el._driftCursor) return;
-    el._driftCursor = true;
-    el.addEventListener('mouseenter', () => { ring.classList.add('is-over'); dot.classList.add('is-over'); });
-    el.addEventListener('mouseleave', () => { ring.classList.remove('is-over'); dot.classList.remove('is-over'); });
-  });
-  const inputs = document.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], input[type="search"], textarea');
-  inputs.forEach(el => {
-    if(el._driftCursor2) return;
-    el._driftCursor2 = true;
-    el.addEventListener('mouseenter', () => ring.classList.add('is-text'));
-    el.addEventListener('mouseleave', () => ring.classList.remove('is-text'));
-  });
-}
+// No-op kept for backward compat with prior calls
+function bindHoverables(){}
 
 /* ----------- Magnetic buttons ----------- */
 function setupMagnetic(){
@@ -360,6 +385,50 @@ function setupMarquee(){
   m.innerHTML = m.innerHTML + m.innerHTML;
 }
 
+/* ----------- Sticky mobile add-to-cart ----------- */
+function setupStickyCart(){
+  const bar = document.getElementById('sticky-cart');
+  if(!bar) return;
+  const hero = document.getElementById('hero');
+  const buy = document.getElementById('buy');
+  if(!hero) return;
+
+  // Show after hero scrolls out, hide once user is in/past the buy section
+  const heroIO = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(!e.isIntersecting && window.scrollY > 200){
+        bar.classList.add('show');
+        bar.setAttribute('aria-hidden','false');
+      } else {
+        bar.classList.remove('show');
+        bar.setAttribute('aria-hidden','true');
+      }
+    });
+  }, { threshold: 0 });
+  heroIO.observe(hero);
+
+  if(buy){
+    const buyIO = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if(e.isIntersecting){
+          bar.classList.remove('show');
+          bar.setAttribute('aria-hidden','true');
+        }
+      });
+    }, { threshold: 0.2 });
+    buyIO.observe(buy);
+  }
+
+  const addBtn = document.getElementById('sticky-add');
+  if(addBtn){
+    addBtn.addEventListener('click', () => {
+      Cart.add('dusk-sub');
+      toast('The Dusk added — your ritual begins', 'moon');
+      openCart();
+    });
+  }
+}
+
 /* ----------- Init on every page ----------- */
 function init(){
   Cart.load();
@@ -370,7 +439,7 @@ function init(){
   setupMagnetic();
   setupParallax();
   setupMarquee();
-  bindHoverables();
+  setupStickyCart();
 
   // Cart icon
   const cartBtn = document.getElementById('cart-btn');
@@ -379,6 +448,22 @@ function init(){
     updateCartBadge();
   }
   document.addEventListener('cart:change', () => { updateCartBadge(true); renderCart(); });
+
+  // Smooth-scroll anchor offset to account for sticky nav
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', (e) => {
+      const id = a.getAttribute('href').slice(1);
+      if(!id) return;
+      const target = document.getElementById(id);
+      if(!target) return;
+      e.preventDefault();
+      const top = target.getBoundingClientRect().top + window.scrollY - 60;
+      window.scrollTo({ top, behavior: 'smooth' });
+      // Close mobile drawer if open
+      const drawer = document.getElementById('drawer');
+      if(drawer) drawer.classList.remove('open');
+    });
+  });
 
   // Mobile menu drawer
   const openMenu = document.getElementById('openMenu');

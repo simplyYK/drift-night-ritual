@@ -104,29 +104,38 @@ body::after{
 
 .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 var(--gutter); position:relative; z-index:2 }
 
-/* Custom cursor */
+/* Custom cursor — bulletproof, GPU-only */
 .cursor{
-  position:fixed; top:0; left:0; pointer-events:none; z-index:200;
-  width:8px; height:8px; border-radius:50%;
+  position:fixed; top:0; left:0; pointer-events:none; z-index:9999;
+  border-radius:50%;
+  will-change:transform, width, height, opacity, background, border-color;
+  transition: width .32s var(--ease-out), height .32s var(--ease-out),
+              border-color .22s var(--ease), background .22s var(--ease),
+              opacity .18s var(--ease);
+  /* Initial offscreen position to prevent flash at 0,0 */
+  transform: translate3d(-100px, -100px, 0) translate(-50%, -50%);
+}
+.cursor-dot{
+  width:6px; height:6px;
   background:var(--amber);
-  mix-blend-mode:difference;
-  transform:translate(-50%, -50%);
-  transition: width .35s var(--ease-out), height .35s var(--ease-out),
-              background .25s var(--ease), opacity .2s;
-  will-change:transform;
+  box-shadow: 0 0 12px rgba(232,154,44,.55);
 }
-.cursor.ring{
-  width:42px; height:42px; background:transparent;
-  border:1px solid var(--amber);
-  mix-blend-mode:normal;
-  transition: width .45s var(--ease-out), height .45s var(--ease-out),
-              transform .12s linear, opacity .2s, border-color .2s;
+.cursor-ring{
+  width:36px; height:36px; background:transparent;
+  border:1px solid rgba(232,197,138,.85);
 }
-.cursor.is-over{ width:60px; height:60px }
-.cursor-dot.is-over{ width:0; height:0 }
-.cursor.is-text{ width:2px; height:22px; border-radius:2px; background:var(--bone); border:none }
-.cursor.is-hidden{ opacity:0 }
-@media (max-width: 880px), (hover: none){ .cursor{ display:none } }
+.cursor-ring.is-hover{ width:60px; height:60px; border-color:var(--amber) }
+.cursor-dot.is-hover{ width:0; height:0; opacity:0 }
+.cursor-ring.is-text{
+  width:2px; height:22px; border-radius:2px;
+  background:var(--bone); border:none;
+}
+.cursor-dot.is-text{ opacity:0 }
+.cursor-ring.is-active{ width:24px; height:24px }
+.cursor.is-hidden{ opacity:0 !important }
+@media (max-width: 880px), (hover: none){
+  .cursor{ display:none !important }
+}
 
 /* Scroll progress bar */
 .scroll-progress{
@@ -1105,6 +1114,249 @@ footer{ background:#06090F; border-top:1px solid var(--hairline); padding: 90px 
   body{ cursor:auto } button{ cursor:pointer }
   .cursor{ display:none }
 }
+
+/* =========================================================
+   TRUST STRIP — below hero
+   ========================================================= */
+.trust-strip{
+  border-top:1px solid var(--hairline); border-bottom:1px solid var(--hairline);
+  background:rgba(248,245,242,0.012);
+}
+.trust-strip-inner{
+  display:grid; grid-template-columns:repeat(4, 1fr);
+  align-items:center;
+}
+.trust-cell{
+  padding:22px 18px; display:flex; align-items:center; gap:14px;
+  border-right:1px solid var(--hairline);
+  min-height:80px;
+}
+.trust-cell:last-child{ border-right:none }
+.trust-cell .ico{
+  width:36px; height:36px; border-radius:50%; flex:none;
+  border:1px solid var(--hairline-strong);
+  display:flex; align-items:center; justify-content:center;
+  color:var(--amber-soft);
+}
+.trust-cell .copy .t{
+  font-family:var(--serif); font-size:15px; line-height:1.2;
+  font-variation-settings: "opsz" 24, "SOFT" 80, "wght" 420;
+  color:var(--bone);
+}
+.trust-cell .copy .s{
+  font-family:var(--mono); font-size:9.5px; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--muted-2); margin-top:4px;
+}
+@media(max-width:880px){
+  .trust-strip-inner{ grid-template-columns:repeat(2, 1fr) }
+  .trust-cell{ padding:18px 14px; min-height:72px; gap:10px }
+  .trust-cell:nth-child(2){ border-right:none }
+  .trust-cell:nth-child(1),
+  .trust-cell:nth-child(2){ border-bottom:1px solid var(--hairline) }
+  .trust-cell .copy .t{ font-size:14px }
+  .trust-cell .copy .s{ font-size:9px }
+  .trust-cell .ico{ width:32px; height:32px }
+}
+@media(max-width:420px){
+  .trust-strip-inner{ grid-template-columns:1fr }
+  .trust-cell{ border-right:none !important; border-bottom:1px solid var(--hairline) }
+  .trust-cell:last-child{ border-bottom:none }
+}
+
+/* =========================================================
+   PRESS WALL — Editorial wordmark grid
+   ========================================================= */
+.press-wall{
+  padding: clamp(50px, 7vw, 90px) 0;
+  border-bottom:1px solid var(--hairline);
+  text-align:center;
+}
+.press-wall .lbl{
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.32em; text-transform:uppercase;
+  color:var(--muted-2);
+}
+.press-wall .lbl::before,.press-wall .lbl::after{
+  content:""; display:inline-block; width:30px; height:1px; background:var(--hairline-strong);
+  vertical-align:middle; margin:0 14px;
+}
+.press-grid{
+  margin-top:38px;
+  display:grid; grid-template-columns:repeat(6, 1fr);
+  gap: clamp(20px, 3vw, 50px);
+  align-items:center; justify-items:center;
+}
+@media(max-width:880px){ .press-grid{ grid-template-columns:repeat(3, 1fr); gap:26px 30px } }
+@media(max-width:420px){ .press-grid{ grid-template-columns:repeat(2, 1fr) } }
+
+.press-mark{
+  color:var(--bone-dim); opacity:.78; transition: opacity .25s var(--ease), transform .35s var(--ease);
+  white-space:nowrap;
+}
+.press-mark:hover{ opacity:1; transform:translateY(-2px) }
+
+/* Vogue — display Bodoni-feel via Fraunces ultra-tight */
+.pm-vogue{
+  font-family:var(--serif); font-variation-settings: "opsz" 144, "SOFT" 0, "wght" 700;
+  font-size:clamp(22px, 2.4vw, 30px); letter-spacing:.04em;
+  text-transform:uppercase;
+}
+/* GQ — sans black */
+.pm-gq{
+  font-family:var(--sans); font-weight:800;
+  font-size:clamp(26px, 2.8vw, 36px); letter-spacing:-.04em;
+}
+/* Bon Appétit — italic editorial */
+.pm-ba{
+  font-family:var(--serif); font-style:italic;
+  font-variation-settings: "opsz" 144, "SOFT" 100, "wght" 420;
+  font-size:clamp(18px, 2vw, 26px); letter-spacing:-.01em;
+}
+/* Architectural Digest — small caps spaced */
+.pm-ad{
+  font-family:var(--sans); font-weight:600;
+  font-size:clamp(11px, 1.1vw, 13px); letter-spacing:.32em; text-transform:uppercase;
+  line-height:1.4; text-align:center;
+}
+.pm-ad span{ display:block }
+/* Forbes — italic with terminal period */
+.pm-forbes{
+  font-family:var(--serif); font-style:italic; font-variation-settings: "opsz" 96, "SOFT" 80, "wght" 600;
+  font-size:clamp(20px, 2.2vw, 28px); letter-spacing:-.02em;
+}
+.pm-forbes::after{ content:"."; color:var(--amber-soft) }
+/* Wallpaper — magazine-style spaced caps */
+.pm-wall{
+  font-family:var(--serif); font-variation-settings: "opsz" 24, "SOFT" 60, "wght" 500;
+  font-size:clamp(14px, 1.4vw, 16px); letter-spacing:.36em; text-transform:uppercase;
+}
+
+/* =========================================================
+   COMPARISON TABLE — DRIFT vs alternatives
+   ========================================================= */
+.compare{ background:linear-gradient(180deg, var(--ink-2), var(--ink)) }
+.compare-head{ text-align:center; max-width:36ch; margin:0 auto 56px }
+.compare-head h2{ margin-top:14px }
+.compare-head .lede{ margin: 22px auto 0 }
+
+.compare-table{
+  border:1px solid var(--hairline); border-radius:var(--radius-lg);
+  background:rgba(248,245,242,0.012);
+  overflow:hidden;
+}
+.compare-row{
+  display:grid; grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr;
+  border-bottom:1px solid var(--hairline);
+}
+.compare-row:last-child{ border-bottom:none }
+.compare-cell{
+  padding: 22px 20px;
+  border-right:1px solid var(--hairline);
+  display:flex; align-items:center;
+  font-size:14px; color:var(--bone-dim);
+  position:relative;
+}
+.compare-cell:last-child{ border-right:none }
+
+/* Header row */
+.compare-row.head{ background: rgba(232,154,44,.04) }
+.compare-row.head .compare-cell{
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--muted); padding:18px 20px;
+  justify-content:center; text-align:center;
+}
+.compare-row.head .compare-cell.is-drift{
+  color:var(--amber-soft);
+  background: rgba(232,154,44,.10);
+  border-bottom:1px solid var(--amber);
+}
+.compare-row.head .compare-cell:first-child{ justify-content:flex-start; text-align:left; color:var(--muted-2) }
+
+/* Row label cell */
+.compare-cell.label{
+  font-family:var(--serif); font-size:16px; color:var(--bone);
+  font-variation-settings: "opsz" 24, "SOFT" 60;
+}
+/* Score cells */
+.compare-cell.score{ justify-content:center; text-align:center; flex-direction:column; gap:6px }
+.compare-cell.score .dots{ display:inline-flex; gap:5px }
+.compare-cell.score .dots span{
+  width:7px; height:7px; border-radius:50%;
+  background:var(--hairline-strong);
+}
+.compare-cell.score .dots span.on{ background:var(--bone) }
+.compare-cell.is-drift .dots span.on{ background:var(--amber) }
+.compare-cell.score .note{ font-family:var(--mono); font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted-2) }
+.compare-cell.score .x{ color:var(--muted-2); font-size:18px; line-height:1 }
+
+.compare-cell.is-drift{
+  background: rgba(232,154,44,.04);
+  border-left:1px solid rgba(232,154,44,.20);
+  border-right:1px solid rgba(232,154,44,.20);
+}
+
+@media(max-width:880px){
+  /* Stack as cards */
+  .compare-table{ background:transparent; border:none; display:flex; flex-direction:column; gap:14px }
+  .compare-row{ grid-template-columns:1fr 1fr; border:1px solid var(--hairline); border-radius:14px; overflow:hidden; background:var(--ink-2) }
+  .compare-row.head{ display:none }
+  .compare-cell{ border-right:none; border-bottom:1px solid var(--hairline); padding:14px 16px; font-size:13.5px }
+  .compare-cell:last-child{ border-bottom:none }
+  .compare-cell.label{ background:rgba(248,245,242,.02); font-family:var(--mono); font-size:10.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); grid-column:1/-1 }
+  .compare-cell.score{ flex-direction:row; justify-content:space-between }
+  .compare-cell.score::before{
+    content: attr(data-col);
+    font-family:var(--mono); font-size:9.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted-2);
+  }
+  .compare-cell.is-drift{ border-left:none; border-right:none; background: rgba(232,154,44,.06) }
+  .compare-cell.is-drift::before{ color:var(--amber-soft) }
+}
+
+/* =========================================================
+   STICKY MOBILE ADD-TO-CART
+   ========================================================= */
+.sticky-cart{
+  position:fixed; left:0; right:0; bottom:0; z-index:48;
+  background:rgba(10,14,24,.94);
+  backdrop-filter:blur(14px) saturate(140%);
+  -webkit-backdrop-filter:blur(14px) saturate(140%);
+  border-top:1px solid var(--hairline-strong);
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+  display:none; align-items:center; gap:14px;
+  transform:translateY(110%);
+  transition: transform .45s var(--ease-out);
+}
+.sticky-cart.show{ transform:none }
+.sticky-cart .sc-thumb{
+  width:42px; height:50px; border-radius:6px;
+  background:linear-gradient(180deg, #11182a, #060a17); border:1px solid var(--hairline);
+  display:flex; align-items:center; justify-content:center; flex:none; position:relative;
+}
+.sticky-cart .sc-thumb::before{
+  content:""; position:absolute; inset:auto 0 -10% 0; height:60%;
+  background:radial-gradient(50% 60% at 50% 0%, rgba(232,154,44,.22), transparent 70%);
+}
+.sticky-cart .sc-mark{ font-family:var(--serif); font-size:8.5px; letter-spacing:.32em; color:var(--amber-soft); position:relative; z-index:1 }
+.sticky-cart .sc-info{ flex:1; min-width:0 }
+.sticky-cart .sc-name{ font-family:var(--serif); font-size:15px; line-height:1.1; font-variation-settings: "opsz" 24, "SOFT" 80 }
+.sticky-cart .sc-meta{ font-family:var(--mono); font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-top:3px }
+.sticky-cart .sc-meta s{ color:var(--muted-2); margin-right:6px }
+.sticky-cart .sc-meta .price{ color:var(--amber-soft); font-weight:600 }
+.sticky-cart .sc-cta{
+  padding:13px 22px; border-radius:999px; background:var(--amber); color:var(--ink);
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.2em; text-transform:uppercase; font-weight:600;
+  white-space:nowrap;
+}
+@media(max-width:880px){ .sticky-cart{ display:flex } }
+
+/* Skip link */
+.skip-link{
+  position:absolute; left:-9999px; top:0;
+  background:var(--amber); color:var(--ink);
+  padding:12px 20px; border-radius:0 0 8px 0;
+  font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; font-weight:600;
+  z-index:200;
+}
+.skip-link:focus{ left:0 }
 
 /* =========================================================
    THE DRIFT DIAGNOSTIC — Editorial Section + Modal
