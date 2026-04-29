@@ -396,17 +396,21 @@
       <div class="flavor-row" role="tablist" aria-label="Flavor" style="margin-top:36px">
         <button class="flavor" data-flavor="lavender" aria-selected="true"><span class="swatch"></span>Honey Lavender</button>
         <button class="flavor" data-flavor="vanilla" aria-selected="false"><span class="swatch"></span>Vanilla Dusk</button>
+        <button class="flavor" data-flavor="cacao" aria-selected="false"><span class="swatch"></span>Cacao Moon</button>
+        <button class="flavor" data-flavor="chai" aria-selected="false"><span class="swatch"></span>Spiced Chai</button>
+        <button class="flavor" data-flavor="matcha" aria-selected="false"><span class="swatch"></span>Matcha Midnight</button>
+        <button class="flavor" data-flavor="mix" aria-selected="false"><span class="swatch swatch-mix"></span>Mix Pack <span class="flavor-badge">All 5</span></button>
       </div>
 
       <div class="plan" role="tablist" aria-label="Purchase plan">
-        <button class="plan-opt" role="tab" aria-selected="true" data-plan="dusk-sub">
+        <button class="plan-opt" role="tab" aria-selected="true" data-plan="sub">
           <div class="name">Subscribe <span class="badge">Save 19%</span></div>
-          <div class="price"><s>$42</s>$34<span style="font-size:13px;color:var(--muted);font-family:var(--mono);font-weight:400;letter-spacing:.06em;margin-left:6px;text-transform:uppercase">/ month</span></div>
+          <div class="price"><s id="planCompare">$42</s><span id="planSubPrice">$34</span><span style="font-size:13px;color:var(--muted);font-family:var(--mono);font-weight:400;letter-spacing:.06em;margin-left:6px;text-transform:uppercase">/ month</span></div>
           <div class="desc">Skip · pause · cancel anytime</div>
         </button>
-        <button class="plan-opt" role="tab" aria-selected="false" data-plan="dusk-one">
+        <button class="plan-opt" role="tab" aria-selected="false" data-plan="one">
           <div class="name">One time</div>
-          <div class="price">$42</div>
+          <div class="price" id="planOnePrice">$42</div>
           <div class="desc">30 sachets · No commitment</div>
         </button>
       </div>
@@ -572,19 +576,88 @@
   </div>
 </footer>
 
+<!-- ============== THE DRIFT DIAGNOSTIC ============== -->
+<button class="dx-launcher" id="dx-launch" aria-label="Open the Drift Diagnostic">
+  <span class="ico" aria-hidden="true">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E8C58A" stroke-width="1.4">
+      <path d="M16.5 14.2A7 7 0 0 1 9.8 7.5a7 7 0 1 0 6.7 6.7Z"/>
+      <circle cx="18.5" cy="6.5" r="0.9" fill="#E8C58A"/>
+    </svg>
+  </span>
+  <span class="lbl">
+    <span class="t">The Drift Diagnostic</span>
+    <span class="s">60-Second Sleep Profile</span>
+  </span>
+</button>
+
+<div class="dx-modal" id="dx-modal" role="dialog" aria-modal="true" aria-labelledby="dx-title" aria-hidden="true">
+  <div class="dx-card">
+    <header class="dx-head">
+      <div class="h-l">
+        <span class="badge">AI Concierge</span>
+        <span class="title" id="dx-title">The Drift Diagnostic</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px">
+        <span class="progress" id="dx-progress-text">01 / 06</span>
+        <button class="close" id="dx-close" aria-label="Close">✕</button>
+      </div>
+    </header>
+    <div class="dx-progress-bar"><div id="dx-progress-fill" style="position:absolute;inset:0 100% 0 0;background:linear-gradient(90deg,var(--amber-soft),var(--amber));transition:right .55s var(--ease-out)"></div></div>
+
+    <div class="dx-body">
+      <div class="dx-stage" id="dx-stage"></div>
+    </div>
+
+    <footer class="dx-foot">
+      <button class="back" id="dx-back" disabled>← Back</button>
+      <button class="btn btn-primary next" id="dx-next" disabled>Continue <span class="arr">→</span></button>
+    </footer>
+  </div>
+</div>
+
 <script src="assets/app.js"></script>
+<script src="assets/diagnostic.js"></script>
 <script>
   // Plan + flavor toggles on the BUY section
   const priceLabel = document.getElementById('planPrice');
-  let selectedPlan = 'dusk-sub';
-  let selectedFlavor = 'Honey Lavender';
+  const planSubPrice = document.getElementById('planSubPrice');
+  const planOnePrice = document.getElementById('planOnePrice');
+  const planCompare = document.getElementById('planCompare');
+
+  const FLAVOR_MAP = {
+    lavender: 'Honey Lavender',
+    vanilla:  'Vanilla Dusk',
+    cacao:    'Cacao Moon',
+    chai:     'Spiced Chai',
+    matcha:   'Matcha Midnight',
+    mix:      'Mix Pack (all 5)',
+  };
+
+  let plan = 'sub';        // 'sub' | 'one'
+  let flavorKey = 'lavender';
+  let isMix = false;
+
+  function refreshPricing(){
+    isMix = (flavorKey === 'mix');
+    const subPrice = isMix ? 36 : 34;
+    const onePrice = isMix ? 44 : 42;
+    planSubPrice.textContent = `$${subPrice}`;
+    planOnePrice.textContent = `$${onePrice}`;
+    planCompare.textContent = `$${onePrice}`;
+    priceLabel.textContent = `$${plan === 'sub' ? subPrice : onePrice}`;
+  }
+
+  function getSku(){
+    if(isMix) return plan === 'sub' ? 'mix-sub' : 'mix-one';
+    return plan === 'sub' ? 'dusk-sub' : 'dusk-one';
+  }
 
   document.querySelectorAll('.plan-opt').forEach(b => {
     b.addEventListener('click', () => {
       document.querySelectorAll('.plan-opt').forEach(x => x.setAttribute('aria-selected','false'));
       b.setAttribute('aria-selected','true');
-      selectedPlan = b.dataset.plan;
-      priceLabel.textContent = selectedPlan === 'dusk-sub' ? '$34' : '$42';
+      plan = b.dataset.plan;
+      refreshPricing();
     });
   });
 
@@ -592,15 +665,20 @@
     b.addEventListener('click', () => {
       document.querySelectorAll('.flavor').forEach(x => x.setAttribute('aria-selected','false'));
       b.setAttribute('aria-selected','true');
-      selectedFlavor = b.dataset.flavor === 'vanilla' ? 'Vanilla Dusk' : 'Honey Lavender';
+      flavorKey = b.dataset.flavor;
+      refreshPricing();
     });
   });
 
   document.getElementById('buy-add').addEventListener('click', () => {
-    Cart.add(selectedPlan, { flavor: selectedFlavor });
-    toast(`${PRODUCTS[selectedPlan].name} added — ${selectedFlavor}`, 'moon');
+    const sku = getSku();
+    const flavorName = FLAVOR_MAP[flavorKey];
+    Cart.add(sku, { flavor: flavorName });
+    toast(`${PRODUCTS[sku].name} added — ${flavorName}`, 'moon');
     openCart();
   });
+
+  refreshPricing();
 
   document.querySelectorAll('[data-add]').forEach(el => {
     el.addEventListener('click', (e) => {

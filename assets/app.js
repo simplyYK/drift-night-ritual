@@ -4,9 +4,11 @@
    ========================================================= */
 
 const PRODUCTS = {
-  'dusk-sub': { id:'dusk-sub', name:'The Dusk', sub:'Subscription · Monthly', price:34, compareAt:42, image:'DRIFT' },
-  'dusk-one': { id:'dusk-one', name:'The Dusk', sub:'One-time · 30 sachets', price:42, compareAt:null, image:'DRIFT' },
-  'sampler':  { id:'sampler',  name:'The Sampler', sub:'7-night trial', price:14, compareAt:null, image:'DRIFT 7' },
+  'dusk-sub': { id:'dusk-sub', name:'The Dusk',     sub:'Subscription · Monthly',           price:34, compareAt:42, image:'DRIFT' },
+  'dusk-one': { id:'dusk-one', name:'The Dusk',     sub:'One-time · 30 sachets',            price:42, compareAt:null, image:'DRIFT' },
+  'mix-sub':  { id:'mix-sub',  name:'The Mix Pack', sub:'Subscription · All 5 flavors',     price:36, compareAt:44, image:'MIX' },
+  'mix-one':  { id:'mix-one',  name:'The Mix Pack', sub:'One-time · All 5 flavors',         price:44, compareAt:null, image:'MIX' },
+  'sampler':  { id:'sampler',  name:'The Sampler',  sub:'7-night trial · 5 flavors',        price:14, compareAt:null, image:'DRIFT 7' },
   'kit':      { id:'kit',      name:'The Wind Down Kit', sub:'Sachets · ceramic mug · candle', price:78, compareAt:96, image:'KIT' }
 };
 
