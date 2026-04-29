@@ -1,0 +1,624 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>DRIFT — Wind down on purpose.</title>
+<meta name="description" content="A functional nighttime drink ritual. Clinically dosed adaptogens in a single-serve sachet — calm the mind, relax the body, sleep better, wake up refreshed." />
+<meta name="theme-color" content="#0A0E18" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,0..100;1,9..144,300..700,0..100&family=Manrope:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<div class="cursor cursor-dot" id="cursor-dot" aria-hidden="true"></div>
+<div class="cursor ring" id="cursor-ring" aria-hidden="true"></div>
+<div class="scroll-progress" aria-hidden="true"></div>
+
+<!-- ============== NAV ============== -->
+<header class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a href="#" class="brand" aria-label="DRIFT — Nighttime Ritual">
+      <svg class="logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+        <path d="M16.5 14.2A7 7 0 0 1 9.8 7.5a7 7 0 1 0 6.7 6.7Z"/>
+        <circle cx="18.5" cy="6.5" r="0.9" fill="currentColor"/>
+      </svg>
+      DRIFT
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#ritual">Ritual</a>
+      <a href="#ingredients">Ingredients</a>
+      <a href="#science">Science</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-primary" href="#buy">Shop The Dusk <span class="arr">→</span></a>
+      <button class="icon-btn" id="cart-btn" aria-label="Open cart">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+          <path d="M5 7h14l-1.4 11.2a2 2 0 0 1-2 1.8H8.4a2 2 0 0 1-2-1.8L5 7Z"/>
+          <path d="M9 7V5a3 3 0 0 1 6 0v2"/>
+        </svg>
+        <span class="cart-badge" id="cart-badge">0</span>
+      </button>
+      <button class="menu-btn" aria-label="Open menu" id="openMenu"><span></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-top">
+    <a href="#" class="brand">
+      <svg class="logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M16.5 14.2A7 7 0 0 1 9.8 7.5a7 7 0 1 0 6.7 6.7Z"/><circle cx="18.5" cy="6.5" r="0.9" fill="currentColor"/></svg>
+      DRIFT
+    </a>
+    <button class="close-btn" id="closeMenu" aria-label="Close menu">✕</button>
+  </div>
+  <nav class="drawer-links">
+    <a href="#ritual">Ritual</a>
+    <a href="#ingredients">Ingredients</a>
+    <a href="#science">Science</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#faq">FAQ</a>
+    <a href="#buy" style="color:var(--amber-soft)">Shop The Dusk →</a>
+  </nav>
+</div>
+
+<!-- ============== HERO ============== -->
+<section class="hero" id="hero">
+  <div class="aurora" aria-hidden="true"></div>
+  <div class="hero-caption" aria-hidden="true">
+    <span><i class="pip"></i>ISSUE №001</span>
+    <span><i class="pip"></i>THE DUSK</span>
+    <span><i class="pip"></i>NIGHT 0001/0030</span>
+  </div>
+
+  <div class="wrap hero-grid">
+    <div class="reveal-stagger">
+      <span class="eyebrow">Nighttime Drink Ritual · 30 Sachets</span>
+      <h1 style="margin-top:28px">
+        <span class="split-line"><span class="word em">Wind</span> <span class="word em">down</span></span>
+        <span class="split-line"><span class="word it">on</span> <span class="word it">purpose.</span></span>
+      </h1>
+      <p class="lede hero-subline">
+        A single sachet, dissolved in warm water, replaces the fragmented
+        nightly routine — herbal tea, magnesium, midnight scrolling — with one
+        clinically dosed, beautifully designed ritual that actually works.
+      </p>
+      <div class="hero-actions">
+        <button class="btn btn-primary magnetic" data-add="dusk-sub">Begin the ritual <span class="arr">→</span></button>
+        <a href="#science" class="btn btn-ghost">How it works</a>
+      </div>
+      <div class="hero-meta">
+        <span><i class="dot"></i>Clinically dosed</span>
+        <span><i class="dot"></i>No melatonin grogginess</span>
+        <span><i class="dot"></i>Third-party tested</span>
+      </div>
+    </div>
+
+    <div class="hero-art" aria-hidden="true" data-parallax="0.3">
+      <div class="moon" data-parallax="0.2"></div>
+      <div class="stars">
+        <span class="star" style="top:10%; left:18%"></span>
+        <span class="star s2" style="top:30%; left:88%"></span>
+        <span class="star" style="top:62%; left:8%"></span>
+        <span class="star" style="top:80%; left:74%; animation-delay:1s"></span>
+        <span class="star s2" style="top:18%; left:62%; animation-delay:1.5s"></span>
+        <span class="star" style="top:50%; left:96%; animation-delay:.5s"></span>
+      </div>
+      <div class="sachet" data-parallax="0.15">
+        <div style="display:flex; flex-direction:column; align-items:center; margin-top:8%">
+          <svg class="sachet-moon" viewBox="0 0 24 24" fill="none" stroke="#E8C58A" stroke-width="1.2" aria-hidden="true">
+            <path d="M16.5 14.2A7 7 0 0 1 9.8 7.5a7 7 0 1 0 6.7 6.7Z"/>
+            <circle cx="18.5" cy="6.5" r="0.9" fill="#E8C58A"/>
+          </svg>
+          <div class="sachet-logo">DRIFT</div>
+          <div class="sachet-tag">Wind down on purpose.</div>
+        </div>
+        <div class="sachet-meta">
+          Nighttime Drink Ritual<br/>
+          Dietary Supplement<br/>
+          Net Wt. 8g
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== PRESS MARQUEE ============== -->
+<div class="press" aria-label="Press">
+  <div class="marquee" id="marquee">
+    <span><em>"The Liquid Death of nighttime."</em></span>
+    <span class="dot"></span>
+    <span>Vogue</span>
+    <span class="dot"></span>
+    <span><em>"Quietly the most-talked-about box on the nightstand."</em></span>
+    <span class="dot"></span>
+    <span>Bon Appétit</span>
+    <span class="dot"></span>
+    <span><em>"Aesop, but for sleep."</em></span>
+    <span class="dot"></span>
+    <span>Architectural Digest</span>
+    <span class="dot"></span>
+    <span><em>"A genuinely useful nightly object."</em></span>
+    <span class="dot"></span>
+    <span>GQ</span>
+    <span class="dot"></span>
+  </div>
+</div>
+
+<!-- ============== PROMISE ============== -->
+<section class="promise" id="problem">
+  <div class="section-num">§ 01 — The Problem</div>
+  <div class="wrap reveal">
+    <span class="eyebrow">A small confession</span>
+    <h2 style="margin-top:18px">
+      The last thirty minutes of your day <em>deserve more</em> than a scroll and a sigh.
+    </h2>
+    <p class="lede">
+      Most of us cobble together a fragile little routine — herbal tea, a magnesium pill,
+      a CBD gummy, one more lap through the feed. It half-works, on a good night.
+      DRIFT replaces the patchwork with one quiet, deliberate ritual that actually delivers.
+    </p>
+
+    <div class="stat-row reveal-stagger">
+      <div class="stat" data-num="01 / 04">
+        <div class="num"><em>1 in 3</em></div>
+        <div class="lbl">Adults don't get enough sleep</div>
+      </div>
+      <div class="stat" data-num="02 / 04">
+        <div class="num"><em>67%</em></div>
+        <div class="lbl">Scroll their phone in bed</div>
+      </div>
+      <div class="stat" data-num="03 / 04">
+        <div class="num"><em>23 min</em></div>
+        <div class="lbl">Average time staring at the ceiling</div>
+      </div>
+      <div class="stat" data-num="04 / 04">
+        <div class="num"><em>78%</em></div>
+        <div class="lbl">Want a calmer wind-down — without one</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== PILLARS ============== -->
+<section id="science">
+  <div class="section-num">§ 02 — The Promise</div>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <span class="eyebrow">Four functional outcomes</span>
+        <h2 style="margin-top:14px">A ritual for<br/>better nights.</h2>
+      </div>
+      <p class="lede">
+        DRIFT is engineered around four functional outcomes — each backed by clinically
+        dosed ingredients, not pixie dust. Track the difference in seven nights.
+      </p>
+    </div>
+
+    <div class="pillars reveal-stagger">
+      <div class="pillar">
+        <div class="pillar-num">i.</div>
+        <div class="pillar-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+            <path d="M12 3a4 4 0 0 0-4 4v1a4 4 0 0 0-2 7.5V17a4 4 0 0 0 8 0V7a4 4 0 0 0-2-3.5Z"/>
+            <path d="M12 3a4 4 0 0 1 4 4v1a4 4 0 0 1 2 7.5V17a4 4 0 0 1-8 0"/>
+          </svg>
+        </div>
+        <h3>Calm the mind</h3>
+        <p>L-theanine and reishi quiet the cortisol spiral that keeps you re-running your day at midnight.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">ii.</div>
+        <div class="pillar-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+            <path d="M12 3c1.5 3 4 4 6 4-1 4-3 7-6 9-3-2-5-5-6-9 2 0 4.5-1 6-4Z"/>
+          </svg>
+        </div>
+        <h3>Relax the body</h3>
+        <p>Magnesium glycinate eases the muscular tension and tightness that accumulates by 11pm.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">iii.</div>
+        <div class="pillar-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+            <path d="M16.5 14.2A7 7 0 0 1 9.8 7.5a7 7 0 1 0 6.7 6.7Z"/>
+          </svg>
+        </div>
+        <h3>Sleep better</h3>
+        <p>Tart cherry — a natural source of melatonin — helps you fall asleep faster and stay asleep longer.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">iv.</div>
+        <div class="pillar-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+            <circle cx="12" cy="12" r="4"/><path d="M12 4v2M12 18v2M4 12h2M18 12h2M6 6l1.5 1.5M16.5 16.5L18 18M6 18l1.5-1.5M16.5 7.5L18 6"/>
+          </svg>
+        </div>
+        <h3>Wake refreshed</h3>
+        <p>Ashwagandha balances overnight cortisol so you rise sharp — not foggy or melatonin-hungover.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== INGREDIENTS ============== -->
+<section class="ingredients" id="ingredients">
+  <div class="section-num">§ 03 — The Formula</div>
+  <div class="wrap ing-grid">
+    <div class="reveal">
+      <span class="eyebrow">Inside The Dusk</span>
+      <h2 style="margin-top:14px">Five ingredients.<br/>Clinically dosed.</h2>
+      <p class="lede" style="margin-top:24px">
+        No proprietary blend obfuscation. Every milligram is published, sourced from
+        traceable farms, and third-party tested for purity and potency.
+      </p>
+
+      <div class="ing-list" style="margin-top:36px">
+        <div class="ing-item">
+          <div class="ing-num">i</div>
+          <div>
+            <div class="ing-name">Reishi Mushroom</div>
+            <span class="ing-desc">Adaptogen for stress reduction & cortisol balance</span>
+          </div>
+          <div class="ing-origin">Pacific Northwest, USA</div>
+          <div class="ing-dose">500mg</div>
+        </div>
+        <div class="ing-item">
+          <div class="ing-num">ii</div>
+          <div>
+            <div class="ing-name">L-Theanine</div>
+            <span class="ing-desc">Calm focus without sedation</span>
+          </div>
+          <div class="ing-origin">Suntheanine®, Japan</div>
+          <div class="ing-dose">200mg</div>
+        </div>
+        <div class="ing-item">
+          <div class="ing-num">iii</div>
+          <div>
+            <div class="ing-name">Magnesium Glycinate</div>
+            <span class="ing-desc">Muscle relaxation & sleep onset</span>
+          </div>
+          <div class="ing-origin">Albion® Minerals</div>
+          <div class="ing-dose">300mg</div>
+        </div>
+        <div class="ing-item">
+          <div class="ing-num">iv</div>
+          <div>
+            <div class="ing-name">Tart Cherry Extract</div>
+            <span class="ing-desc">Natural source of melatonin</span>
+          </div>
+          <div class="ing-origin">Michigan, USA</div>
+          <div class="ing-dose">480mg</div>
+        </div>
+        <div class="ing-item">
+          <div class="ing-num">v</div>
+          <div>
+            <div class="ing-name">Ashwagandha KSM-66®</div>
+            <span class="ing-desc">Cortisol regulation & overnight recovery</span>
+          </div>
+          <div class="ing-origin">Ixoreal Biomed, India</div>
+          <div class="ing-dose">600mg</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ing-visual reveal" aria-hidden="true">
+      <div class="steam"></div>
+      <div class="glass"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== RITUAL ============== -->
+<section class="ritual" id="ritual">
+  <div class="section-num">§ 04 — The Ritual</div>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <span class="eyebrow">Three minutes · Every night</span>
+        <h2 style="margin-top:14px">Tear, pour,<br/>then drift.</h2>
+      </div>
+      <p class="lede">
+        It's not a supplement. It's not a sleep aid. It's a habit — a fixed,
+        beautiful moment that anchors the rest of your evening.
+      </p>
+    </div>
+
+    <div class="ritual-grid reveal-stagger">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3>Tear</h3>
+        <p>Pull a single sachet from the box. Notice the weight of the matte paper, the soft tear along the seam. The day is closing.</p>
+        <span class="step-tag">— 30 seconds —</span>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3>Pour</h3>
+        <p>Empty into 8oz of warm water. Watch the powder dissolve into a soft amber bloom. Stir slowly. Inhale.</p>
+        <span class="step-tag">— 60 seconds —</span>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3>Drift</h3>
+        <p>Sip without your phone. Read, stretch, journal — anything but scroll. Your body knows what to do from here.</p>
+        <span class="step-tag">— Until the cup is empty —</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== FOUNDER NOTE ============== -->
+<section class="note">
+  <div class="wrap reveal">
+    <svg class="moon-rule" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
+      <path d="M16.5 14.2A7 7 0 0 1 9.8 7.5a7 7 0 1 0 6.7 6.7Z"/>
+      <circle cx="18.5" cy="6.5" r="0.9" fill="currentColor"/>
+    </svg>
+    <blockquote>"You deserve the last thirty minutes of your day."</blockquote>
+  </div>
+</section>
+
+<!-- ============== BUY ============== -->
+<section class="buy" id="buy">
+  <div class="section-num">§ 05 — Begin</div>
+  <div class="wrap buy-grid">
+    <div class="buy-art reveal" aria-hidden="true">
+      <div class="box">
+        <div class="box-top">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#E8C58A" stroke-width="1.2"><path d="M16.5 14.2A7 7 0 0 1 9.8 7.5a7 7 0 1 0 6.7 6.7Z"/><circle cx="18.5" cy="6.5" r="0.9" fill="#E8C58A"/></svg>
+          <div class="box-name">DRIFT</div>
+          <div class="box-tag">Wind down on purpose.</div>
+        </div>
+        <div class="box-icons">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 3c1.5 3 4 4 6 4-1 4-3 7-6 9-3-2-5-5-6-9 2 0 4.5-1 6-4Z"/></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M16.5 14.2A7 7 0 0 1 9.8 7.5a7 7 0 1 0 6.7 6.7Z"/></svg>
+        </div>
+        <div class="box-bottom">
+          <div>Nighttime Drink Ritual</div>
+          <div>30 Sachets · Dietary Supplement</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <span class="eyebrow">The Hero SKU · No. 001</span>
+      <h2 style="margin-top:14px">The Dusk.</h2>
+      <p class="lede" style="margin-top:18px">
+        A 30-night supply of single-serve sachets. Honey Lavender or Vanilla Dusk.
+        Subscribe and your next box arrives the day before you run out.
+      </p>
+
+      <div class="flavor-row" role="tablist" aria-label="Flavor" style="margin-top:36px">
+        <button class="flavor" data-flavor="lavender" aria-selected="true"><span class="swatch"></span>Honey Lavender</button>
+        <button class="flavor" data-flavor="vanilla" aria-selected="false"><span class="swatch"></span>Vanilla Dusk</button>
+      </div>
+
+      <div class="plan" role="tablist" aria-label="Purchase plan">
+        <button class="plan-opt" role="tab" aria-selected="true" data-plan="dusk-sub">
+          <div class="name">Subscribe <span class="badge">Save 19%</span></div>
+          <div class="price"><s>$42</s>$34<span style="font-size:13px;color:var(--muted);font-family:var(--mono);font-weight:400;letter-spacing:.06em;margin-left:6px;text-transform:uppercase">/ month</span></div>
+          <div class="desc">Skip · pause · cancel anytime</div>
+        </button>
+        <button class="plan-opt" role="tab" aria-selected="false" data-plan="dusk-one">
+          <div class="name">One time</div>
+          <div class="price">$42</div>
+          <div class="desc">30 sachets · No commitment</div>
+        </button>
+      </div>
+
+      <div class="hero-actions">
+        <button class="btn btn-primary btn-lg magnetic" id="buy-add">Add to cart — <span id="planPrice">$34</span> <span class="arr">→</span></button>
+        <button class="btn btn-ghost" data-add="sampler">Try the 7-night sampler · $14</button>
+      </div>
+
+      <div class="perks">
+        <div class="perk"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E89A2C" stroke-width="2"><path d="M5 12l5 5L20 7"/></svg>Clinically dosed — no proprietary blend</div>
+        <div class="perk"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E89A2C" stroke-width="2"><path d="M5 12l5 5L20 7"/></svg>Third-party tested for purity</div>
+        <div class="perk"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E89A2C" stroke-width="2"><path d="M5 12l5 5L20 7"/></svg>Vegan · Non-GMO · Gluten-free</div>
+        <div class="perk"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E89A2C" stroke-width="2"><path d="M5 12l5 5L20 7"/></svg>30-night happiness guarantee</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== REVIEWS ============== -->
+<section class="reviews" id="reviews">
+  <div class="section-num">§ 06 — In Practice</div>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <span class="eyebrow">From the Dusk Club</span>
+        <h2 style="margin-top:14px">Quietly,<br/>then everywhere.</h2>
+      </div>
+      <p class="lede">
+        4.9 / 5 across 2,847 verified reviews. 64% of subscribers track measurable
+        improvement in deep-sleep minutes within their first two weeks.
+      </p>
+    </div>
+
+    <div class="review-grid reveal-stagger">
+      <div class="review">
+        <div class="stars-row">★★★★★</div>
+        <p>"I quit melatonin in week one. The grogginess is gone. My Oura deep-sleep average is up 22 minutes."</p>
+        <div class="who"><div class="avatar">M</div><div>Maya · Brooklyn · 4 mo</div></div>
+      </div>
+      <div class="review">
+        <div class="stars-row">★★★★★</div>
+        <p>"It tastes like the inside of a candle, in the best way. The nightly pour is genuinely the part of my day I look forward to most."</p>
+        <div class="who"><div class="avatar">J</div><div>James · Austin · 7 mo</div></div>
+      </div>
+      <div class="review">
+        <div class="stars-row">★★★★★</div>
+        <p>"Replaced four products on my nightstand: tea, magnesium, CBD, and a phone scroll. One sachet does what they couldn't."</p>
+        <div class="who"><div class="avatar">P</div><div>Priya · San Francisco · 6 mo</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== FAQ ============== -->
+<section id="faq">
+  <div class="section-num">§ 07 — Honest Answers</div>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <span class="eyebrow">Questions</span>
+        <h2 style="margin-top:14px">Honest answers.</h2>
+      </div>
+      <p class="lede">
+        Transparent on dosage, sourcing, and claims. If we don't have a published
+        clinical reference for it, it isn't in the formula.
+      </p>
+    </div>
+
+    <div class="reveal">
+      <details>
+        <summary>Is DRIFT a sleep aid?<span class="plus">+</span></summary>
+        <div class="ans">No. DRIFT is a dietary supplement designed to support a calming evening ritual. It is not a pharmaceutical and makes no medical claims. The ingredients are clinically dosed adaptogens that help calm the mind, relax the body, and support natural sleep onset.</div>
+      </details>
+      <details>
+        <summary>Will I feel groggy in the morning like with melatonin?<span class="plus">+</span></summary>
+        <div class="ans">DRIFT contains a small amount of natural melatonin from tart cherry — a fraction of the dose in commercial gummies. Most customers report waking sharper, not foggier. We deliberately avoided synthetic high-dose melatonin for this reason.</div>
+      </details>
+      <details>
+        <summary>How quickly will I notice a difference?<span class="plus">+</span></summary>
+        <div class="ans">Adaptogens build effect over time. Most subscribers report meaningful changes in sleep onset and quality within 7–14 nights. We recommend tracking with an Oura ring, Apple Watch, or WHOOP for objective feedback.</div>
+      </details>
+      <details>
+        <summary>What does it taste like?<span class="plus">+</span></summary>
+        <div class="ans">Honey Lavender is delicately floral with a soft sweetness. Vanilla Dusk is warm, lightly toasted, and creamy. Both are designed to taste like something between a tea and a latte — not medicinal, never bitter.</div>
+      </details>
+      <details>
+        <summary>Can I skip, pause, or cancel my subscription?<span class="plus">+</span></summary>
+        <div class="ans">Always. Manage everything from your account dashboard — skip a delivery, pause for a month, or cancel in two clicks. No phone calls, no retention dark patterns.</div>
+      </details>
+      <details>
+        <summary>Where do you source ingredients?<span class="plus">+</span></summary>
+        <div class="ans">Our ashwagandha is KSM-66® from Ixoreal Biomed in India. Reishi is dual-extracted from Real Mushrooms in the US. Magnesium glycinate is from Albion Minerals. Every batch ships with a third-party Certificate of Analysis available on our site.</div>
+      </details>
+      <details>
+        <summary>Is it safe with my medications?<span class="plus">+</span></summary>
+        <div class="ans">As with any supplement, please consult your physician — particularly if you take SSRIs, blood thinners, thyroid medication, or are pregnant or nursing. We publish full ingredient lists with no proprietary blend obfuscation so you and your doctor have everything you need.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============== CTA BAND ============== -->
+<section class="cta-band">
+  <div class="wrap reveal">
+    <span class="eyebrow">Tonight belongs to you.</span>
+    <h2 style="margin-top:18px">Begin the ritual.</h2>
+    <p>Free shipping on every subscription. Skip, pause, or cancel anytime. 30-night happiness guarantee — or your money back.</p>
+    <button class="btn btn-primary magnetic" data-add="dusk-sub">Shop The Dusk — $34 <span class="arr">→</span></button>
+  </div>
+</section>
+
+<!-- ============== FOOTER ============== -->
+<footer>
+  <div class="wrap foot-grid foot">
+    <div class="foot-brand">
+      <a href="#" class="brand">
+        <svg class="logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M16.5 14.2A7 7 0 0 1 9.8 7.5a7 7 0 1 0 6.7 6.7Z"/><circle cx="18.5" cy="6.5" r="0.9" fill="currentColor"/></svg>
+        DRIFT
+      </a>
+      <p>A functional nighttime drink ritual. Designed in Madrid. Brewed in California. Made for the quiet hours.</p>
+      <h4 style="margin-top:30px">The Sunday Wind-Down letter</h4>
+      <form class="newsletter" id="news-form">
+        <input type="email" placeholder="your@email.com" aria-label="Email address" required>
+        <button type="submit">Join</button>
+      </form>
+    </div>
+    <div>
+      <h4>Shop</h4>
+      <ul>
+        <li><a href="#buy">The Dusk · 30-pack</a></li>
+        <li><a href="#" data-add="sampler">Sampler · 7 nights</a></li>
+        <li><a href="#" data-add="kit">The Wind Down Kit</a></li>
+        <li><a href="#">Gift box</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Learn</h4>
+      <ul>
+        <li><a href="#science">The Promise</a></li>
+        <li><a href="#ingredients">The Formula</a></li>
+        <li><a href="#ritual">The Ritual</a></li>
+        <li><a href="#">Sleep Lab Journal</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">Our Story</a></li>
+        <li><a href="#">The Dusk Club</a></li>
+        <li><a href="#">Wholesale</a></li>
+        <li><a href="#">Press</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap foot-bottom">
+    <div>© 2026 DRIFT, Inc. — Made for the quiet hours.</div>
+    <div style="display:flex; gap:24px">
+      <a href="#">Privacy</a><a href="#">Terms</a><a href="#">Accessibility</a>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/app.js"></script>
+<script>
+  // Plan + flavor toggles on the BUY section
+  const priceLabel = document.getElementById('planPrice');
+  let selectedPlan = 'dusk-sub';
+  let selectedFlavor = 'Honey Lavender';
+
+  document.querySelectorAll('.plan-opt').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.plan-opt').forEach(x => x.setAttribute('aria-selected','false'));
+      b.setAttribute('aria-selected','true');
+      selectedPlan = b.dataset.plan;
+      priceLabel.textContent = selectedPlan === 'dusk-sub' ? '$34' : '$42';
+    });
+  });
+
+  document.querySelectorAll('.flavor').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.flavor').forEach(x => x.setAttribute('aria-selected','false'));
+      b.setAttribute('aria-selected','true');
+      selectedFlavor = b.dataset.flavor === 'vanilla' ? 'Vanilla Dusk' : 'Honey Lavender';
+    });
+  });
+
+  document.getElementById('buy-add').addEventListener('click', () => {
+    Cart.add(selectedPlan, { flavor: selectedFlavor });
+    toast(`${PRODUCTS[selectedPlan].name} added — ${selectedFlavor}`, 'moon');
+    openCart();
+  });
+
+  document.querySelectorAll('[data-add]').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      const id = el.dataset.add;
+      Cart.add(id);
+      toast(`${PRODUCTS[id].name} added`, 'moon');
+      openCart();
+    });
+  });
+
+  document.getElementById('news-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    btn.textContent = 'Subscribed ✓';
+    btn.disabled = true;
+    toast('You\'re in. See you Sunday.', 'check');
+  });
+</script>
+</body>
+</html>

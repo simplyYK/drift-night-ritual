@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Checkout · DRIFT</title>
+<meta name="theme-color" content="#0A0E18" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,0..100;1,9..144,300..700,0..100&family=Manrope:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body class="checkout-shell">
+
+<div class="cursor cursor-dot" id="cursor-dot" aria-hidden="true"></div>
+<div class="cursor ring" id="cursor-ring" aria-hidden="true"></div>
+<div class="scroll-progress" aria-hidden="true"></div>
+
+<!-- Slim checkout bar -->
+<header class="co-bar">
+  <a href="index.html" class="brand" aria-label="DRIFT — back home">
+    <svg class="logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+      <path d="M16.5 14.2A7 7 0 0 1 9.8 7.5a7 7 0 1 0 6.7 6.7Z"/>
+      <circle cx="18.5" cy="6.5" r="0.9" fill="currentColor"/>
+    </svg>
+    DRIFT
+  </a>
+  <div class="secure">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+      <rect x="5" y="11" width="14" height="9" rx="2"/>
+      <path d="M8 11V8a4 4 0 0 1 8 0v3"/>
+    </svg>
+    Secure checkout
+  </div>
+  <a href="index.html" class="small" style="color:var(--bone-dim)">← Back to shop</a>
+</header>
+
+<div class="co-grid">
+  <!-- LEFT: Forms -->
+  <main class="co-left">
+    <h2 style="font-size:clamp(28px, 3.4vw, 40px); margin-bottom:6px">Checkout</h2>
+    <p class="small">A few quiet details. Then your ritual is on its way.</p>
+
+    <!-- Express pay -->
+    <div class="express-pay" aria-label="Express checkout">
+      <button class="pay-btn pay-apple" data-express="apple" aria-label="Apple Pay">
+        <svg viewBox="0 0 60 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" height="22">
+          <path fill="currentColor" d="M11 6.6c.7 0 1.6-.5 2.1-1.1.5-.6.8-1.4.8-2.2 0-.1 0-.2 0-.3-1 0-2.1.6-2.7 1.3-.5.5-.9 1.4-.8 2.2 0 .1 0 .1.6.1ZM13 7c-1.2-.1-2.2.7-2.8.7-.6 0-1.5-.7-2.5-.7-1.3 0-2.5.7-3.1 1.8-1.3 2.3-.4 5.7.9 7.5.6.9 1.4 1.9 2.4 1.9 1 0 1.3-.6 2.5-.6 1.2 0 1.5.6 2.5.6 1 0 1.7-.9 2.3-1.8.7-1 1-2 1-2.1 0 0-2-.8-2-3.1 0-1.9 1.6-2.8 1.7-2.9-.9-1.4-2.4-1.6-2.9-1.6Z"/>
+          <text x="20" y="17" font-family="-apple-system, BlinkMacSystemFont, system-ui" font-weight="600" font-size="14" fill="currentColor">Pay</text>
+        </svg>
+      </button>
+      <button class="pay-btn pay-google" data-express="google" aria-label="Google Pay">
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="#4285F4" d="M22 12.2c0-.7-.1-1.5-.2-2.2H12v4.2h5.6c-.2 1.3-1 2.4-2.1 3.1v2.6h3.4c2-1.8 3.1-4.5 3.1-7.7Z"/>
+          <path fill="#34A853" d="M12 22c2.8 0 5.2-.9 7-2.5l-3.4-2.6c-.9.6-2.1 1-3.6 1-2.8 0-5.1-1.9-5.9-4.4H2.6v2.7C4.4 19.6 8 22 12 22Z"/>
+          <path fill="#FBBC04" d="M6.1 13.5c-.2-.6-.3-1.3-.3-2s.1-1.4.3-2V6.8H2.6C1.9 8.3 1.5 10.1 1.5 12s.4 3.7 1.1 5.2L6.1 14.5Z"/>
+          <path fill="#EA4335" d="M12 5.5c1.6 0 3 .5 4.1 1.6l3-3C17.2 2.4 14.8 1.5 12 1.5 8 1.5 4.4 3.9 2.6 7.3L6.1 10c.8-2.5 3.1-4.5 5.9-4.5Z"/>
+        </svg>
+        Pay
+      </button>
+      <button class="pay-btn pay-paypal" data-express="paypal" aria-label="PayPal">PayPal</button>
+      <button class="pay-btn pay-shop" data-express="shop" aria-label="Shop Pay"><span></span></button>
+    </div>
+    <div class="pay-divider">or pay with card</div>
+
+    <!-- Step 1: Contact -->
+    <section class="co-step active" id="step-contact" data-step="contact">
+      <header class="co-step-head">
+        <span class="co-step-num">1</span>
+        <div style="flex:1">
+          <div class="co-step-title">Contact</div>
+          <div class="co-step-summary" id="sum-contact"></div>
+        </div>
+        <button class="edit" type="button" data-edit="contact">Edit</button>
+      </header>
+      <div class="co-step-body">
+        <div class="co-step-inner">
+          <div class="field">
+            <input type="email" id="email" placeholder=" " required autocomplete="email"/>
+            <label for="email">Email address</label>
+          </div>
+          <div class="field">
+            <input type="tel" id="phone" placeholder=" " autocomplete="tel"/>
+            <label for="phone">Phone (for delivery updates)</label>
+          </div>
+          <label class="save-row">
+            <input type="checkbox" id="optin" checked/>
+            <span>Send me the Sunday Wind-Down letter & order updates</span>
+          </label>
+          <button class="btn btn-primary btn-block" data-next="contact" style="margin-top:18px">Continue to shipping <span class="arr">→</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Step 2: Shipping -->
+    <section class="co-step" id="step-shipping" data-step="shipping">
+      <header class="co-step-head">
+        <span class="co-step-num">2</span>
+        <div style="flex:1">
+          <div class="co-step-title">Shipping</div>
+          <div class="co-step-summary" id="sum-shipping"></div>
+        </div>
+        <button class="edit" type="button" data-edit="shipping">Edit</button>
+      </header>
+      <div class="co-step-body">
+        <div class="co-step-inner">
+          <div class="field-row">
+            <div class="field">
+              <input type="text" id="first" placeholder=" " required autocomplete="given-name"/>
+              <label for="first">First name</label>
+            </div>
+            <div class="field">
+              <input type="text" id="last" placeholder=" " required autocomplete="family-name"/>
+              <label for="last">Last name</label>
+            </div>
+          </div>
+          <div class="field">
+            <input type="text" id="address" placeholder=" " required autocomplete="address-line1"/>
+            <label for="address">Address</label>
+          </div>
+          <div class="field">
+            <input type="text" id="address2" placeholder=" " autocomplete="address-line2"/>
+            <label for="address2">Apartment, suite, etc. (optional)</label>
+          </div>
+          <div class="field-row-3">
+            <div class="field">
+              <input type="text" id="city" placeholder=" " required autocomplete="address-level2"/>
+              <label for="city">City</label>
+            </div>
+            <div class="field">
+              <select id="state" required>
+                <option value="" disabled selected hidden></option>
+                <option>CA</option><option>NY</option><option>TX</option><option>FL</option>
+                <option>WA</option><option>MA</option><option>IL</option><option>CO</option>
+              </select>
+              <label for="state">State</label>
+            </div>
+            <div class="field">
+              <input type="text" id="zip" placeholder=" " required pattern="\d{5}" autocomplete="postal-code"/>
+              <label for="zip">ZIP</label>
+            </div>
+          </div>
+
+          <!-- Shipping method -->
+          <div style="margin-top:18px; display:flex; flex-direction:column; gap:10px">
+            <label class="ship-method" style="display:flex; align-items:center; justify-content:space-between; padding:16px 18px; border:1px solid var(--amber); background:rgba(245,166,35,.06); border-radius:12px; cursor:pointer">
+              <span style="display:flex; align-items:center; gap:12px">
+                <input type="radio" name="ship" checked style="accent-color:var(--amber)"/>
+                <span>
+                  <div style="font-family:var(--serif); font-size:16px">Standard · 3–5 days</div>
+                  <div class="small">Carbon-neutral shipping</div>
+                </span>
+              </span>
+              <span style="font-family:var(--serif); font-size:16px" id="std-ship">Free</span>
+            </label>
+            <label class="ship-method" style="display:flex; align-items:center; justify-content:space-between; padding:16px 18px; border:1px solid var(--hairline); border-radius:12px; cursor:pointer">
+              <span style="display:flex; align-items:center; gap:12px">
+                <input type="radio" name="ship" style="accent-color:var(--amber)"/>
+                <span>
+                  <div style="font-family:var(--serif); font-size:16px">Express · 1–2 days</div>
+                  <div class="small">Tomorrow night, on us</div>
+                </span>
+              </span>
+              <span style="font-family:var(--serif); font-size:16px">$12</span>
+            </label>
+          </div>
+
+          <button class="btn btn-primary btn-block" data-next="shipping" style="margin-top:18px">Continue to payment <span class="arr">→</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Step 3: Payment -->
+    <section class="co-step" id="step-payment" data-step="payment">
+      <header class="co-step-head">
+        <span class="co-step-num">3</span>
+        <div style="flex:1">
+          <div class="co-step-title">Payment</div>
+          <div class="co-step-summary" id="sum-payment"></div>
+        </div>
+        <button class="edit" type="button" data-edit="payment">Edit</button>
+      </header>
+      <div class="co-step-body">
+        <div class="co-step-inner">
+          <div class="card-input-wrap">
+            <div class="field" style="margin-bottom:0">
+              <input type="text" id="card" placeholder=" " required maxlength="23" inputmode="numeric" autocomplete="cc-number"/>
+              <label for="card">Card number</label>
+            </div>
+            <div class="brands" aria-hidden="true">
+              <div class="card-brand brand-visa" id="b-visa">VISA</div>
+              <div class="card-brand brand-mc" id="b-mc">MC</div>
+              <div class="card-brand brand-amex" id="b-amex">AMEX</div>
+            </div>
+          </div>
+          <div class="field-row" style="margin-top:14px">
+            <div class="field">
+              <input type="text" id="exp" placeholder=" " required maxlength="5" inputmode="numeric" autocomplete="cc-exp"/>
+              <label for="exp">MM / YY</label>
+            </div>
+            <div class="field">
+              <input type="text" id="cvc" placeholder=" " required maxlength="4" inputmode="numeric" autocomplete="cc-csc"/>
+              <label for="cvc">CVC</label>
+            </div>
+          </div>
+          <div class="field">
+            <input type="text" id="cardname" placeholder=" " required autocomplete="cc-name"/>
+            <label for="cardname">Name on card</label>
+          </div>
+          <label class="save-row">
+            <input type="checkbox" id="billing-same" checked/>
+            <span>Billing address is the same as shipping</span>
+          </label>
+          <label class="save-row">
+            <input type="checkbox" id="save-info"/>
+            <span>Save my info for faster checkout next time</span>
+          </label>
+
+          <button class="btn btn-primary btn-block btn-lg" id="place-order" style="margin-top:22px">
+            <span id="place-label">Place order — <span id="place-total">$0.00</span></span>
+            <span class="arr">→</span>
+          </button>
+
+          <p class="small" style="margin-top:14px; text-align:center">
+            By placing your order you agree to DRIFT's <a href="#" style="color:var(--amber-soft)">Terms</a> &
+            <a href="#" style="color:var(--amber-soft)">Privacy Policy</a>.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div class="trust-row" style="margin-top:30px">
+      <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>SSL encrypted</span>
+      <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12l5 5L20 7"/></svg>30-night guarantee</span>
+      <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg>Skip / pause anytime</span>
+    </div>
+  </main>
+
+  <!-- RIGHT: Order summary -->
+  <aside class="co-right">
+    <div class="summary">
+      <h3>Order summary</h3>
+      <div id="sum-lines"></div>
+
+      <div class="promo-row">
+        <input type="text" id="promo" placeholder="Promo code (try DUSK10)" autocomplete="off"/>
+        <button id="apply-promo" type="button">Apply</button>
+      </div>
+      <div class="promo-applied" id="promo-applied">✓ DUSK10 applied — 10% off your order</div>
+
+      <div class="sum-totals" id="sum-totals"></div>
+
+      <div class="trust-row">
+        <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7l9-4 9 4v6c0 5-4 8-9 9-5-1-9-4-9-9V7Z"/></svg>Trusted by 12,400+ subscribers</span>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<script src="assets/app.js"></script>
+<script>
+  // Render order summary
+  function renderSummary(){
+    const s = Cart.summary();
+    const lines = document.getElementById('sum-lines');
+    const totals = document.getElementById('sum-totals');
+
+    if(s.items.length === 0){
+      lines.innerHTML = `<p class="small" style="padding:30px 0; text-align:center">Your cart is empty. <a href="index.html" style="color:var(--amber-soft)">Shop The Dusk →</a></p>`;
+      totals.innerHTML = '';
+      document.getElementById('place-total').textContent = '$0.00';
+      return;
+    }
+
+    lines.innerHTML = s.items.map(i => {
+      const p = PRODUCTS[i.productId];
+      return `
+        <div class="sum-line">
+          <div class="thumb">
+            <span class="qb">${i.qty}</span>
+            <span class="thumb-mark">${p.image}</span>
+          </div>
+          <div class="info">
+            <div class="n">${p.name}</div>
+            <span class="o">${p.sub} · ${i.flavor}</span>
+          </div>
+          <div class="pr">$${(p.price * i.qty).toFixed(2)}</div>
+        </div>
+      `;
+    }).join('');
+
+    totals.innerHTML = `
+      <div class="row"><span>Subtotal</span><span>$${s.subtotal.toFixed(2)}</span></div>
+      ${s.discount ? `<div class="row"><span>Promo (${s.promo})</span><span style="color:var(--ok)">−$${s.discount.toFixed(2)}</span></div>` : ''}
+      <div class="row"><span>Shipping</span><span>${s.shipping ? '$' + s.shipping.toFixed(2) : 'Free'}</span></div>
+      <div class="row"><span>Estimated tax</span><span>$${s.tax.toFixed(2)}</span></div>
+      <div class="row grand"><span>Total <small>USD</small></span><span>$${s.total.toFixed(2)}</span></div>
+    `;
+    document.getElementById('place-total').textContent = `$${s.total.toFixed(2)}`;
+  }
+  renderSummary();
+  document.addEventListener('cart:change', renderSummary);
+
+  // Promo
+  const promoInput = document.getElementById('promo');
+  document.getElementById('apply-promo').addEventListener('click', () => {
+    if(Cart.applyPromo(promoInput.value)){
+      document.getElementById('promo-applied').classList.add('show');
+      promoInput.value = '';
+      toast('Promo applied · 10% off', 'check');
+    } else {
+      toast('Invalid promo code', 'check');
+    }
+  });
+
+  // Step navigation
+  function goTo(step){
+    document.querySelectorAll('.co-step').forEach(s => s.classList.remove('active'));
+    document.getElementById(`step-${step}`).classList.add('active');
+    document.getElementById(`step-${step}`).scrollIntoView({ behavior:'smooth', block:'start' });
+  }
+  function complete(step, summary){
+    const el = document.getElementById(`step-${step}`);
+    el.classList.add('done'); el.classList.remove('active');
+    document.getElementById(`sum-${step}`).textContent = summary;
+  }
+
+  function validateStep(step){
+    let ids = [];
+    if(step === 'contact') ids = ['email'];
+    if(step === 'shipping') ids = ['first','last','address','city','state','zip'];
+    if(step === 'payment') ids = ['card','exp','cvc','cardname'];
+    let ok = true;
+    ids.forEach(id => {
+      const el = document.getElementById(id);
+      if(!el.checkValidity()){ el.style.borderColor = 'var(--err)'; ok = false; }
+      else el.style.borderColor = '';
+    });
+    return ok;
+  }
+
+  document.querySelectorAll('[data-next]').forEach(b => {
+    b.addEventListener('click', () => {
+      const step = b.dataset.next;
+      if(!validateStep(step)){ toast('Please complete the highlighted fields'); return; }
+      if(step === 'contact'){
+        complete('contact', document.getElementById('email').value);
+        goTo('shipping');
+      } else if(step === 'shipping'){
+        const f = document.getElementById('first').value;
+        const l = document.getElementById('last').value;
+        const a = document.getElementById('address').value;
+        const c = document.getElementById('city').value;
+        const s = document.getElementById('state').value;
+        const z = document.getElementById('zip').value;
+        complete('shipping', `${f} ${l} · ${a}, ${c}, ${s} ${z}`);
+        goTo('payment');
+      }
+    });
+  });
+
+  document.querySelectorAll('[data-edit]').forEach(b => {
+    b.addEventListener('click', () => {
+      const step = b.dataset.edit;
+      document.getElementById(`step-${step}`).classList.remove('done');
+      goTo(step);
+    });
+  });
+
+  // Card number formatting + brand detection
+  const cardInput = document.getElementById('card');
+  cardInput.addEventListener('input', (e) => {
+    let v = e.target.value.replace(/\D/g,'').slice(0,16);
+    e.target.value = v.replace(/(.{4})/g, '$1 ').trim();
+    document.querySelectorAll('.card-brand').forEach(x => x.classList.remove('active'));
+    if(/^4/.test(v)) document.getElementById('b-visa').classList.add('active');
+    else if(/^(5[1-5]|2[2-7])/.test(v)) document.getElementById('b-mc').classList.add('active');
+    else if(/^3[47]/.test(v)) document.getElementById('b-amex').classList.add('active');
+  });
+
+  // Expiry formatting
+  const expInput = document.getElementById('exp');
+  expInput.addEventListener('input', (e) => {
+    let v = e.target.value.replace(/\D/g,'').slice(0,4);
+    if(v.length >= 3) v = v.slice(0,2) + ' / ' + v.slice(2);
+    e.target.value = v;
+  });
+
+  // CVC numeric
+  document.getElementById('cvc').addEventListener('input', (e) => {
+    e.target.value = e.target.value.replace(/\D/g,'').slice(0,4);
+  });
+
+  // ZIP numeric
+  document.getElementById('zip').addEventListener('input', (e) => {
+    e.target.value = e.target.value.replace(/\D/g,'').slice(0,5);
+  });
+
+  // Express pay buttons (dummy → success directly)
+  document.querySelectorAll('[data-express]').forEach(b => {
+    b.addEventListener('click', () => {
+      const provider = b.dataset.express;
+      const map = { apple:'Apple Pay', google:'Google Pay', paypal:'PayPal', shop:'Shop Pay' };
+      placeOrder(map[provider] || provider);
+    });
+  });
+
+  // Place order
+  function placeOrder(method = 'Card'){
+    if(method === 'Card' && !validateStep('payment')){ toast('Please complete payment details'); return; }
+    if(Cart.summary().items.length === 0){ toast('Your cart is empty'); return; }
+
+    const btn = document.getElementById('place-order');
+    btn.disabled = true;
+    document.getElementById('place-label').textContent = 'Placing order…';
+
+    // Build the order
+    const order = {
+      number: 'DRF-' + Math.random().toString(36).slice(2,8).toUpperCase(),
+      email: document.getElementById('email').value || 'guest@drift.co',
+      first: document.getElementById('first').value || 'Friend',
+      last: document.getElementById('last').value || '',
+      address: document.getElementById('address').value || '',
+      city: document.getElementById('city').value || '',
+      state: document.getElementById('state').value || '',
+      zip: document.getElementById('zip').value || '',
+      method,
+      items: Cart.summary().items.map(i => ({ ...i, product: PRODUCTS[i.productId] })),
+      summary: Cart.summary(),
+      date: new Date().toISOString()
+    };
+    localStorage.setItem('drift_last_order', JSON.stringify(order));
+    Cart.clear();
+
+    setTimeout(() => { window.location.href = 'confirmation.html'; }, 700);
+  }
+
+  document.getElementById('place-order').addEventListener('click', () => placeOrder('Card'));
+
+  // Hide cart icon on checkout (cleaner UX) — already not in this header
+</script>
+</body>
+</html>

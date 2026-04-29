@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Order confirmed · DRIFT</title>
+<meta name="theme-color" content="#0A0E18" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,0..100;1,9..144,300..700,0..100&family=Manrope:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<div class="cursor cursor-dot" id="cursor-dot" aria-hidden="true"></div>
+<div class="cursor ring" id="cursor-ring" aria-hidden="true"></div>
+<div class="scroll-progress" aria-hidden="true"></div>
+
+<header class="co-bar">
+  <a href="index.html" class="brand">
+    <svg class="logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+      <path d="M16.5 14.2A7 7 0 0 1 9.8 7.5a7 7 0 1 0 6.7 6.7Z"/>
+      <circle cx="18.5" cy="6.5" r="0.9" fill="currentColor"/>
+    </svg>
+    DRIFT
+  </a>
+  <div class="secure">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l5 5L20 7"/></svg>
+    Order confirmed
+  </div>
+  <a href="index.html" class="small" style="color:var(--bone-dim)">Continue shopping →</a>
+</header>
+
+<main class="cf-shell">
+  <div class="cf-card">
+    <div class="confetti" id="confetti" aria-hidden="true"></div>
+
+    <div class="cf-mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12l5 5L20 7"/>
+      </svg>
+    </div>
+
+    <span class="cf-eyebrow" id="eyebrow">Order confirmed</span>
+    <h1 id="greeting">Tonight belongs to you.</h1>
+    <p class="lede" id="confirm-msg">
+      Your ritual is on its way. We've sent a confirmation to your inbox with everything you need.
+    </p>
+
+    <!-- Meta cells -->
+    <div class="cf-meta">
+      <div class="cell">
+        <div class="lbl">Order number</div>
+        <div class="val" id="order-num">—</div>
+      </div>
+      <div class="cell">
+        <div class="lbl">Estimated arrival</div>
+        <div class="val" id="eta">—</div>
+      </div>
+      <div class="cell">
+        <div class="lbl">Total charged</div>
+        <div class="val" id="total">—</div>
+      </div>
+    </div>
+
+    <!-- Tracker -->
+    <div class="cf-tracker">
+      <div class="tk now">
+        <div class="pip">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <rect x="4" y="6" width="16" height="13" rx="2"/><path d="M8 6V4M16 6V4"/>
+          </svg>
+        </div>
+        <div class="ttl">Confirmed</div>
+        <div class="sub">Just now</div>
+      </div>
+      <div class="tk">
+        <div class="pip">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M3 7h13l4 4v6h-2M3 7v10h2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/>
+          </svg>
+        </div>
+        <div class="ttl">Shipped</div>
+        <div class="sub" id="ship-eta">In 1–2 days</div>
+      </div>
+      <div class="tk">
+        <div class="pip">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+            <path d="M16.5 14.2A7 7 0 0 1 9.8 7.5a7 7 0 1 0 6.7 6.7Z"/>
+            <circle cx="18.5" cy="6.5" r="0.9" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="ttl">First night</div>
+        <div class="sub" id="first-night">Your ritual begins</div>
+      </div>
+    </div>
+
+    <!-- Items -->
+    <div class="cf-items" id="cf-items"></div>
+
+    <!-- Actions -->
+    <div class="cf-actions">
+      <a href="#" class="btn btn-primary" id="track-btn">Track your order <span class="arr">→</span></a>
+      <a href="index.html" class="btn btn-ghost">Continue shopping</a>
+    </div>
+
+    <!-- Share -->
+    <div class="cf-share">
+      <div>
+        <span class="eyebrow">Join the Dusk Club</span>
+        <h3 style="margin-top:8px">Share your first pour. Get $10 toward your next box.</h3>
+        <p>Tag <strong style="color:var(--amber-soft)">@drift</strong> on TikTok or Instagram with your dusk ritual. We'll send a credit to your inbox.</p>
+      </div>
+      <a href="#" class="btn btn-ghost">Get my referral link →</a>
+    </div>
+  </div>
+</main>
+
+<footer style="padding:40px 0; text-align:center; border-top:1px solid var(--hairline); margin-top:60px">
+  <div class="wrap" style="color:var(--muted-2); font-size:12px; letter-spacing:.06em">
+    © 2026 DRIFT, Inc. · Need help? <a href="#" style="color:var(--amber-soft)">support@drift.co</a>
+  </div>
+</footer>
+
+<script src="assets/app.js"></script>
+<script>
+  const order = (() => {
+    try { return JSON.parse(localStorage.getItem('drift_last_order')); }
+    catch { return null; }
+  })();
+
+  if(!order){
+    // Demo fallback so the page is still beautiful when visited directly
+    document.getElementById('order-num').textContent = 'DRF-DEMO01';
+    document.getElementById('total').textContent = '$0.00';
+    document.getElementById('eta').textContent = '—';
+    document.getElementById('confirm-msg').textContent = 'No recent order found. Place an order to see your confirmation here.';
+    document.getElementById('cf-items').innerHTML = `
+      <p class="small" style="text-align:center; padding:30px 0">Visit the <a href="index.html" style="color:var(--amber-soft)">shop</a> to begin your ritual.</p>
+    `;
+  } else {
+    const firstName = order.first || 'Friend';
+    document.getElementById('greeting').innerHTML = `Tonight belongs to you,<br/><span style="color:var(--amber-soft); font-style:italic">${firstName}</span>.`;
+    document.getElementById('confirm-msg').innerHTML = `
+      Thank you. Your ritual is on its way to <strong style="color:var(--bone)">${[order.address, order.city, order.state, order.zip].filter(Boolean).join(', ') || 'your home'}</strong>.
+      We've sent a confirmation to <strong style="color:var(--bone)">${order.email}</strong>.
+    `;
+
+    document.getElementById('order-num').textContent = order.number;
+    document.getElementById('total').textContent = `$${order.summary.total.toFixed(2)}`;
+
+    const eta = new Date(); eta.setDate(eta.getDate() + 4);
+    const ship = new Date(); ship.setDate(ship.getDate() + 1);
+    const first = new Date(); first.setDate(first.getDate() + 4);
+    const fmtDate = d => d.toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric' });
+    document.getElementById('eta').textContent = fmtDate(eta);
+    document.getElementById('ship-eta').textContent = `By ${fmtDate(ship)}`;
+    document.getElementById('first-night').textContent = `${fmtDate(first)} · ${order.method}`;
+
+    // Items list
+    document.getElementById('cf-items').innerHTML = order.items.map(i => `
+      <div class="sum-line">
+        <div class="thumb"><span class="qb">${i.qty}</span><span class="thumb-mark">${i.product.image}</span></div>
+        <div class="info">
+          <div class="n">${i.product.name}</div>
+          <span class="o">${i.product.sub} · ${i.flavor}</span>
+        </div>
+        <div class="pr">$${(i.product.price * i.qty).toFixed(2)}</div>
+      </div>
+    `).join('') + `
+      <div style="display:flex; justify-content:space-between; padding:16px 0 4px; color:var(--muted); font-size:13px">
+        <span>Paid with</span><span>${order.method}</span>
+      </div>
+    `;
+  }
+
+  // Confetti — golden moon dust
+  const cf = document.getElementById('confetti');
+  if(cf){
+    const colors = ['#F5A623','#E7C365','#F8F5F2','#B7791F'];
+    for(let i = 0; i < 28; i++){
+      const s = document.createElement('span');
+      s.style.left = (Math.random() * 100) + '%';
+      s.style.background = colors[Math.floor(Math.random() * colors.length)];
+      s.style.animationDelay = (Math.random() * 0.6) + 's';
+      s.style.animationDuration = (1.6 + Math.random() * 1.2) + 's';
+      s.style.width = (3 + Math.random()*5) + 'px';
+      s.style.height = s.style.width;
+      cf.appendChild(s);
+    }
+    setTimeout(() => cf.remove(), 4000);
+  }
+</script>
+</body>
+</html>
