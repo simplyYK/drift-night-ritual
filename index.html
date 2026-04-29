@@ -659,16 +659,13 @@
 <div class="dx-modal" id="dx-modal" role="dialog" aria-modal="true" aria-labelledby="dx-title" aria-hidden="true">
   <div class="dx-card">
     <header class="dx-head">
-      <div class="h-l">
-        <span class="badge">AI Concierge</span>
-        <span class="title" id="dx-title">The Drift Diagnostic</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:14px">
+      <span class="title" id="dx-title">The Drift Diagnostic</span>
+      <div class="dx-head-right">
         <span class="progress" id="dx-progress-text">01 / 06</span>
         <button class="close" id="dx-close" aria-label="Close">✕</button>
       </div>
     </header>
-    <div class="dx-progress-bar"><div id="dx-progress-fill" style="position:absolute;inset:0 100% 0 0;background:linear-gradient(90deg,var(--amber-soft),var(--amber));transition:right .55s var(--ease-out)"></div></div>
+    <div class="dx-progress-bar"><div class="dx-progress-fill" id="dx-progress-fill"></div></div>
 
     <div class="dx-body">
       <div class="dx-stage" id="dx-stage"></div>
