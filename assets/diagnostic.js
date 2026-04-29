@@ -168,14 +168,15 @@ const DX = (() => {
     progressText = document.getElementById('dx-progress-text');
     nextBtn = document.getElementById('dx-next');
     backBtn = document.getElementById('dx-back');
-    const launcher = document.getElementById('dx-launch');
     const close = document.getElementById('dx-close');
 
-    if(!modal || !launcher) return;
+    if(!modal) return;
 
-    setTimeout(() => launcher.classList.add('show'), 1400);
+    // Multiple entry points across the page
+    document.querySelectorAll('[data-dx-open]').forEach(btn => {
+      btn.addEventListener('click', open);
+    });
 
-    launcher.addEventListener('click', open);
     close.addEventListener('click', closeModal);
     modal.addEventListener('click', (e) => { if(e.target === modal) closeModal(); });
     document.addEventListener('keydown', (e) => { if(e.key === 'Escape' && modal.classList.contains('open')) closeModal(); });
@@ -184,6 +185,134 @@ const DX = (() => {
     backBtn.addEventListener('click', goBack);
 
     render();
+    initProfileCardCycler();
+  }
+
+  /* Live "Profile Card" cycler — rotates archetypes on the §03 section */
+  function initProfileCardCycler(){
+    const card = document.getElementById('profile-card');
+    if(!card) return;
+
+    const ARCH_PREVIEWS = [
+      {
+        key:'wired',
+        title:'The Wired Mind',
+        desc:'Mind racing past midnight. Cortisol elevated. Needs unwinding, not sedation.',
+        flavor:'Honey Lavender',
+        swatch:'#B7A7CB',
+        ingreds:[ {n:'L-Theanine', d:'200mg'}, {n:'Reishi', d:'500mg'} ],
+        num:'0042',
+      },
+      {
+        key:'restless',
+        title:'The Restless Body',
+        desc:"Mind clocked out, body still tense. Shoulders, jaw, calves carrying the day.",
+        flavor:'Vanilla Dusk',
+        swatch:'#E8C58A',
+        ingreds:[ {n:'Magnesium', d:'300mg'}, {n:'Ashwagandha', d:'600mg'} ],
+        num:'0186',
+      },
+      {
+        key:'light',
+        title:'The Light Sleeper',
+        desc:'Falls asleep fine. Wakes at 3:14am. Sleep architecture needs depth, not duration.',
+        flavor:'Matcha Midnight',
+        swatch:'#5A7A4D',
+        ingreds:[ {n:'Tart Cherry', d:'480mg'}, {n:'Magnesium', d:'300mg'} ],
+        num:'0298',
+      },
+      {
+        key:'fatigue',
+        title:'The Burnt Out',
+        desc:'Sleeping insufficiently — and what sleep happens isn\'t restoring. Recovery is the goal.',
+        flavor:'Cacao Moon',
+        swatch:'#6B4226',
+        ingreds:[ {n:'Ashwagandha', d:'600mg'}, {n:'Reishi', d:'500mg'} ],
+        num:'0411',
+      },
+      {
+        key:'holistic',
+        title:'The Multi-Factor',
+        desc:'Some nights mind, some nights body, some nights both. Range over repetition.',
+        flavor:'Mix Pack — All 5',
+        swatch:'conic',
+        ingreds:[ {n:'5 formulas', d:'30 sachets'}, {n:'Full clinical dose', d:'every night'} ],
+        num:'0573',
+      },
+    ];
+
+    const titleEl = document.getElementById('pcard-title');
+    const descEl = document.getElementById('pcard-desc');
+    const flavorEl = document.getElementById('pcard-flavor');
+    const swEl = document.getElementById('pcard-sw');
+    const ingredsEl = document.getElementById('pcard-ingreds');
+    const numEl = document.getElementById('pcard-num');
+    const dotsEl = document.getElementById('pcard-dots');
+    const tags = document.querySelectorAll('#archetype-tags span');
+
+    let idx = 0;
+    let timer = null;
+    let paused = false;
+
+    function paint(i){
+      const a = ARCH_PREVIEWS[i];
+      const fades = card.querySelectorAll('.pcard-fade');
+      fades.forEach(f => f.classList.add('out'));
+
+      setTimeout(() => {
+        titleEl.textContent = a.title;
+        descEl.textContent = a.desc;
+        flavorEl.textContent = a.flavor;
+        if(a.swatch === 'conic'){
+          swEl.style.background = 'conic-gradient(#B7A7CB 0 20%, #E8C58A 20% 40%, #6B4226 40% 60%, #C8753A 60% 80%, #5A7A4D 80% 100%)';
+        } else {
+          swEl.style.background = a.swatch;
+        }
+        ingredsEl.innerHTML = a.ingreds.map(g => `
+          <div class="ig-pill"><span class="ig-name">${g.n}</span><span class="ig-dose">${g.d}</span></div>
+        `).join('');
+        numEl.textContent = `PROFILE NO. ${a.num}`;
+
+        // Dots
+        dotsEl.querySelectorAll('.d').forEach((d, j) => d.classList.toggle('active', j === i));
+        // Archetype tag highlight
+        tags.forEach(t => t.classList.toggle('is-active', t.dataset.arch === a.key));
+
+        fades.forEach(f => f.classList.remove('out'));
+      }, 460);
+    }
+
+    function tick(){
+      if(paused) return;
+      idx = (idx + 1) % ARCH_PREVIEWS.length;
+      paint(idx);
+    }
+
+    function start(){
+      stop();
+      timer = setInterval(tick, 3600);
+    }
+    function stop(){ if(timer){ clearInterval(timer); timer = null; } }
+
+    paint(0);
+    // Pause when offscreen, resume when visible
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if(e.isIntersecting) start(); else stop(); });
+    }, { threshold: 0.2 });
+    io.observe(card);
+
+    // Pause on hover (desktop)
+    card.addEventListener('mouseenter', () => { paused = true });
+    card.addEventListener('mouseleave', () => { paused = false });
+
+    // Click on archetype tag jumps the card
+    tags.forEach((t, i) => {
+      t.addEventListener('click', () => {
+        const targetIdx = ARCH_PREVIEWS.findIndex(a => a.key === t.dataset.arch);
+        if(targetIdx >= 0){ idx = targetIdx; paint(idx); start(); }
+      });
+      t.style.cursor = 'pointer';
+    });
   }
 
   function open(){

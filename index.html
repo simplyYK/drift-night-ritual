@@ -28,9 +28,9 @@
       DRIFT
     </a>
     <nav class="nav-links" aria-label="Primary">
-      <a href="#ritual">Ritual</a>
+      <a href="#diagnostic">Diagnostic</a>
       <a href="#ingredients">Ingredients</a>
-      <a href="#science">Science</a>
+      <a href="#ritual">Ritual</a>
       <a href="#reviews">Reviews</a>
       <a href="#faq">FAQ</a>
     </nav>
@@ -57,9 +57,9 @@
     <button class="close-btn" id="closeMenu" aria-label="Close menu">✕</button>
   </div>
   <nav class="drawer-links">
-    <a href="#ritual">Ritual</a>
+    <a href="#diagnostic">Diagnostic</a>
     <a href="#ingredients">Ingredients</a>
-    <a href="#science">Science</a>
+    <a href="#ritual">Ritual</a>
     <a href="#reviews">Reviews</a>
     <a href="#faq">FAQ</a>
     <a href="#buy" style="color:var(--amber-soft)">Shop The Dusk →</a>
@@ -245,9 +245,80 @@
   </div>
 </section>
 
-<!-- ============== INGREDIENTS ============== -->
+<!-- ============== §03 FIND YOUR PROFILE ============== -->
+<section class="profile-finder" id="diagnostic">
+  <div class="section-num">§ 03 — Find Your Profile</div>
+  <div class="wrap profile-grid">
+    <div class="profile-copy reveal">
+      <span class="eyebrow">AI Concierge · 60 Seconds</span>
+      <h2 style="margin-top:14px">
+        Not sure where<br/>you fit?<br/>
+        <em>We'll tell you.</em>
+      </h2>
+      <p class="lede">
+        Six questions, one quiet conversation. The Drift Diagnostic names your sleep
+        archetype, recommends the right flavor and dose, and adds it to your nightstand
+        — no guessing, no wading through five SKUs.
+      </p>
+
+      <div class="archetype-tags" id="archetype-tags">
+        <span data-arch="wired" class="is-active">The Wired Mind</span>
+        <span data-arch="restless">The Restless Body</span>
+        <span data-arch="light">The Light Sleeper</span>
+        <span data-arch="fatigue">The Burnt Out</span>
+        <span data-arch="holistic">The Multi-Factor</span>
+      </div>
+
+      <button class="btn btn-primary btn-lg magnetic" data-dx-open>
+        Begin the diagnostic <span class="arr">→</span>
+      </button>
+
+      <div class="profile-trust">
+        <span><i class="dot"></i>2,847 profiles built</span>
+        <span><i class="dot"></i>92% match accuracy</span>
+        <span><i class="dot"></i>Anonymous · Private</span>
+      </div>
+    </div>
+
+    <div class="profile-card reveal" id="profile-card" aria-hidden="true">
+      <header>
+        <span class="profile-num" id="pcard-num">PROFILE NO. 0042</span>
+        <span class="profile-status">Live preview</span>
+      </header>
+      <div class="pcard-body">
+        <div class="pcard-row pcard-fade" id="pcard-arch-block">
+          <span class="lbl">Sleep Archetype</span>
+          <div class="pcard-archetype-name" id="pcard-title">The Wired Mind</div>
+          <p class="pcard-archetype-desc" id="pcard-desc">Mind racing past midnight. Cortisol elevated. Needs unwinding, not sedation.</p>
+        </div>
+        <div class="pcard-row pcard-fade" id="pcard-flavor-block">
+          <span class="lbl">Recommended Flavor</span>
+          <div class="pcard-flavor-line">
+            <span class="sw" id="pcard-sw" style="background:#B7A7CB"></span>
+            <span class="nm" id="pcard-flavor">Honey Lavender</span>
+          </div>
+        </div>
+        <div class="pcard-row pcard-fade" id="pcard-ingreds-block">
+          <span class="lbl">Active Pairing</span>
+          <div class="pcard-ingreds" id="pcard-ingreds">
+            <div class="ig-pill"><span class="ig-name">L-Theanine</span><span class="ig-dose">200mg</span></div>
+            <div class="ig-pill"><span class="ig-name">Reishi</span><span class="ig-dose">500mg</span></div>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <span class="pcard-dots" id="pcard-dots">
+          <span class="d active"></span><span class="d"></span><span class="d"></span><span class="d"></span><span class="d"></span>
+        </span>
+        <button class="footer-cta" data-dx-open>Build mine →</button>
+      </footer>
+    </div>
+  </div>
+</section>
+
+<!-- ============== §04 INGREDIENTS ============== -->
 <section class="ingredients" id="ingredients">
-  <div class="section-num">§ 03 — The Formula</div>
+  <div class="section-num">§ 04 — The Formula</div>
   <div class="wrap ing-grid">
     <div class="reveal">
       <span class="eyebrow">Inside The Dusk</span>
@@ -315,7 +386,7 @@
 
 <!-- ============== RITUAL ============== -->
 <section class="ritual" id="ritual">
-  <div class="section-num">§ 04 — The Ritual</div>
+  <div class="section-num">§ 05 — The Ritual</div>
   <div class="wrap">
     <div class="section-head reveal">
       <div>
@@ -364,7 +435,7 @@
 
 <!-- ============== BUY ============== -->
 <section class="buy" id="buy">
-  <div class="section-num">§ 05 — Begin</div>
+  <div class="section-num">§ 06 — Begin</div>
   <div class="wrap buy-grid">
     <div class="buy-art reveal" aria-hidden="true">
       <div class="box">
@@ -393,7 +464,15 @@
         Subscribe and your next box arrives the day before you run out.
       </p>
 
-      <div class="flavor-row" role="tablist" aria-label="Flavor" style="margin-top:36px">
+      <div class="buy-quiz-hint">
+        <span class="icon" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E8C58A" stroke-width="1.4"><path d="M16.5 14.2A7 7 0 0 1 9.8 7.5a7 7 0 1 0 6.7 6.7Z"/><circle cx="18.5" cy="6.5" r="0.9" fill="#E8C58A"/></svg>
+        </span>
+        <span class="text">Five flavors, one Mix Pack — not sure which is yours?</span>
+        <button class="cta" data-dx-open>Take the diagnostic →</button>
+      </div>
+
+      <div class="flavor-row" role="tablist" aria-label="Flavor" style="margin-top:24px">
         <button class="flavor" data-flavor="lavender" aria-selected="true"><span class="swatch"></span>Honey Lavender</button>
         <button class="flavor" data-flavor="vanilla" aria-selected="false"><span class="swatch"></span>Vanilla Dusk</button>
         <button class="flavor" data-flavor="cacao" aria-selected="false"><span class="swatch"></span>Cacao Moon</button>
@@ -432,7 +511,7 @@
 
 <!-- ============== REVIEWS ============== -->
 <section class="reviews" id="reviews">
-  <div class="section-num">§ 06 — In Practice</div>
+  <div class="section-num">§ 07 — In Practice</div>
   <div class="wrap">
     <div class="section-head reveal">
       <div>
@@ -467,7 +546,7 @@
 
 <!-- ============== FAQ ============== -->
 <section id="faq">
-  <div class="section-num">§ 07 — Honest Answers</div>
+  <div class="section-num">§ 08 — Honest Answers</div>
   <div class="wrap">
     <div class="section-head reveal">
       <div>
@@ -576,20 +655,7 @@
   </div>
 </footer>
 
-<!-- ============== THE DRIFT DIAGNOSTIC ============== -->
-<button class="dx-launcher" id="dx-launch" aria-label="Open the Drift Diagnostic">
-  <span class="ico" aria-hidden="true">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E8C58A" stroke-width="1.4">
-      <path d="M16.5 14.2A7 7 0 0 1 9.8 7.5a7 7 0 1 0 6.7 6.7Z"/>
-      <circle cx="18.5" cy="6.5" r="0.9" fill="#E8C58A"/>
-    </svg>
-  </span>
-  <span class="lbl">
-    <span class="t">The Drift Diagnostic</span>
-    <span class="s">60-Second Sleep Profile</span>
-  </span>
-</button>
-
+<!-- ============== THE DRIFT DIAGNOSTIC MODAL ============== -->
 <div class="dx-modal" id="dx-modal" role="dialog" aria-modal="true" aria-labelledby="dx-title" aria-hidden="true">
   <div class="dx-card">
     <header class="dx-head">
