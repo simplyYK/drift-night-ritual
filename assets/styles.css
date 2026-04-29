@@ -1092,3 +1092,267 @@ footer{ background:#06090F; border-top:1px solid var(--hairline); padding: 90px 
   body{ cursor:auto } button{ cursor:pointer }
   .cursor{ display:none }
 }
+
+/* =========================================================
+   MOBILE OPTIMIZATIONS — UI/UX pass
+   ========================================================= */
+
+/* Restore native cursors on touch / narrow viewports */
+@media (max-width: 880px), (hover: none){
+  body, button, summary, details summary, .flavor, .plan-opt,
+  .ing-item, .pillar, .step, .review, .cart-line, .qty-control button,
+  .icon-btn, .menu-btn, .close-btn, .btn, a { cursor: auto }
+  a, button, .btn, summary, .flavor, .plan-opt, .icon-btn,
+  .menu-btn, .close-btn, .qty-control button, [role="button"] { cursor: pointer }
+  input, textarea, select { cursor: text }
+  .cursor { display:none !important }
+}
+
+/* Tighter section rhythm on phones */
+@media (max-width: 720px){
+  :root{
+    --section: clamp(56px, 14vw, 96px);
+    --gutter: 22px;
+  }
+  section{ padding: var(--section) 0 }
+
+  /* Section numbers — move inline + smaller */
+  .section-num{
+    font-size:10px; letter-spacing:.22em;
+    margin-bottom:18px; padding-bottom:0;
+  }
+  .section-num::before{ width:24px }
+
+  /* Body — disable global cursor:none */
+  body{ cursor:auto }
+
+  /* HERO */
+  .hero{ padding: 110px 0 60px; min-height:auto }
+  .hero-grid{ gap:48px }
+  .hero h1{
+    font-size: clamp(48px, 13vw, 80px);
+    line-height:.96;
+  }
+  .hero-subline{ margin-top:22px; font-size:15.5px; line-height:1.6 }
+  .hero-actions{ margin-top:30px; gap:10px; width:100% }
+  .hero-actions .btn{ flex:1; min-width:0; padding:15px 22px; font-size:10.5px; letter-spacing:.18em }
+  .hero-meta{
+    margin-top:38px; gap:12px 22px; font-size:10px;
+    letter-spacing:.16em;
+  }
+  .hero-meta span{ flex:0 0 auto }
+
+  /* Hero art — center, contain better */
+  .hero-art{ aspect-ratio: 1/0.95; max-width:420px; margin:0 auto; width:100% }
+  .moon{ inset:8% 10% auto 10% }
+  .sachet{ width:55%; padding:16% 9% 12% }
+  .sachet-logo{ font-size:22px; letter-spacing:.32em }
+  .sachet-tag{ font-size:10px }
+  .sachet-meta{ font-size:8px; letter-spacing:.22em }
+
+  /* Press marquee — tighter */
+  .marquee{ gap:38px; font-size:15px; animation-duration: 28s }
+
+  /* Promise / stats */
+  .promise h2{ font-size: clamp(30px, 8vw, 44px) }
+  .promise .lede{ font-size:15px; margin-top:22px }
+  .stat-row{ margin-top:50px; grid-template-columns:repeat(2,1fr) }
+  .stat{ padding:24px 18px }
+  .stat::before{ font-size:9px; top:14px; right:14px; letter-spacing:.18em }
+  .stat .num{ font-size:34px }
+  .stat .lbl{ font-size:9.5px; letter-spacing:.16em; margin-top:12px; line-height:1.4 }
+
+  /* Section heads */
+  .section-head{ margin-bottom:36px; gap:18px }
+  .section-head h2{ font-size: clamp(32px, 9vw, 52px) }
+  .section-head .lede{ font-size:14.5px }
+
+  /* Pillars */
+  .pillars{ grid-template-columns:repeat(2,1fr) }
+  .pillar{ padding:32px 22px 28px }
+  .pillar h3{ font-size:19px }
+  .pillar p{ font-size:13.5px; line-height:1.6 }
+  .pillar-num{ top:14px; right:14px; font-size:9px }
+  .pillar-icon{ width:46px; height:46px; margin-bottom:18px }
+  .pillar-icon svg{ width:18px; height:18px }
+
+  /* Ingredients — re-stack as 2 rows: name+desc on top, origin+dose below */
+  .ing-grid{ gap:32px }
+  .ing-item{
+    grid-template-columns: 36px 1fr;
+    grid-template-areas:
+      "num name"
+      ".   meta";
+    gap:6px 14px;
+    padding:22px 0;
+  }
+  .ing-item .ing-num{ grid-area:num; font-size:10px; align-self:start; padding-top:6px }
+  .ing-item > div:nth-child(2){ grid-area:name }
+  .ing-item .ing-name{ font-size:21px; line-height:1.15 }
+  .ing-item .ing-desc{ font-size:12.5px; margin-top:4px }
+  .ing-item .ing-origin{
+    grid-area:meta; text-align:left; font-size:9px;
+    margin-top:8px; letter-spacing:.18em;
+  }
+  .ing-item .ing-dose{
+    grid-area:meta; justify-self:end;
+    font-size:10px; padding:5px 9px;
+    margin-top:-26px; /* sit on the same row as origin */
+  }
+  .ing-item:hover{ padding-left:0; background:transparent }
+
+  .ing-visual{ aspect-ratio:1/0.85; padding:30px }
+  .ing-visual::after{ font-size:9px; bottom:14px; right:14px }
+
+  /* Ritual steps */
+  .step{ padding:32px 26px 28px }
+  .step-num{ font-size:72px; margin-bottom:16px }
+  .step h3{ font-size:22px }
+  .step p{ font-size:14px }
+  .step-tag{ margin-top:20px; font-size:10px }
+
+  /* Founder note */
+  .note blockquote{ font-size: clamp(24px, 7vw, 38px); max-width:18ch }
+  .note .moon-rule{ width:30px; height:30px; margin-bottom:24px }
+
+  /* Buy */
+  .buy-grid{ gap:36px }
+  .buy-art{ aspect-ratio:1/0.85; max-width:380px; margin:0 auto; width:100% }
+  .buy-art::after{ font-size:9px; top:14px; left:14px }
+  .box{ width:64%; padding:14% 12% }
+  .box-name{ font-size:18px; letter-spacing:.28em }
+  .box-tag{ font-size:9.5px }
+  .box-bottom{ font-size:7.5px; letter-spacing:.22em }
+
+  .flavor-row{ gap:8px; margin-bottom:20px }
+  .flavor{ padding:10px 14px; font-size:9.5px; letter-spacing:.16em }
+
+  .plan{ flex-direction:column; gap:6px; margin-bottom:24px }
+  .plan-opt{ padding:18px }
+  .plan-opt .name{ font-size:18px }
+  .plan-opt .price{ font-size:24px }
+  .plan-opt .badge{ font-size:8.5px; padding:4px 9px }
+  .plan-opt .desc{ font-size:11px }
+
+  /* Reviews */
+  .review{ padding:28px 24px }
+  .review p{ font-size:17px; line-height:1.5; margin-bottom:20px }
+  .review .who{ font-size:10px }
+  .avatar{ width:34px; height:34px }
+
+  /* FAQ */
+  details{ padding:22px 0 }
+  details summary{ font-size:18px; gap:12px }
+  details .ans{ font-size:13.5px; padding-top:12px }
+  details .plus{ width:30px; height:30px; flex:none }
+
+  /* CTA band */
+  .cta-band h2{ font-size: clamp(34px, 9vw, 56px) }
+  .cta-band p{ font-size:14px; margin-top:18px }
+  .cta-band .btn{ margin-top:28px; padding:15px 28px; font-size:10.5px }
+
+  /* Buttons general */
+  .btn{ padding:14px 22px; font-size:10.5px; letter-spacing:.18em }
+  .btn-lg{ padding:16px 26px; font-size:11px }
+
+  /* Drawer */
+  .drawer-links a{ font-size:32px; padding:12px 0 }
+
+  /* Cart drawer */
+  .cart-drawer{ width:100% }
+  .cart-head{ padding:20px 22px }
+  .cart-head .title{ font-size:24px }
+  .cart-body{ padding:0 22px }
+  .cart-foot{ padding:20px 22px 24px }
+  .cart-line{ grid-template-columns:72px 1fr auto; gap:14px; padding:18px 0 }
+  .cart-thumb{ width:72px; height:90px }
+  .cart-info .name{ font-size:16px }
+  .cart-info .opt{ font-size:10.5px; letter-spacing:.06em }
+  .cart-line .price{ font-size:16px }
+
+  /* Footer */
+  footer{ padding:64px 0 36px }
+  .foot-grid{ gap:40px }
+  .foot-bottom{ flex-direction:column; align-items:flex-start; gap:14px }
+
+  /* Press tighter */
+  .press{ padding:22px 0 }
+
+  /* Checkout bar */
+  .co-bar{ padding:16px 22px; flex-wrap:wrap; gap:8px }
+  .co-bar .secure{ display:none }
+  .co-bar .brand{ font-size:15px; letter-spacing:.34em }
+
+  /* Checkout grid — make right column flow naturally below left */
+  .co-left,.co-right{ padding: 32px 22px }
+  .co-left{ padding-bottom:24px; border-right:none; border-bottom:1px solid var(--hairline) }
+  .co-right{ padding-top:32px }
+
+  .summary{ position:static; top:auto }
+  .summary h3{ font-size:18px }
+
+  .express-pay{ grid-template-columns:repeat(2,1fr); gap:8px; margin: 22px 0 }
+  .pay-btn{ height:50px; font-size:13px }
+
+  .co-step-head{ padding:18px 20px; gap:12px }
+  .co-step-title{ font-size:18px }
+  .co-step-summary{ font-size:10.5px }
+  .co-step-num{ width:26px; height:26px; font-size:11px }
+  .co-step-inner{ padding:6px 20px 22px }
+
+  .field input,.field select{ font-size:16px } /* prevent iOS zoom */
+  .field-row,.field-row-3{ grid-template-columns:1fr; gap:12px }
+
+  /* Confirmation */
+  .cf-shell{ padding: 90px var(--gutter) var(--section) }
+  .cf-card h1{ font-size: clamp(40px, 10vw, 60px) }
+  .cf-card .lede{ font-size:14.5px }
+  .cf-meta{ grid-template-columns:1fr; margin-top:32px }
+  .cf-meta .cell{ padding:18px 18px }
+  .cf-meta .cell .val{ font-size:17px }
+  .cf-tracker{ margin-top:48px; gap:18px }
+  .cf-tracker::before{ display:none }
+  .tk .pip{ width:42px; height:42px; margin-bottom:12px }
+  .tk .ttl{ font-size:16px }
+  .tk .sub{ font-size:10px }
+  .cf-items{ margin-top:40px; padding:6px 20px }
+  .cf-share{ padding:24px; margin-top:40px }
+  .cf-share h3{ font-size:20px }
+  .cf-actions{ margin-top:36px; flex-direction:column; align-items:stretch }
+  .cf-actions .btn{ width:100% }
+
+  /* Toast — pull above keyboard / nav */
+  .toast-wrap{ bottom:14px; left:14px; right:14px; transform:none; align-items:stretch }
+  .toast{ width:100%; justify-content:center }
+
+  /* Logo / brand on tight nav */
+  .nav-inner{ height:64px }
+  .brand{ font-size:15px; letter-spacing:.34em }
+}
+
+/* Very narrow phones — final tightening */
+@media (max-width: 420px){
+  :root{ --gutter: 18px }
+  .nav-cta .btn{ display:none }   /* keep cart icon + menu only on tiny screens */
+  .nav-cta{ gap:10px }
+
+  .hero h1{ font-size: 44px }
+  .hero-actions{ flex-direction:column }
+  .hero-actions .btn{ width:100%; flex:none }
+
+  .stat-row{ grid-template-columns:1fr }
+  .stat .num{ font-size:38px }
+
+  .pillars{ grid-template-columns:1fr }
+
+  .review-grid{ gap:14px }
+  .review p{ font-size:16px }
+
+  .ing-item .ing-origin{ display:none }
+  .ing-item{ grid-template-columns: 28px 1fr auto; grid-template-areas: "num name dose" ". desc dose"; gap:4px 12px }
+  .ing-item .ing-desc{ grid-area:desc }
+  .ing-item .ing-dose{ grid-area:dose; align-self:start; margin-top:0; justify-self:end }
+
+  .foot-grid{ gap:32px }
+}
+
