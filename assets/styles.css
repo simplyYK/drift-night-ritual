@@ -689,6 +689,7 @@ section{ padding: var(--section) 0; position:relative }
   color:var(--muted-2);
 }
 .box{
+  --accent: #E8C58A;
   width:62%; aspect-ratio:1/1.1; position:relative;
   background:linear-gradient(180deg, #0d1326 0%, #050811 100%);
   border-radius:6px;
@@ -696,58 +697,110 @@ section{ padding: var(--section) 0; position:relative }
     inset 0 1px 0 rgba(248,245,242,.06),
     inset 0 -22px 50px rgba(0,0,0,.6),
     0 50px 80px -10px rgba(0,0,0,.75),
-    0 0 110px rgba(232,154,44,.18);
+    0 0 110px color-mix(in srgb, var(--accent) 28%, transparent);
   transform: rotate(-3deg);
   padding: 16% 14%;
   display:flex; flex-direction:column; justify-content:space-between; align-items:center; text-align:center;
+  transition: box-shadow .5s var(--ease);
 }
 .box-top{ display:flex; flex-direction:column; align-items:center; gap:8px }
-.box-name{ font-family:var(--serif); letter-spacing:.38em; color:var(--amber-soft); font-size:clamp(20px, 2.4vw, 28px); font-variation-settings: "opsz" 36, "SOFT" 50, "wght" 460 }
-.box-tag{ font-family:var(--serif); font-style:italic; color:var(--bone-dim); font-size:11px; letter-spacing:.04em }
-.box-icons{ display:flex; gap:14px; opacity:.55; color:var(--amber-soft) }
+.box-moon{ color: var(--accent); transition: color .35s var(--ease) }
+.box-name{ font-family:var(--serif); letter-spacing:.38em; color: var(--accent); font-size:clamp(20px, 2.4vw, 28px); font-variation-settings: "opsz" 36, "SOFT" 50, "wght" 460; transition: color .35s var(--ease) }
+.box-tag{ font-family:var(--serif); font-style:italic; color:var(--bone-dim); font-size:12px; letter-spacing:.04em; transition: opacity .25s var(--ease) }
+.box-icons{ display:flex; gap:14px; opacity:.55; color: var(--accent); transition: color .35s var(--ease) }
 .box-bottom{ display:flex; flex-direction:column; gap:6px; align-items:center; color:var(--muted); font-size:8.5px; letter-spacing:.26em; text-transform:uppercase; font-family:var(--mono) }
 
+/* Flavor selector — labelled, larger, clearer */
+.flavor-label{
+  display:flex; align-items:baseline; justify-content:space-between; gap:14px;
+  margin:24px 0 12px;
+}
+.flavor-label .lbl{
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--muted);
+}
+.flavor-label .sel{
+  font-family:var(--serif); font-size:15px; color:var(--bone-dim);
+  font-variation-settings: "opsz" 24, "SOFT" 60;
+}
+.flavor-grid{
+  display:grid; grid-template-columns:repeat(3, 1fr); gap:10px;
+  margin-bottom:28px;
+}
+@media(max-width:760px){ .flavor-grid{ grid-template-columns:repeat(2, 1fr) } }
+@media(max-width:380px){ .flavor-grid{ grid-template-columns:1fr } }
+.flavor-card{
+  display:flex; flex-direction:column; align-items:flex-start; gap:6px;
+  padding:14px 14px;
+  border:1px solid var(--hairline); border-radius:14px;
+  background:rgba(248,245,242,.015);
+  text-align:left; transition: border-color .2s var(--ease), background .2s var(--ease), transform .2s var(--ease);
+  position:relative;
+}
+.flavor-card:hover{ border-color:var(--hairline-strong); background:rgba(248,245,242,.04) }
+.flavor-card[aria-checked="true"]{
+  border-color:var(--amber); background:rgba(232,154,44,.07);
+}
+.flavor-card[aria-checked="true"]::after{
+  content:""; position:absolute; top:10px; right:10px;
+  width:14px; height:14px; border-radius:50%; background:var(--amber);
+  box-shadow: inset 0 0 0 3px var(--ink-2);
+}
+.flavor-card .swatch{
+  width:22px; height:22px; border-radius:50%;
+  box-shadow: 0 0 0 1px rgba(248,245,242,.12), inset 0 0 0 2px rgba(0,0,0,.35);
+  flex:none;
+}
+.flavor-card[data-flavor="lavender"] .swatch{ background:#B7A7CB }
+.flavor-card[data-flavor="vanilla"]  .swatch{ background:#E8C58A }
+.flavor-card[data-flavor="cacao"]    .swatch{ background:#6B4226 }
+.flavor-card[data-flavor="chai"]     .swatch{ background:#C8753A }
+.flavor-card[data-flavor="matcha"]   .swatch{ background:#5A7A4D }
+.flavor-card .swatch-mix{
+  background: conic-gradient(#B7A7CB 0 20%, #E8C58A 20% 40%, #6B4226 40% 60%, #C8753A 60% 80%, #5A7A4D 80% 100%);
+}
+.flavor-card .name{
+  font-family:var(--serif); font-size:15.5px; color:var(--bone);
+  font-variation-settings: "opsz" 24, "SOFT" 60;
+  display:flex; align-items:center; gap:8px;
+  line-height:1.15;
+}
+.flavor-card .desc{
+  font-family:var(--mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--muted);
+}
+.flavor-badge{
+  font-family:var(--mono); font-size:8.5px; letter-spacing:.16em; text-transform:uppercase;
+  padding:2px 7px; border-radius:99px; background:rgba(232,154,44,.16); color:var(--amber-soft);
+  font-weight:500;
+}
+
+/* Plan toggle */
 .plan{
   border:1px solid var(--hairline); border-radius:var(--radius-lg);
   padding:6px; background:rgba(248,245,242,.012);
   display:flex; gap:6px; margin-bottom:28px;
 }
 .plan-opt{
-  flex:1; padding:20px; border-radius:calc(var(--radius-lg) - 8px);
-  text-align:left; transition:background .3s var(--ease), outline .3s var(--ease);
+  flex:1; padding:18px 20px; border-radius:calc(var(--radius-lg) - 8px);
+  text-align:left; transition: background .25s var(--ease), outline-color .25s var(--ease);
   position:relative;
+  outline:1px solid transparent;
 }
-.plan-opt[aria-selected="true"]{ background:rgba(232,154,44,.10); outline:1px solid rgba(232,154,44,.32) }
-.plan-opt .name{ font-family:var(--serif); font-size:20px; display:flex; align-items:center; gap:10px; font-variation-settings: "opsz" 24, "SOFT" 60 }
-.plan-opt .badge{ font-family:var(--mono); font-size:9px; letter-spacing:.2em; text-transform:uppercase; padding:5px 10px; border-radius:999px; background:var(--amber); color:var(--ink); font-weight:600 }
-.plan-opt .price{ font-family:var(--serif); font-size:28px; margin-top:10px; color:var(--bone); font-variation-settings: "opsz" 36, "SOFT" 60 }
-.plan-opt .price s{ color:var(--muted-2); font-size:18px; margin-right:8px }
-.plan-opt .desc{ color:var(--muted); font-size:12px; margin-top:8px; font-family:var(--mono); letter-spacing:.06em }
+.plan-opt[aria-checked="true"]{ background:rgba(232,154,44,.10); outline-color:rgba(232,154,44,.34) }
+.plan-opt .name{ font-family:var(--serif); font-size:18px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; font-variation-settings: "opsz" 24, "SOFT" 60 }
+.plan-opt .badge{ font-family:var(--mono); font-size:9px; letter-spacing:.2em; text-transform:uppercase; padding:4px 9px; border-radius:999px; background:var(--amber); color:var(--ink); font-weight:600 }
+.plan-opt .price{ font-family:var(--serif); font-size:26px; margin-top:8px; color:var(--bone); font-variation-settings: "opsz" 36, "SOFT" 60; display:flex; align-items:baseline; gap:8px; flex-wrap:wrap }
+.plan-opt .price s{ color:var(--muted-2); font-size:16px; font-variation-settings: "opsz" 24, "SOFT" 60 }
+.plan-opt .price .per{ font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); font-weight:400; margin-left:4px }
+.plan-opt .desc{ color:var(--muted); font-size:11.5px; margin-top:8px; font-family:var(--mono); letter-spacing:.06em }
 
-.flavor-row{ display:flex; gap:10px; margin-bottom:24px; flex-wrap:wrap }
-.flavor{
-  padding:12px 18px; border-radius:999px; border:1px solid var(--hairline-strong);
-  font-family:var(--mono); font-size:10.5px; letter-spacing:.18em; text-transform:uppercase;
-  transition:all .25s var(--ease); display:inline-flex; align-items:center; gap:10px;
+/* Smooth flash on price update */
+@keyframes priceFlash{
+  0%   { color:var(--amber); }
+  100% { color:inherit; }
 }
-.flavor:hover{ border-color:var(--bone) }
-.flavor[aria-selected="true"]{ background:var(--bone); color:var(--ink); border-color:var(--bone); font-weight:600 }
-.flavor .swatch{ width:10px; height:10px; border-radius:50%; background:var(--amber-soft); flex:none }
-.flavor[data-flavor="lavender"] .swatch{ background:#B7A7CB }
-.flavor[data-flavor="vanilla"]  .swatch{ background:#E8C58A }
-.flavor[data-flavor="cacao"]    .swatch{ background:#6B4226 }
-.flavor[data-flavor="chai"]     .swatch{ background:#C8753A }
-.flavor[data-flavor="matcha"]   .swatch{ background:#5A7A4D }
-.flavor[data-flavor="mix"] .swatch.swatch-mix{
-  background: conic-gradient(#B7A7CB 0 20%, #E8C58A 20% 40%, #6B4226 40% 60%, #C8753A 60% 80%, #5A7A4D 80% 100%);
-  width:14px; height:14px; box-shadow: 0 0 0 1px rgba(248,245,242,.2);
-}
-.flavor-badge{
-  font-family:var(--mono); font-size:8.5px; letter-spacing:.18em; text-transform:uppercase;
-  padding:3px 7px; border-radius:99px; background:rgba(232,154,44,.16); color:var(--amber-soft);
-  margin-left:6px;
-}
-.flavor[aria-selected="true"] .flavor-badge{ background:rgba(11,15,26,.16); color:var(--ink) }
+.flash{ animation: priceFlash .55s var(--ease-out) }
 
 .perks{ display:grid; grid-template-columns:1fr 1fr; gap:14px 28px; margin-top:28px }
 .perk{ display:flex; align-items:center; gap:12px; color:var(--bone-dim); font-size:13.5px }
@@ -871,8 +924,9 @@ footer{ background:#06090F; border-top:1px solid var(--hairline); padding: 90px 
   transition:transform .2s var(--ease), opacity .2s, box-shadow .25s var(--ease);
   border:1px solid transparent;
 }
-.pay-btn:hover{ transform:translateY(-2px); box-shadow:0 14px 30px -8px rgba(0,0,0,.55) }
+.pay-btn:hover:not(:disabled){ transform:translateY(-2px); box-shadow:0 14px 30px -8px rgba(0,0,0,.55) }
 .pay-btn:active{ transform:translateY(0) }
+.pay-btn:disabled{ opacity:.4; cursor:not-allowed }
 .pay-apple{ background:#000; color:#fff }
 .pay-apple svg{ height:22px }
 .pay-google{ background:#fff; color:#1f1f1f; gap:6px; font-size:14px; font-family:'Roboto', var(--sans); font-weight:500 }
@@ -1784,10 +1838,10 @@ footer{ background:#06090F; border-top:1px solid var(--hairline); padding: 90px 
 
 /* Restore native cursors on touch / narrow viewports */
 @media (max-width: 880px), (hover: none){
-  body, button, summary, details summary, .flavor, .plan-opt,
+  body, button, summary, details summary, .flavor-card, .plan-opt,
   .ing-item, .pillar, .step, .review, .cart-line, .qty-control button,
   .icon-btn, .menu-btn, .close-btn, .btn, a { cursor: auto }
-  a, button, .btn, summary, .flavor, .plan-opt, .icon-btn,
+  a, button, .btn, summary, .flavor-card, .plan-opt, .icon-btn,
   .menu-btn, .close-btn, .qty-control button, [role="button"] { cursor: pointer }
   input, textarea, select { cursor: text }
   .cursor { display:none !important }

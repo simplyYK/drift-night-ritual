@@ -315,7 +315,7 @@ function setupCursor(){
   document.addEventListener('mouseup',   () => ring.classList.remove('is-active'), { passive: true });
 
   // Hover/text states via event delegation — survives DOM changes
-  const HOVER_SEL = 'a, button, [role="button"], .plan-opt, .flavor, .ing-item, summary, .cart-line, .pillar, .step, .review, .archetype-tags span, .pcard-dots .d, .compare-row.head .compare-cell.is-drift, .pay-btn';
+  const HOVER_SEL = 'a, button, [role="button"], .plan-opt, .flavor-card, .ing-item, summary, .cart-line, .pillar, .step, .review, .archetype-tags span, .pcard-dots .d, .compare-row.head .compare-cell.is-drift, .pay-btn';
   const TEXT_SEL = 'input[type="text"], input[type="email"], input[type="tel"], input[type="search"], input[type="number"], textarea';
 
   document.addEventListener('mouseover', (e) => {
@@ -419,14 +419,7 @@ function setupStickyCart(){
     buyIO.observe(buy);
   }
 
-  const addBtn = document.getElementById('sticky-add');
-  if(addBtn){
-    addBtn.addEventListener('click', () => {
-      Cart.add('dusk-sub');
-      toast('The Dusk added — your ritual begins', 'moon');
-      openCart();
-    });
-  }
+  // Sticky-add click is bound in the buy section script (uses live selection)
 }
 
 /* ----------- Init on every page ----------- */

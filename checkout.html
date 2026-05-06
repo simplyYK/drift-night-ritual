@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,0..100;1,9..144,300..700,0..100&family=Manrope:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/styles.css?v=20260429b">
+<link rel="stylesheet" href="assets/styles.css?v=20260506a">
 </head>
 <body class="checkout-shell">
 
@@ -217,7 +217,7 @@
           </label>
 
           <button class="btn btn-primary btn-block btn-lg" id="place-order" style="margin-top:22px">
-            <span id="place-label">Place order — <span id="place-total">$0.00</span></span>
+            <span id="place-label">Place order — </span><span id="place-total">$0.00</span>
             <span class="arr">→</span>
           </button>
 
@@ -257,10 +257,19 @@
   </aside>
 </div>
 
-<script src="assets/app.js?v=20260429b"></script>
+<script src="assets/app.js?v=20260506a"></script>
 <script>
+  // Ensure cart state is loaded before first render (app.js init runs on DOMContentLoaded)
+  Cart.load();
+
   // Render order summary
+  const placeBtn = document.getElementById('place-order');
+  const placeLabel = document.getElementById('place-label');
+  const placeTotal = document.getElementById('place-total');
+  let placing = false;
+
   function renderSummary(){
+    if(placing) return; // Don't overwrite the "Placing order…" label mid-flight
     const s = Cart.summary();
     const lines = document.getElementById('sum-lines');
     const totals = document.getElementById('sum-totals');
@@ -268,7 +277,11 @@
     if(s.items.length === 0){
       lines.innerHTML = `<p class="small" style="padding:30px 0; text-align:center">Your cart is empty. <a href="index.html" style="color:var(--amber-soft)">Shop The Dusk →</a></p>`;
       totals.innerHTML = '';
-      document.getElementById('place-total').textContent = '$0.00';
+      placeBtn.disabled = true;
+      placeLabel.textContent = 'Cart is empty';
+      placeTotal.textContent = '';
+      document.querySelectorAll('[data-express]').forEach(b => b.disabled = true);
+      document.getElementById('promo-applied').classList.toggle('show', !!s.promo);
       return;
     }
 
@@ -296,7 +309,13 @@
       <div class="row"><span>Estimated tax</span><span>$${s.tax.toFixed(2)}</span></div>
       <div class="row grand"><span>Total <small>USD</small></span><span>$${s.total.toFixed(2)}</span></div>
     `;
-    document.getElementById('place-total').textContent = `$${s.total.toFixed(2)}`;
+    placeBtn.disabled = false;
+    placeLabel.textContent = 'Place order — ';
+    placeTotal.textContent = `$${s.total.toFixed(2)}`;
+    document.querySelectorAll('[data-express]').forEach(b => b.disabled = false);
+
+    // Promo banner reflects persisted state
+    document.getElementById('promo-applied').classList.toggle('show', !!s.promo);
   }
   renderSummary();
   document.addEventListener('cart:change', renderSummary);
@@ -305,9 +324,9 @@
   const promoInput = document.getElementById('promo');
   document.getElementById('apply-promo').addEventListener('click', () => {
     if(Cart.applyPromo(promoInput.value)){
-      document.getElementById('promo-applied').classList.add('show');
       promoInput.value = '';
       toast('Promo applied · 10% off', 'check');
+      // renderSummary fires via cart:change broadcast
     } else {
       toast('Invalid promo code', 'check');
     }
@@ -373,6 +392,7 @@
     let v = e.target.value.replace(/\D/g,'').slice(0,16);
     e.target.value = v.replace(/(.{4})/g, '$1 ').trim();
     document.querySelectorAll('.card-brand').forEach(x => x.classList.remove('active'));
+    if(!v) return;
     if(/^4/.test(v)) document.getElementById('b-visa').classList.add('active');
     else if(/^(5[1-5]|2[2-7])/.test(v)) document.getElementById('b-mc').classList.add('active');
     else if(/^3[47]/.test(v)) document.getElementById('b-amex').classList.add('active');
@@ -410,9 +430,10 @@
     if(method === 'Card' && !validateStep('payment')){ toast('Please complete payment details'); return; }
     if(Cart.summary().items.length === 0){ toast('Your cart is empty'); return; }
 
-    const btn = document.getElementById('place-order');
-    btn.disabled = true;
-    document.getElementById('place-label').textContent = 'Placing order…';
+    placing = true;
+    placeBtn.disabled = true;
+    placeLabel.textContent = 'Placing order…';
+    placeTotal.textContent = '';
 
     // Build the order
     const order = {

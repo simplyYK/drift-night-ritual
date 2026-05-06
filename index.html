@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,0..100;1,9..144,300..700,0..100&family=Manrope:wght@200;300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/styles.css?v=20260429b">
+<link rel="stylesheet" href="assets/styles.css?v=20260506a">
 </head>
 <body>
 
@@ -589,11 +589,11 @@
   <div class="section-num">§ 07 — Begin</div>
   <div class="wrap buy-grid">
     <div class="buy-art reveal" aria-hidden="true">
-      <div class="box">
+      <div class="box" id="buy-box">
         <div class="box-top">
-          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#E8C58A" stroke-width="1.2"><path d="M16.5 14.2A7 7 0 0 1 9.8 7.5a7 7 0 1 0 6.7 6.7Z"/><circle cx="18.5" cy="6.5" r="0.9" fill="#E8C58A"/></svg>
-          <div class="box-name">DRIFT</div>
-          <div class="box-tag">Wind down on purpose.</div>
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" class="box-moon"><path d="M16.5 14.2A7 7 0 0 1 9.8 7.5a7 7 0 1 0 6.7 6.7Z"/><circle cx="18.5" cy="6.5" r="0.9" fill="currentColor"/></svg>
+          <div class="box-name" id="buy-box-name">DRIFT</div>
+          <div class="box-tag" id="buy-box-tag">Honey Lavender</div>
         </div>
         <div class="box-icons">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg>
@@ -601,17 +601,17 @@
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M16.5 14.2A7 7 0 0 1 9.8 7.5a7 7 0 1 0 6.7 6.7Z"/></svg>
         </div>
         <div class="box-bottom">
-          <div>Nighttime Drink Ritual</div>
-          <div>30 Sachets · Dietary Supplement</div>
+          <div id="buy-box-line1">Nighttime Drink Ritual</div>
+          <div id="buy-box-line2">30 Sachets · Dietary Supplement</div>
         </div>
       </div>
     </div>
 
     <div class="reveal">
       <span class="eyebrow">The Hero SKU · No. 001</span>
-      <h2 style="margin-top:14px">The Dusk.</h2>
-      <p class="lede" style="margin-top:18px">
-        A 30-night supply of single-serve sachets. Honey Lavender or Vanilla Dusk.
+      <h2 style="margin-top:14px" id="buy-heading">The Dusk.</h2>
+      <p class="lede" id="buy-lede" style="margin-top:18px">
+        A 30-night supply of single-serve sachets in Honey Lavender.
         Subscribe and your next box arrives the day before you run out.
       </p>
 
@@ -623,24 +623,52 @@
         <button class="cta" data-dx-open>Take the diagnostic →</button>
       </div>
 
-      <div class="flavor-row" role="tablist" aria-label="Flavor" style="margin-top:24px">
-        <button class="flavor" data-flavor="lavender" aria-selected="true"><span class="swatch"></span>Honey Lavender</button>
-        <button class="flavor" data-flavor="vanilla" aria-selected="false"><span class="swatch"></span>Vanilla Dusk</button>
-        <button class="flavor" data-flavor="cacao" aria-selected="false"><span class="swatch"></span>Cacao Moon</button>
-        <button class="flavor" data-flavor="chai" aria-selected="false"><span class="swatch"></span>Spiced Chai</button>
-        <button class="flavor" data-flavor="matcha" aria-selected="false"><span class="swatch"></span>Matcha Midnight</button>
-        <button class="flavor" data-flavor="mix" aria-selected="false"><span class="swatch swatch-mix"></span>Mix Pack <span class="flavor-badge">All 5</span></button>
+      <div class="flavor-label">
+        <span class="lbl">Choose your flavor</span>
+        <span class="sel" id="flavor-selected">Honey Lavender</span>
+      </div>
+      <div class="flavor-grid" role="radiogroup" aria-label="Flavor">
+        <button class="flavor-card" data-flavor="lavender" role="radio" aria-checked="true">
+          <span class="swatch"></span>
+          <span class="name">Honey Lavender</span>
+          <span class="desc">Floral · Calming</span>
+        </button>
+        <button class="flavor-card" data-flavor="vanilla" role="radio" aria-checked="false">
+          <span class="swatch"></span>
+          <span class="name">Vanilla Dusk</span>
+          <span class="desc">Warm · Creamy</span>
+        </button>
+        <button class="flavor-card" data-flavor="cacao" role="radio" aria-checked="false">
+          <span class="swatch"></span>
+          <span class="name">Cacao Moon</span>
+          <span class="desc">Rich · Restorative</span>
+        </button>
+        <button class="flavor-card" data-flavor="chai" role="radio" aria-checked="false">
+          <span class="swatch"></span>
+          <span class="name">Spiced Chai</span>
+          <span class="desc">Aromatic · Cosy</span>
+        </button>
+        <button class="flavor-card" data-flavor="matcha" role="radio" aria-checked="false">
+          <span class="swatch"></span>
+          <span class="name">Matcha Midnight</span>
+          <span class="desc">Earthy · Light</span>
+        </button>
+        <button class="flavor-card flavor-card-mix" data-flavor="mix" role="radio" aria-checked="false">
+          <span class="swatch swatch-mix"></span>
+          <span class="name">Mix Pack <span class="flavor-badge">All 5</span></span>
+          <span class="desc">Rotate every night</span>
+        </button>
       </div>
 
-      <div class="plan" role="tablist" aria-label="Purchase plan">
-        <button class="plan-opt" role="tab" aria-selected="true" data-plan="sub">
+      <div class="plan" role="radiogroup" aria-label="Purchase plan">
+        <button class="plan-opt" role="radio" aria-checked="true" data-plan="sub">
           <div class="name">Subscribe <span class="badge">Save 19%</span></div>
-          <div class="price"><s id="planCompare">$42</s><span id="planSubPrice">$34</span><span style="font-size:13px;color:var(--muted);font-family:var(--mono);font-weight:400;letter-spacing:.06em;margin-left:6px;text-transform:uppercase">/ month</span></div>
+          <div class="price"><s id="planCompare">$42</s><span id="planSubPrice">$34</span><span class="per">/ month</span></div>
           <div class="desc">Skip · pause · cancel anytime</div>
         </button>
-        <button class="plan-opt" role="tab" aria-selected="false" data-plan="one">
+        <button class="plan-opt" role="radio" aria-checked="false" data-plan="one">
           <div class="name">One time</div>
-          <div class="price" id="planOnePrice">$42</div>
+          <div class="price"><span id="planOnePrice">$42</span></div>
           <div class="desc">30 sachets · No commitment</div>
         </button>
       </div>
@@ -757,10 +785,10 @@
 
 <!-- ============== STICKY MOBILE ADD-TO-CART ============== -->
 <div class="sticky-cart" id="sticky-cart" aria-hidden="true">
-  <div class="sc-thumb"><span class="sc-mark">DRIFT</span></div>
+  <div class="sc-thumb"><span class="sc-mark" id="sc-mark">DRIFT</span></div>
   <div class="sc-info">
-    <div class="sc-name">The Dusk · Subscribe</div>
-    <div class="sc-meta"><s>$42</s><span class="price">$34/mo</span> · Skip anytime</div>
+    <div class="sc-name" id="sc-name">The Dusk · Subscribe</div>
+    <div class="sc-meta"><s id="sc-compare">$42</s><span class="price" id="sc-price">$34/mo</span> · <span id="sc-flavor">Honey Lavender</span></div>
   </div>
   <button class="sc-cta" id="sticky-add">Add</button>
 </div>
@@ -841,88 +869,164 @@
   </div>
 </div>
 
-<script src="assets/app.js?v=20260429b"></script>
-<script src="assets/diagnostic.js?v=20260429b"></script>
+<script src="assets/app.js?v=20260506a"></script>
+<script src="assets/diagnostic.js?v=20260506a"></script>
 <script>
-  // Plan + flavor toggles on the BUY section
-  const priceLabel = document.getElementById('planPrice');
-  const planSubPrice = document.getElementById('planSubPrice');
-  const planOnePrice = document.getElementById('planOnePrice');
-  const planCompare = document.getElementById('planCompare');
-
-  const FLAVOR_MAP = {
-    lavender: 'Honey Lavender',
-    vanilla:  'Vanilla Dusk',
-    cacao:    'Cacao Moon',
-    chai:     'Spiced Chai',
-    matcha:   'Matcha Midnight',
-    mix:      'Mix Pack (all 5)',
+(function(){
+  const FLAVORS = {
+    lavender: { name:'Honey Lavender',     short:'Honey Lavender',  swatch:'#B7A7CB', desc:'A 30-night supply of single-serve sachets in Honey Lavender — delicate florals, soft sweetness. Subscribe and your next box arrives the day before you run out.' },
+    vanilla:  { name:'Vanilla Dusk',       short:'Vanilla Dusk',    swatch:'#E8C58A', desc:'A 30-night supply of single-serve sachets in Vanilla Dusk — warm, lightly toasted, creamy. Subscribe and your next box arrives the day before you run out.' },
+    cacao:    { name:'Cacao Moon',         short:'Cacao Moon',      swatch:'#C68A5A', desc:'A 30-night supply of single-serve sachets in Cacao Moon — deep, rich, restorative. Subscribe and your next box arrives the day before you run out.' },
+    chai:     { name:'Spiced Chai',        short:'Spiced Chai',     swatch:'#C8753A', desc:'A 30-night supply of single-serve sachets in Spiced Chai — aromatic, cosy, gently warming. Subscribe and your next box arrives the day before you run out.' },
+    matcha:   { name:'Matcha Midnight',    short:'Matcha Midnight', swatch:'#7A9D6E', desc:'A 30-night supply of single-serve sachets in Matcha Midnight — earthy, light-bodied, balanced. Subscribe and your next box arrives the day before you run out.' },
+    mix:      { name:'Mix Pack — all 5',   short:'Mix Pack',        swatch:'#E8C58A', desc:'All five DRIFT formulas in one box. Rotate flavors night by night — most subscribers find a clear favorite within three weeks.' },
   };
 
-  let plan = 'sub';        // 'sub' | 'one'
-  let flavorKey = 'lavender';
-  let isMix = false;
+  const els = {
+    heading:    document.getElementById('buy-heading'),
+    lede:       document.getElementById('buy-lede'),
+    boxName:    document.getElementById('buy-box-name'),
+    boxTag:     document.getElementById('buy-box-tag'),
+    boxLine1:   document.getElementById('buy-box-line1'),
+    boxLine2:   document.getElementById('buy-box-line2'),
+    box:        document.getElementById('buy-box'),
+    flavorSel:  document.getElementById('flavor-selected'),
+    planSub:    document.getElementById('planSubPrice'),
+    planOne:    document.getElementById('planOnePrice'),
+    planCompare:document.getElementById('planCompare'),
+    addPrice:   document.getElementById('planPrice'),
+    addBtn:     document.getElementById('buy-add'),
+    scName:     document.getElementById('sc-name'),
+    scPrice:    document.getElementById('sc-price'),
+    scCompare:  document.getElementById('sc-compare'),
+    scFlavor:   document.getElementById('sc-flavor'),
+    scMark:     document.getElementById('sc-mark'),
+    stickyAdd:  document.getElementById('sticky-add'),
+  };
 
-  function refreshPricing(){
-    isMix = (flavorKey === 'mix');
-    const subPrice = isMix ? 36 : 34;
-    const onePrice = isMix ? 44 : 42;
-    planSubPrice.textContent = `$${subPrice}`;
-    planOnePrice.textContent = `$${onePrice}`;
-    planCompare.textContent = `$${onePrice}`;
-    priceLabel.textContent = `$${plan === 'sub' ? subPrice : onePrice}`;
+  const state = { plan: 'sub', flavor: 'lavender' };
+
+  function priceFor(plan, flavor){
+    const isMix = flavor === 'mix';
+    return {
+      sub: isMix ? 36 : 34,
+      one: isMix ? 44 : 42,
+      isMix,
+    };
   }
 
   function getSku(){
-    if(isMix) return plan === 'sub' ? 'mix-sub' : 'mix-one';
-    return plan === 'sub' ? 'dusk-sub' : 'dusk-one';
+    const isMix = state.flavor === 'mix';
+    if(isMix) return state.plan === 'sub' ? 'mix-sub' : 'mix-one';
+    return state.plan === 'sub' ? 'dusk-sub' : 'dusk-one';
   }
 
+  function flashUpdate(el){
+    if(!el) return;
+    el.classList.remove('flash');
+    void el.offsetWidth;
+    el.classList.add('flash');
+  }
+
+  function render(){
+    const f = FLAVORS[state.flavor];
+    const p = priceFor(state.plan, state.flavor);
+    const isMix = p.isMix;
+
+    // Heading + lede
+    const newHeading = isMix ? 'The Mix Pack.' : 'The Dusk.';
+    if(els.heading.textContent !== newHeading){
+      els.heading.textContent = newHeading;
+    }
+    els.lede.textContent = f.desc;
+
+    // Flavor "Selected" caption
+    els.flavorSel.textContent = f.short;
+
+    // Box mock — accent + name + tag
+    els.box.style.setProperty('--accent', f.swatch);
+    els.boxName.textContent = isMix ? 'MIX' : 'DRIFT';
+    els.boxTag.textContent = f.short;
+    els.boxLine2.textContent = isMix ? '5 Flavors · 30 Sachets' : '30 Sachets · Dietary Supplement';
+
+    // Plan card prices
+    els.planSub.textContent = `$${p.sub}`;
+    els.planOne.textContent = `$${p.one}`;
+    els.planCompare.textContent = `$${p.one}`;
+
+    // CTA price
+    const activePrice = state.plan === 'sub' ? p.sub : p.one;
+    els.addPrice.textContent = `$${activePrice}`;
+    flashUpdate(els.addPrice);
+
+    // Sticky cart
+    const planLabel = state.plan === 'sub' ? 'Subscribe' : 'One-time';
+    els.scName.textContent = `${isMix ? 'The Mix Pack' : 'The Dusk'} · ${planLabel}`;
+    els.scPrice.textContent = state.plan === 'sub' ? `$${p.sub}/mo` : `$${p.one}`;
+    els.scCompare.textContent = state.plan === 'sub' ? `$${p.one}` : '';
+    els.scCompare.style.display = state.plan === 'sub' ? '' : 'none';
+    els.scFlavor.textContent = f.short;
+    els.scMark.textContent = isMix ? 'MIX' : 'DRIFT';
+  }
+
+  // Flavor cards
+  document.querySelectorAll('.flavor-card').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.flavor-card').forEach(x => x.setAttribute('aria-checked','false'));
+      b.setAttribute('aria-checked','true');
+      state.flavor = b.dataset.flavor;
+      render();
+    });
+  });
+
+  // Plan toggles
   document.querySelectorAll('.plan-opt').forEach(b => {
     b.addEventListener('click', () => {
-      document.querySelectorAll('.plan-opt').forEach(x => x.setAttribute('aria-selected','false'));
-      b.setAttribute('aria-selected','true');
-      plan = b.dataset.plan;
-      refreshPricing();
+      document.querySelectorAll('.plan-opt').forEach(x => x.setAttribute('aria-checked','false'));
+      b.setAttribute('aria-checked','true');
+      state.plan = b.dataset.plan;
+      render();
     });
   });
 
-  document.querySelectorAll('.flavor').forEach(b => {
-    b.addEventListener('click', () => {
-      document.querySelectorAll('.flavor').forEach(x => x.setAttribute('aria-selected','false'));
-      b.setAttribute('aria-selected','true');
-      flavorKey = b.dataset.flavor;
-      refreshPricing();
-    });
-  });
-
-  document.getElementById('buy-add').addEventListener('click', () => {
+  // Buy → cart (main and sticky use the live selection)
+  function addCurrent(){
     const sku = getSku();
-    const flavorName = FLAVOR_MAP[flavorKey];
+    const flavorName = FLAVORS[state.flavor].name;
     Cart.add(sku, { flavor: flavorName });
     toast(`${PRODUCTS[sku].name} added — ${flavorName}`, 'moon');
     openCart();
-  });
+  }
+  els.addBtn.addEventListener('click', addCurrent);
+  if(els.stickyAdd) els.stickyAdd.addEventListener('click', addCurrent);
 
-  refreshPricing();
-
+  // Generic [data-add] (sampler, kit, hero CTA, etc.) — independent of buy state
   document.querySelectorAll('[data-add]').forEach(el => {
     el.addEventListener('click', (e) => {
       e.preventDefault();
       const id = el.dataset.add;
+      const p = PRODUCTS[id];
+      if(!p) return;
       Cart.add(id);
-      toast(`${PRODUCTS[id].name} added`, 'moon');
+      toast(`${p.name} added`, 'moon');
       openCart();
     });
   });
 
-  document.getElementById('news-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const btn = e.target.querySelector('button');
-    btn.textContent = 'Subscribed ✓';
-    btn.disabled = true;
-    toast('You\'re in. See you Sunday.', 'check');
-  });
+  // Newsletter
+  const news = document.getElementById('news-form');
+  if(news){
+    news.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const btn = e.target.querySelector('button');
+      btn.textContent = 'Subscribed ✓';
+      btn.disabled = true;
+      toast("You're in. See you Sunday.", 'check');
+    });
+  }
+
+  render();
+})();
 </script>
 </body>
 </html>
