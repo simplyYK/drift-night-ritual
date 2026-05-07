@@ -192,12 +192,14 @@ const DX = (() => {
       answers: state.answers,
       wiredSlider: state.wiredSlider,
       archetype: arch.key,
+      archetypeTitle: arch.title,
       flavor: state.flavor,
       plan: state.plan,
       matchPct: matchPct(arch.key),
       ranked,
       ts: Date.now(),
     }));
+    document.dispatchEvent(new CustomEvent('dx:profile-saved'));
   }
 
   /* ----------- Modal lifecycle ----------- */

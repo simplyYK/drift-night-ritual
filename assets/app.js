@@ -151,6 +151,7 @@ function renderCart(){
         <h3 style="font-size:24px; margin:0; font-family:var(--serif)">Your nightstand is empty.</h3>
         <p>Add a box of The Dusk and we'll send your first ritual within 2 business days.</p>
         <a href="index.html#buy" class="btn btn-primary" onclick="closeCart()">Shop The Dusk →</a>
+        <button class="cart-empty-link" data-dx-open onclick="closeCart()">Not sure which to pick? Take the diagnostic →</button>
       </div>
     `;
     foot.innerHTML = '';
@@ -191,13 +192,34 @@ function renderCart(){
     line.querySelector('[data-act="remove"]').addEventListener('click', ()=> { Cart.remove(key); toast('Removed from cart'); });
   });
 
-  const remaining = Math.max(0, FREE_SHIP_THRESHOLD - (s.subtotal - s.discount));
+  const earned = Math.max(0, s.subtotal - s.discount);
+  const remaining = Math.max(0, FREE_SHIP_THRESHOLD - earned);
+  const pct = Math.min(100, Math.round((earned / FREE_SHIP_THRESHOLD) * 100));
   const shipNote = remaining > 0
-    ? `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16.5 14.2A7 7 0 0 1 9.8 7.5a7 7 0 1 0 6.7 6.7Z"/></svg> Add ${fmt(remaining)} for free shipping`
+    ? `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16.5 14.2A7 7 0 0 1 9.8 7.5a7 7 0 1 0 6.7 6.7Z"/></svg> Add <strong>${fmt(remaining)}</strong> for free shipping`
     : `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l5 5L20 7"/></svg> Free shipping unlocked`;
+  const shipBar = `
+    <div class="ship-progress">
+      <div class="ship-progress-text">${shipNote}</div>
+      <div class="ship-progress-bar"><div class="fill" style="width:${pct}%"></div></div>
+    </div>`;
+
+  // Smart upsell: if there's a subscription/box but no sampler, offer one.
+  const hasSampler = s.items.some(i => i.productId === 'sampler');
+  const hasBox = s.items.some(i => i.productId !== 'sampler');
+  const upsell = (!hasSampler && hasBox) ? `
+    <div class="cart-upsell">
+      <div class="cart-upsell-thumb"><span>7</span></div>
+      <div class="cart-upsell-info">
+        <div class="cart-upsell-name">Add the 7-night sampler</div>
+        <div class="cart-upsell-meta">Try all 5 flavors · $14</div>
+      </div>
+      <button class="cart-upsell-add" data-add-product="sampler">Add</button>
+    </div>` : '';
 
   foot.innerHTML = `
-    <div class="ship-note">${shipNote}</div>
+    ${shipBar}
+    ${upsell}
     <div class="totals"><span>Subtotal</span><span>${fmt(s.subtotal)}</span></div>
     ${s.discount ? `<div class="totals"><span>Promo (${s.promo})</span><span style="color:var(--ok)">−${fmt(s.discount)}</span></div>` : ''}
     <div class="totals"><span>Shipping</span><span>${s.shipping ? fmt(s.shipping) : 'Free'}</span></div>
@@ -205,6 +227,14 @@ function renderCart(){
     <a href="checkout.html" class="btn btn-primary btn-block">Checkout — ${fmt(s.total)} <span class="arr">→</span></a>
     <p class="legal">Skip · pause · cancel anytime — 30-night guarantee</p>
   `;
+
+  const upsellBtn = foot.querySelector('[data-add-product]');
+  if(upsellBtn){
+    upsellBtn.addEventListener('click', () => {
+      Cart.add(upsellBtn.dataset.addProduct);
+      toast('Sampler added · 5 flavors to try', 'moon');
+    });
+  }
 }
 
 /* ----------- Cart badge in nav ----------- */

@@ -1563,6 +1563,7 @@ footer{ background:#06090F; border-top:1px solid var(--hairline); padding: 90px 
   background: rgba(232,154,44,.04);
   font-size:13.5px; color:var(--bone-dim);
 }
+.buy-quiz-hint[hidden]{ display:none }
 .buy-quiz-hint .icon{
   width:32px; height:32px; border-radius:50%;
   background: radial-gradient(circle at 35% 35%, #2a2f44 0%, #161b2c 60%, #0a0e1a 100%);
@@ -2083,6 +2084,138 @@ footer{ background:#06090F; border-top:1px solid var(--hairline); padding: 90px 
   .dx-flavor-tag{ display:none }
 }
 .dx-result-actions .btn{ padding:12px 22px; font-size:11px; white-space:nowrap }
+
+/* =========================================================
+   E-COMMERCE PERSONALISATION + TRUST + UPSELL
+   ========================================================= */
+
+/* Diagnostic → buy section bridge banner */
+.dx-bridge{
+  display:flex; align-items:center; gap:14px;
+  margin: 24px 0 4px;
+  padding: 14px 16px;
+  border:1px solid rgba(232,154,44,.36);
+  border-radius:14px;
+  background: linear-gradient(90deg, rgba(232,154,44,.10), rgba(232,154,44,.04));
+}
+.dx-bridge[hidden]{ display:none }
+.dx-bridge-mark{
+  width:32px; height:32px; border-radius:50%;
+  background:var(--amber); color:var(--ink);
+  display:flex; align-items:center; justify-content:center; flex:none;
+}
+.dx-bridge-info{ flex:1; min-width:0 }
+.dx-bridge-title{
+  font-family:var(--serif); font-size:15px; color:var(--bone);
+  font-variation-settings:"opsz" 24, "SOFT" 60;
+  display:flex; flex-wrap:wrap; gap:6px; align-items:baseline;
+}
+.dx-bridge-title strong{ color:var(--amber); font-weight:500 }
+.dx-bridge-sub{
+  color:var(--muted); font-family:var(--mono); font-size:10.5px;
+  letter-spacing:.14em; text-transform:uppercase; margin-top:3px;
+}
+.dx-bridge-sub span{ color:var(--bone-dim) }
+.dx-bridge-adjust{
+  font-family:var(--mono); font-size:10px; letter-spacing:.18em;
+  text-transform:uppercase; color:var(--amber-soft);
+  padding:8px 10px; transition:color .2s;
+  white-space:nowrap;
+}
+.dx-bridge-adjust:hover{ color:var(--bone) }
+
+/* "Best fit" badge on the recommended flavor card */
+.flavor-card.flavor-card-best{
+  border-color:rgba(232,154,44,.5);
+  box-shadow: 0 0 0 1px rgba(232,154,44,.18) inset;
+}
+.flavor-card.flavor-card-best::before{
+  content:"BEST FIT"; position:absolute; top:8px; right:8px;
+  font-family:var(--mono); font-size:8.5px; letter-spacing:.18em;
+  padding:3px 7px; border-radius:99px;
+  background:var(--amber); color:var(--ink); font-weight:600;
+  z-index:1;
+}
+.flavor-card.flavor-card-best[aria-checked="true"]::before{ display:none }
+
+/* Subscription savings annotation */
+.plan-saves{
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--ok);
+  margin-top:8px;
+}
+
+/* Trust line near Add-to-cart */
+.cta-trust{
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  margin-top:14px;
+  font-family:var(--mono); font-size:11px; letter-spacing:.06em;
+  color:var(--muted);
+}
+.cta-trust strong{ color:var(--bone); font-weight:500; margin-right:2px }
+.cta-trust .stars{ color:var(--amber); letter-spacing:.04em }
+
+/* Visual free-shipping progress bar */
+.cart-foot .ship-progress{ margin-bottom:14px }
+.ship-progress-text{
+  display:flex; align-items:center; gap:8px;
+  color:var(--bone-dim); font-family:var(--mono);
+  font-size:10.5px; letter-spacing:.14em; text-transform:uppercase;
+  margin-bottom:8px;
+}
+.ship-progress-text strong{ color:var(--amber-soft); font-weight:500 }
+.ship-progress-text svg{ color:var(--amber-soft); flex:none }
+.ship-progress-bar{
+  height:3px; background:var(--hairline); border-radius:99px; overflow:hidden;
+}
+.ship-progress-bar .fill{
+  height:100%; width:0%;
+  background:linear-gradient(90deg, var(--amber-soft), var(--amber));
+  border-radius:99px;
+  transition: width .55s var(--ease-out);
+}
+
+/* Cart cross-sell card */
+.cart-upsell{
+  display:flex; align-items:center; gap:12px;
+  padding:12px 14px;
+  border:1px dashed var(--hairline-strong); border-radius:12px;
+  background:rgba(248,245,242,.018);
+  margin-bottom:14px;
+}
+.cart-upsell-thumb{
+  width:36px; height:42px; border-radius:6px;
+  background:linear-gradient(180deg, #11182a, #060a17);
+  border:1px solid var(--hairline);
+  display:flex; align-items:center; justify-content:center; flex:none;
+  font-family:var(--serif); font-size:12px; color:var(--amber-soft);
+  font-variation-settings:"opsz" 24, "SOFT" 50;
+}
+.cart-upsell-info{ flex:1; min-width:0 }
+.cart-upsell-name{
+  font-family:var(--serif); font-size:14px; color:var(--bone);
+  font-variation-settings:"opsz" 24, "SOFT" 60;
+}
+.cart-upsell-meta{
+  font-family:var(--mono); font-size:9.5px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--muted); margin-top:3px;
+}
+.cart-upsell-add{
+  font-family:var(--mono); font-size:10px; letter-spacing:.18em;
+  text-transform:uppercase; color:var(--ink);
+  background:var(--amber); padding:8px 14px; border-radius:99px;
+  transition:transform .15s, box-shadow .2s;
+}
+.cart-upsell-add:hover{ transform:translateY(-1px); box-shadow:0 8px 18px -6px rgba(232,154,44,.6) }
+
+/* Cart empty state — secondary diagnostic link */
+.cart-empty-link{
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--muted);
+  margin-top:6px; transition:color .2s;
+  background:none; border:0; cursor:pointer;
+}
+.cart-empty-link:hover{ color:var(--bone) }
 
 /* =========================================================
    MOBILE OPTIMIZATIONS — UI/UX pass

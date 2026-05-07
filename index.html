@@ -26,7 +26,33 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,0..100;1,9..144,300..700,0..100&family=Manrope:wght@200;300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/styles.css?v=20260506b">
+<link rel="stylesheet" href="assets/styles.css?v=20260507a">
+
+<!-- Structured data for rich result eligibility -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "DRIFT — The Dusk",
+  "description": "A clinically dosed nighttime drink ritual. Five flavors, single-serve sachets, no melatonin grogginess.",
+  "brand": { "@type": "Brand", "name": "DRIFT" },
+  "category": "Dietary Supplements > Sleep Support",
+  "offers": {
+    "@type": "AggregateOffer",
+    "priceCurrency": "USD",
+    "lowPrice": "14.00",
+    "highPrice": "78.00",
+    "offerCount": "6",
+    "availability": "https://schema.org/InStock",
+    "url": "https://drift-night-ritual.vercel.app/#buy"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "reviewCount": "2847"
+  }
+}
+</script>
 </head>
 <body>
 
@@ -615,12 +641,24 @@
         Subscribe and your next box arrives the day before you run out.
       </p>
 
-      <div class="buy-quiz-hint">
+      <div class="buy-quiz-hint" id="buy-quiz-hint">
         <span class="icon" aria-hidden="true">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E8C58A" stroke-width="1.4"><path d="M16.5 14.2A7 7 0 0 1 9.8 7.5a7 7 0 1 0 6.7 6.7Z"/><circle cx="18.5" cy="6.5" r="0.9" fill="#E8C58A"/></svg>
         </span>
         <span class="text">Five flavors, one Mix Pack — not sure which is yours?</span>
         <button class="cta" data-dx-open>Take the diagnostic →</button>
+      </div>
+
+      <!-- Personalised banner (shown only when a saved diagnostic profile exists) -->
+      <div class="dx-bridge" id="dx-bridge" hidden>
+        <span class="dx-bridge-mark" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12l5 5L20 7"/></svg>
+        </span>
+        <div class="dx-bridge-info">
+          <div class="dx-bridge-title"><span id="dx-bridge-arch">The Wired Mind</span> · <span id="dx-bridge-pct">92%</span> match</div>
+          <div class="dx-bridge-sub">Based on your sleep profile · Pre-selected <span id="dx-bridge-flavor">Honey Lavender</span></div>
+        </div>
+        <button class="dx-bridge-adjust" data-dx-open>Adjust →</button>
       </div>
 
       <div class="flavor-label">
@@ -665,6 +703,7 @@
           <div class="name">Subscribe <span class="badge">Save 19%</span></div>
           <div class="price"><s id="planCompare">$42</s><span id="planSubPrice">$34</span><span class="per">/ month</span></div>
           <div class="desc">Skip · pause · cancel anytime</div>
+          <div class="plan-saves" id="planSaves">$96 saved per year vs. one-time</div>
         </button>
         <button class="plan-opt" role="radio" aria-checked="false" data-plan="one">
           <div class="name">One time</div>
@@ -676,6 +715,11 @@
       <div class="hero-actions">
         <button class="btn btn-primary btn-lg magnetic" id="buy-add">Add to cart — <span id="planPrice">$34</span> <span class="arr">→</span></button>
         <button class="btn btn-ghost" data-add="sampler">Try the 7-night sampler · $14</button>
+      </div>
+
+      <div class="cta-trust">
+        <span class="stars" aria-hidden="true">★★★★★</span>
+        <span><strong>4.9</strong> · 2,847 verified reviews · 30-night money-back guarantee</span>
       </div>
 
       <div class="perks">
@@ -869,8 +913,8 @@
   </div>
 </div>
 
-<script src="assets/app.js?v=20260506b"></script>
-<script src="assets/diagnostic.js?v=20260506b"></script>
+<script src="assets/app.js?v=20260507a"></script>
+<script src="assets/diagnostic.js?v=20260507a"></script>
 <script>
 (function(){
   const FLAVORS = {
@@ -894,6 +938,7 @@
     planSub:    document.getElementById('planSubPrice'),
     planOne:    document.getElementById('planOnePrice'),
     planCompare:document.getElementById('planCompare'),
+    planSaves:  document.getElementById('planSaves'),
     addPrice:   document.getElementById('planPrice'),
     addBtn:     document.getElementById('buy-add'),
     scName:     document.getElementById('sc-name'),
@@ -902,9 +947,43 @@
     scFlavor:   document.getElementById('sc-flavor'),
     scMark:     document.getElementById('sc-mark'),
     stickyAdd:  document.getElementById('sticky-add'),
+    bridge:     document.getElementById('dx-bridge'),
+    bridgeArch: document.getElementById('dx-bridge-arch'),
+    bridgePct:  document.getElementById('dx-bridge-pct'),
+    bridgeFlavor: document.getElementById('dx-bridge-flavor'),
+    quizHint:   document.getElementById('buy-quiz-hint'),
   };
 
   const state = { plan: 'sub', flavor: 'lavender' };
+
+  // --- Diagnostic profile bridge -----------------------------------------
+  function loadDxProfile(){
+    try { return JSON.parse(localStorage.getItem('drift_dx_profile_v2')); } catch { return null; }
+  }
+  function applyDxProfile(){
+    const profile = loadDxProfile();
+    document.querySelectorAll('.flavor-card').forEach(c => c.classList.remove('flavor-card-best'));
+    if(!profile || !profile.flavor || !FLAVORS[profile.flavor]){
+      els.bridge.hidden = true;
+      els.quizHint.hidden = false;
+      return;
+    }
+    state.flavor = profile.flavor;
+    if(profile.plan === 'sub' || profile.plan === 'one') state.plan = profile.plan;
+    document.querySelectorAll('.flavor-card').forEach(c => {
+      c.setAttribute('aria-checked', c.dataset.flavor === state.flavor ? 'true' : 'false');
+    });
+    document.querySelectorAll('.plan-opt').forEach(c => {
+      c.setAttribute('aria-checked', c.dataset.plan === state.plan ? 'true' : 'false');
+    });
+    const recCard = document.querySelector(`.flavor-card[data-flavor="${state.flavor}"]`);
+    if(recCard) recCard.classList.add('flavor-card-best');
+    els.bridgeArch.textContent = profile.archetypeTitle || 'Your sleep profile';
+    els.bridgePct.textContent = (profile.matchPct || 0) + '%';
+    els.bridgeFlavor.textContent = FLAVORS[state.flavor].name;
+    els.bridge.hidden = false;
+    els.quizHint.hidden = true;
+  }
 
   function priceFor(plan, flavor){
     const isMix = flavor === 'mix';
@@ -967,6 +1046,12 @@
     els.scCompare.style.display = state.plan === 'sub' ? '' : 'none';
     els.scFlavor.textContent = f.short;
     els.scMark.textContent = isMix ? 'MIX' : 'DRIFT';
+
+    // Subscription savings annotation (vs one-time, monthly cadence)
+    if(els.planSaves){
+      const yearly = (p.one - p.sub) * 12;
+      els.planSaves.textContent = `$${yearly} saved per year vs. one-time`;
+    }
   }
 
   // Flavor cards
@@ -1025,6 +1110,10 @@
     });
   }
 
+  // Bring the diagnostic profile in (pre-select recommended flavor + plan,
+  // tag the recommended card "Best fit", swap the quiz hint for a personal banner).
+  applyDxProfile();
+  document.addEventListener('dx:profile-saved', () => { applyDxProfile(); render(); });
   render();
 })();
 </script>
