@@ -289,9 +289,11 @@ function setupNavStuck(){
 function setupCursor(){
   const dot = document.getElementById('cursor-dot');
   const ring = document.getElementById('cursor-ring');
+  const glow = document.getElementById('candleglow');
   if(!dot || !ring) return;
   if(window.matchMedia('(hover: none)').matches){
     dot.style.display = 'none'; ring.style.display = 'none';
+    if(glow) glow.style.display = 'none';
     return;
   }
 
@@ -299,6 +301,7 @@ function setupCursor(){
   let tx = -100, ty = -100;
   let dx = -100, dy = -100;  // dot — tight follow
   let rx = -100, ry = -100;  // ring — lazy follow
+  let gx = -100, gy = -100;  // glow — very lazy, atmospheric
   let synced = false;
 
   // Continuous RAF loop — smoother than starting/stopping
@@ -307,8 +310,11 @@ function setupCursor(){
     dy += (ty - dy) * 0.55;
     rx += (tx - rx) * 0.18;
     ry += (ty - ry) * 0.18;
+    gx += (tx - gx) * 0.06;
+    gy += (ty - gy) * 0.06;
     dot.style.transform  = `translate3d(${dx}px, ${dy}px, 0) translate(-50%, -50%)`;
     ring.style.transform = `translate3d(${rx}px, ${ry}px, 0) translate(-50%, -50%)`;
+    if(glow) glow.style.transform = `translate3d(${gx}px, ${gy}px, 0) translate(-50%, -50%)`;
     requestAnimationFrame(loop);
   }
   loop();
@@ -316,6 +322,7 @@ function setupCursor(){
   // First touch ever → permanently disable (handles hybrid devices)
   document.addEventListener('touchstart', () => {
     dot.style.display = 'none'; ring.style.display = 'none';
+    if(glow) glow.style.display = 'none';
     document.body.style.cursor = 'auto';
   }, { once: true, passive: true });
 
@@ -323,10 +330,11 @@ function setupCursor(){
     tx = e.clientX; ty = e.clientY;
     if(!synced){
       // Sync immediately on first move so there's no flying-from-corner
-      dx = rx = tx; dy = ry = ty;
+      dx = rx = gx = tx; dy = ry = gy = ty;
       synced = true;
       dot.classList.remove('is-hidden');
       ring.classList.remove('is-hidden');
+      if(glow) glow.classList.add('is-on');
     }
   }, { passive: true });
 
@@ -334,10 +342,12 @@ function setupCursor(){
   document.addEventListener('mouseleave', () => {
     dot.classList.add('is-hidden');
     ring.classList.add('is-hidden');
+    if(glow) glow.classList.remove('is-on');
   });
   document.addEventListener('mouseenter', () => {
     dot.classList.remove('is-hidden');
     ring.classList.remove('is-hidden');
+    if(glow && synced) glow.classList.add('is-on');
   });
 
   // Active state on click
@@ -415,6 +425,214 @@ function setupMarquee(){
   m.innerHTML = m.innerHTML + m.innerHTML;
 }
 
+/* ----------- Tonight's Window — time / moon / drifters ----------- */
+function setupTonightRibbon(){
+  const root = document.getElementById('tonight-ribbon');
+  if(!root) return;
+
+  const $time   = document.getElementById('tr-time');
+  const $loc    = document.getElementById('tr-loc');
+  const $phase  = document.getElementById('tr-phase');
+  const $moon   = document.getElementById('tr-moon-path');
+  const $count  = document.getElementById('tr-count');
+  const $msg    = document.getElementById('tr-msg');
+
+  // ---- Local city from IANA tz ----
+  function getCity(){
+    try{
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+      const last = tz.split('/').pop() || '';
+      return last.replace(/_/g, ' ');
+    } catch { return ''; }
+  }
+
+  // ---- 12-hour local time ----
+  function fmtTime(d){
+    const h = d.getHours(), m = String(d.getMinutes()).padStart(2,'0');
+    const h12 = ((h + 11) % 12) + 1;
+    return `${h12}:${m} ${h < 12 ? 'AM' : 'PM'}`;
+  }
+
+  // ---- Moon phase from synodic month ----
+  // Reference new moon: 2000-01-06 18:14 UTC. Period: 29.530588853 days.
+  const SYNODIC = 29.530588853 * 86400e3;
+  const REF_NEW = Date.UTC(2000, 0, 6, 18, 14, 0);
+  function moonPhase(d){
+    const age = ((d.getTime() - REF_NEW) % SYNODIC + SYNODIC) % SYNODIC;
+    return age / SYNODIC; // 0..1
+  }
+  function phaseName(p){
+    if(p < 0.03 || p > 0.97) return 'New Moon';
+    if(p < 0.22) return 'Waxing Crescent';
+    if(p < 0.28) return 'First Quarter';
+    if(p < 0.47) return 'Waxing Gibbous';
+    if(p < 0.53) return 'Full Moon';
+    if(p < 0.72) return 'Waning Gibbous';
+    if(p < 0.78) return 'Last Quarter';
+    return 'Waning Crescent';
+  }
+  // SVG path for the lit portion at radius r centered at (cx,cy)
+  function moonPath(p, cx, cy, r){
+    if(p < 0.02 || p > 0.98) return '';                   // new
+    if(Math.abs(p - 0.5) < 0.02){                          // full
+      return `M ${cx-r},${cy} a ${r},${r} 0 1,0 ${r*2},0 a ${r},${r} 0 1,0 ${-r*2},0`;
+    }
+    const waxing = p < 0.5;
+    const k = (1 - Math.cos(p * 2 * Math.PI)) / 2;        // illumination 0..1
+    const rx = Math.max(0.001, Math.abs(r * (1 - 2*k)));
+    const outerSweep = waxing ? 1 : 0;
+    const innerSweep = (k > 0.5) ? outerSweep : (1 - outerSweep);
+    return `M ${cx},${cy-r} A ${r},${r} 0 1,${outerSweep} ${cx},${cy+r} A ${rx},${r} 0 1,${innerSweep} ${cx},${cy-r} Z`;
+  }
+
+  // ---- Drifters count: seed by hour-of-day, drift upward slowly ----
+  function baselineCount(d){
+    const h = d.getHours() + d.getMinutes()/60;
+    // Cosine curve: peaks at 23:00, troughs at 11:00
+    const t = Math.cos((h - 23) / 24 * Math.PI * 2);
+    return Math.max(180, Math.round(820 + t * 480));
+  }
+
+  let currentCount = baselineCount(new Date());
+
+  // ---- Window mode (amber glow between 21:00 → 02:00) ----
+  function windowState(d){
+    const h = d.getHours();
+    if(h >= 21 || h < 2)  return { on:true,  msg:'Perfect time to begin.' };
+    if(h < 8)              return { on:false, msg:'Catch dawn instead.' };
+    if(h < 18)             return { on:false, msg:'Begin again at dusk.' };
+    return { on:false, msg:'Soon. The window opens at nine.' };
+  }
+
+  // ---- Render ----
+  function render(){
+    const now = new Date();
+    if($time)  $time.textContent  = fmtTime(now);
+    if($loc){
+      const c = getCity();
+      $loc.textContent = c ? `in ${c}` : 'where you are';
+    }
+    const phase = moonPhase(now);
+    if($phase) $phase.textContent = phaseName(phase);
+    if($moon)  $moon.setAttribute('d', moonPath(phase, 6, 6, 5));
+    if($count) $count.textContent = currentCount.toLocaleString();
+    const ws = windowState(now);
+    root.dataset.window = ws.on ? 'on' : 'off';
+    if($msg){
+      const span = $msg.querySelector('span');
+      if(span) span.textContent = ws.msg;
+    }
+  }
+
+  render();
+
+  // Clock tick — every 20s is enough for minute changes
+  setInterval(render, 20000);
+
+  // Drifters ticker — increment 1–3 every 4.5–7.5s
+  function tick(){
+    currentCount += 1 + Math.floor(Math.random() * 3);
+    if($count){
+      $count.textContent = currentCount.toLocaleString();
+      $count.classList.remove('tick'); void $count.offsetWidth;
+      $count.classList.add('tick');
+    }
+    setTimeout(tick, 4500 + Math.random() * 3000);
+  }
+  setTimeout(tick, 3500 + Math.random() * 2000);
+}
+
+/* ----------- The Ritual — scroll-driven cinema ----------- */
+function setupRitualCinema(){
+  const stage = document.getElementById('ritual-stage');
+  if(!stage) return;
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const narrow = window.matchMedia('(max-width: 879px)').matches;
+  if(reduce || narrow) return;
+
+  document.body.classList.add('cinema-on');
+
+  let raf = null;
+  let inView = false;
+  let pSmooth = 0;
+  let pTarget = 0;
+  const clamp01 = (v) => Math.max(0, Math.min(1, v));
+  const smoothstep = (t) => t * t * (3 - 2 * t);
+
+  function readTarget(){
+    const r = stage.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const total = Math.max(1, r.height - vh);
+    return clamp01(-r.top / total);
+  }
+
+  function tick(){
+    pTarget = readTarget();
+    // Smooth p toward target — gives buttery feel independent of scroll velocity
+    pSmooth += (pTarget - pSmooth) * 0.22;
+    if(Math.abs(pTarget - pSmooth) < 0.0006) pSmooth = pTarget;
+    const p = pSmooth;
+
+    // Tighter phase windows, smoothstep within each → cinematic, not linear
+    const p1 = smoothstep(clamp01( p          / 0.34));
+    const p2 = smoothstep(clamp01((p - 0.26)  / 0.38));
+    const p3 = smoothstep(clamp01((p - 0.60)  / 0.36));
+
+    stage.style.setProperty('--p',  p.toFixed(4));
+    stage.style.setProperty('--p1', p1.toFixed(4));
+    stage.style.setProperty('--p2', p2.toFixed(4));
+    stage.style.setProperty('--p3', p3.toFixed(4));
+
+    // Caption cross-fades: 0.24→0.34 (1→2) and 0.58→0.68 (2→3)
+    let c1, c2, c3;
+    if(p < 0.24){       c1 = 1; c2 = 0; c3 = 0; }
+    else if(p < 0.34){  const t = smoothstep((p - 0.24) / 0.10); c1 = 1 - t; c2 = t;     c3 = 0; }
+    else if(p < 0.58){  c1 = 0; c2 = 1; c3 = 0; }
+    else if(p < 0.68){  const t = smoothstep((p - 0.58) / 0.10); c1 = 0;     c2 = 1 - t; c3 = t; }
+    else {              c1 = 0; c2 = 0; c3 = 1; }
+    stage.style.setProperty('--c1', c1.toFixed(3));
+    stage.style.setProperty('--c2', c2.toFixed(3));
+    stage.style.setProperty('--c3', c3.toFixed(3));
+
+    const phase = (p < 0.30) ? '1' : (p < 0.63 ? '2' : '3');
+    if(stage.dataset.phase !== phase) stage.dataset.phase = phase;
+
+    // Continuous rAF while in view → independent of scroll-event throttling
+    if(inView){
+      raf = requestAnimationFrame(tick);
+    } else {
+      raf = null;
+    }
+  }
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      const wasInView = inView;
+      inView = e.isIntersecting;
+      if(inView && !wasInView && raf === null){
+        // Resync immediately so we don't lerp from stale state
+        pSmooth = readTarget();
+        raf = requestAnimationFrame(tick);
+      }
+    });
+  }, { rootMargin: '40% 0px 40% 0px' });
+  io.observe(stage);
+
+  window.addEventListener('resize', () => {
+    const r2 = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const n2 = window.matchMedia('(max-width: 879px)').matches;
+    if(r2 || n2){
+      document.body.classList.remove('cinema-on');
+      if(raf){ cancelAnimationFrame(raf); raf = null; }
+    }
+  }, { passive: true });
+
+  // Prime initial state so the very first frame is correct, not 0
+  pSmooth = readTarget();
+  tick();
+}
+
 /* ----------- Sticky mobile add-to-cart ----------- */
 function setupStickyCart(){
   const bar = document.getElementById('sticky-cart');
@@ -463,6 +681,7 @@ function init(){
   setupParallax();
   setupMarquee();
   setupStickyCart();
+  setupRitualCinema();
 
   // Cart icon
   const cartBtn = document.getElementById('cart-btn');
