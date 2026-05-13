@@ -710,35 +710,46 @@
   </div>
 </section>
 
-<!-- ============== THE DUSK HOUR (nightly pricing window) ============== -->
-<aside class="dusk-hour" id="dusk-hour" data-active="false" aria-label="The Dusk Hour — tonight's pricing window">
+<!-- ============== YOUR FIRST NIGHT — reservation + conversion ribbon ============== -->
+<aside class="dusk-hour" id="dusk-hour" data-state="active" aria-label="Your first night — introduction price reserved">
   <span class="dh-rail dh-rail-top" aria-hidden="true"><span class="dh-rail-fill" id="dh-fill"></span></span>
   <div class="wrap dh-inner">
     <div class="dh-col dh-mark">
-      <span class="dh-eyebrow"><i class="dh-orb" aria-hidden="true"></i>The Dusk Hour</span>
-      <p class="dh-line" id="dh-line">Tonight's pricing is held<br/>until <em>midnight</em>, your local time.</p>
+      <span class="dh-eyebrow"><i class="dh-orb" aria-hidden="true"></i>Your First Night · Reserved</span>
+      <p class="dh-line" id="dh-line">Your introduction price is held<br/>for the next <em>fifteen minutes</em>.</p>
+      <p class="dh-social">Joining <strong>2,847</strong> verified ritualists</p>
     </div>
 
     <div class="dh-col dh-clock-col" aria-live="polite" aria-atomic="true">
       <div class="dh-clock-row">
-        <span class="dh-num" id="dh-h">--</span>
+        <span class="dh-num" id="dh-m">15</span>
         <span class="dh-dot">:</span>
-        <span class="dh-num" id="dh-m">--</span>
-        <span class="dh-dot">:</span>
-        <span class="dh-num" id="dh-s">--</span>
+        <span class="dh-num" id="dh-s">00</span>
       </div>
       <div class="dh-clock-lbl" aria-hidden="true">
-        <span>hours</span><span>minutes</span><span>seconds</span>
+        <span>minutes</span><span>seconds</span>
       </div>
     </div>
 
     <div class="dh-col dh-offer">
-      <div class="dh-pct">10<span>%</span></div>
-      <p class="dh-tag">off your first ritual<br/>with code <strong>DUSK10</strong></p>
-      <button class="dh-copy" id="dh-copy" type="button" aria-label="Copy code DUSK10">
-        <span class="dh-copy-default">Copy code</span>
-        <span class="dh-copy-done" aria-hidden="true">Code copied ✓</span>
-      </button>
+      <div class="dh-price-row">
+        <span class="dh-price-now">$34<small>/mo</small></span>
+        <span class="dh-price-was">was <s>$42</s></span>
+      </div>
+      <p class="dh-bonus">
+        <span class="dh-bonus-tag">10% off</span>
+        <span class="dh-bonus-sep">·</span>
+        <span class="dh-bonus-tag">Free shipping on your first box</span>
+      </p>
+      <div class="dh-actions">
+        <button class="dh-cta" id="dh-cta" type="button">
+          Begin Tonight <span class="dh-cta-price">$34</span> <span class="arr">→</span>
+        </button>
+        <button class="dh-copy dh-copy-mini" id="dh-copy" type="button" aria-label="Copy code DUSK10">
+          <span class="dh-copy-default">Copy DUSK10</span>
+          <span class="dh-copy-done" aria-hidden="true">Copied ✓</span>
+        </button>
+      </div>
     </div>
   </div>
   <span class="dh-rail dh-rail-bot" aria-hidden="true"></span>

@@ -2822,7 +2822,7 @@ body.cinema-on .ritual-grid-fallback{ display:none }
   transition: transform .9s linear;
   box-shadow: 0 0 18px rgba(232,154,44,0.55);
 }
-.dusk-hour[data-active="false"] .dh-rail-fill{ display:none }
+.dusk-hour[data-state="extended"] .dh-rail-fill{ background:var(--hairline-strong); box-shadow:none; transform:scaleX(0) }
 
 .dh-inner{
   display:grid;
@@ -2851,8 +2851,8 @@ body.cinema-on .ritual-grid-fallback{ display:none }
   0%,100%{ transform:scale(1);    box-shadow:0 0 12px rgba(232,154,44,0.6) }
   50%   { transform:scale(1.22);  box-shadow:0 0 22px rgba(232,154,44,0.95) }
 }
-.dusk-hour[data-active="false"] .dh-orb{
-  background:var(--muted); box-shadow:none; animation:none;
+.dusk-hour[data-state="extended"] .dh-orb{
+  background:var(--amber-soft); box-shadow:0 0 8px rgba(232,197,138,0.5); animation:none;
 }
 .dh-line{
   font-family:var(--serif);
@@ -2873,12 +2873,12 @@ body.cinema-on .ritual-grid-fallback{ display:none }
   font-variant-numeric: tabular-nums lining-nums;
 }
 .dh-clock-row{
-  display:flex; align-items:baseline; gap:14px;
+  display:flex; align-items:baseline; gap:18px;
   font-family:var(--serif);
-  font-size: clamp(64px, 9vw, 132px);
-  line-height:0.92;
+  font-size: clamp(80px, 11vw, 156px);
+  line-height:0.9;
   font-variation-settings: "opsz" 144, "SOFT" 30, "wght" 320;
-  letter-spacing:-0.045em;
+  letter-spacing:-0.05em;
   color:var(--bone);
 }
 .dh-num{
@@ -2889,39 +2889,113 @@ body.cinema-on .ritual-grid-fallback{ display:none }
   animation: dhTick 1s steps(2, end) infinite;
 }
 @keyframes dhTick{ 50%{ opacity:.18 } }
-.dusk-hour[data-active="false"] .dh-dot{ animation:none; opacity:.4 }
+.dusk-hour[data-state="extended"] .dh-dot{ animation:none; opacity:.4 }
 .dh-clock-lbl{
-  display:flex; gap: clamp(42px, 7vw, 88px);
+  display:flex; gap: clamp(56px, 9vw, 112px);
   font-family:var(--mono); font-size:10.5px; letter-spacing:.26em;
   text-transform:uppercase; color:var(--muted);
   margin-top:6px;
 }
 
-/* Right — offer + copy */
+/* Social proof — left col footer */
+.dh-social{
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.18em;
+  text-transform:uppercase; color:var(--muted);
+  margin:6px 0 0;
+}
+.dh-social strong{
+  color:var(--bone-dim); font-weight:500;
+  font-variant-numeric: tabular-nums lining-nums;
+  margin-right:2px;
+}
+
+/* Right — anchored pricing + bonuses + CTA */
 .dh-offer{
   display:flex; flex-direction:column; align-items:flex-end; gap:10px;
-  text-align:right;
+  text-align:right; min-width:0;
 }
-.dh-pct{
+.dh-price-row{
+  display:flex; align-items:baseline; gap:14px;
+  flex-wrap:wrap; justify-content:flex-end;
+}
+.dh-price-now{
   font-family:var(--serif);
-  font-size: clamp(52px, 6.4vw, 96px);
-  font-variation-settings: "opsz" 144, "SOFT" 80, "wght" 350;
-  color:var(--amber);
-  letter-spacing:-0.045em; line-height:0.95;
+  font-size: clamp(40px, 4.6vw, 64px);
+  font-variation-settings: "opsz" 96, "SOFT" 80, "wght" 360;
+  color:var(--bone);
+  letter-spacing:-0.035em; line-height:0.95;
+  font-variant-numeric: tabular-nums lining-nums;
 }
-.dh-pct span{
-  font-size:0.45em; vertical-align: top;
-  opacity:.7; margin-left:2px;
+.dh-price-now small{
+  font-family:var(--mono); font-size:0.30em;
+  letter-spacing:.16em; text-transform:uppercase;
+  color:var(--bone-dim); margin-left:4px;
+  vertical-align:middle;
 }
-.dusk-hour[data-active="false"] .dh-pct{ color:var(--bone-dim) }
-.dh-tag{
-  font-family:var(--sans); font-size:13.5px; color:var(--bone-dim);
-  line-height:1.55; margin:0; font-weight:300;
+.dh-price-was{
+  font-family:var(--mono); font-size:10.5px;
+  letter-spacing:.18em; text-transform:uppercase;
+  color:var(--muted);
 }
-.dh-tag strong{
-  color:var(--amber-soft); font-weight:500;
-  font-family:var(--mono); font-size:12px;
-  letter-spacing:.16em; margin-left:2px;
+.dh-price-was s{ color:var(--muted-2); margin-left:4px }
+
+.dh-bonus{
+  margin:2px 0 4px;
+  font-family:var(--mono); font-size:10.5px;
+  letter-spacing:.14em; text-transform:uppercase;
+  color:var(--amber-soft);
+  display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end;
+}
+.dh-bonus-tag{ white-space:nowrap }
+.dh-bonus-sep{ color:var(--muted-2); opacity:.7 }
+
+.dh-actions{
+  display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+  justify-content:flex-end; margin-top:6px;
+}
+
+/* Primary conversion CTA */
+.dh-cta{
+  display:inline-flex; align-items:center; gap:10px;
+  padding:15px 24px;
+  background:var(--amber); color:var(--ink);
+  border:none; border-radius:99px;
+  font-family:var(--mono); font-size:11px;
+  letter-spacing:.22em; text-transform:uppercase;
+  font-weight:500;
+  cursor:pointer;
+  position:relative; overflow:hidden;
+  transition: transform .2s var(--ease), box-shadow .25s var(--ease);
+  box-shadow: 0 18px 40px -14px rgba(232,154,44,0.55);
+}
+.dh-cta:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 24px 56px -14px rgba(232,154,44,0.7), 0 0 0 1px rgba(232,154,44,0.35) inset;
+}
+.dh-cta:active{ transform:scale(.98) }
+.dh-cta-price{
+  font-family:var(--serif); font-size:14px;
+  letter-spacing:-0.02em;
+  font-variation-settings: "opsz" 36, "SOFT" 60, "wght" 420;
+  text-transform:none;
+}
+.dh-cta .arr{ transition: transform .3s var(--ease) }
+.dh-cta:hover .arr{ transform: translateX(3px) }
+/* Subtle shimmer like the existing btn-primary */
+.dh-cta::after{
+  content:""; position:absolute; top:-30%; left:-30%; width:30%; height:160%;
+  background:linear-gradient(120deg, transparent, rgba(255,255,255,0.18), transparent);
+  transform: skewX(-20deg);
+  transition: left .9s var(--ease);
+  pointer-events:none;
+}
+.dh-cta:hover::after{ left:130% }
+
+/* Secondary copy — ghost / mini variant */
+.dh-copy-mini{
+  margin-top:0;
+  padding:9px 18px; font-size:10px; letter-spacing:.20em;
+  min-width:auto; min-height:0;
 }
 .dh-copy{
   margin-top:10px;
@@ -2953,16 +3027,20 @@ body.cinema-on .ritual-grid-fallback{ display:none }
 @media (max-width: 880px){
   .dh-inner{
     grid-template-columns:1fr;
-    gap:30px;
+    gap:28px;
     padding: 56px 0 48px;
     text-align:center;
   }
   .dh-mark{ align-items:center }
+  .dh-social{ text-align:center }
   .dh-line{ max-width:32ch }
   .dh-offer{ align-items:center; text-align:center }
-  .dh-clock-row{ font-size: clamp(56px, 16vw, 88px); gap:8px }
-  .dh-clock-lbl{ gap: clamp(32px, 10vw, 56px); font-size:9.5px }
-  .dh-pct{ font-size: clamp(48px, 14vw, 72px) }
+  .dh-clock-row{ font-size: clamp(64px, 18vw, 104px); gap:10px }
+  .dh-clock-lbl{ gap: clamp(36px, 12vw, 64px); font-size:9.5px }
+  .dh-price-row{ justify-content:center }
+  .dh-bonus{ justify-content:center }
+  .dh-actions{ justify-content:center; width:100% }
+  .dh-cta{ flex:1 1 auto; justify-content:center }
 }
 @media (prefers-reduced-motion: reduce){
   .dh-orb, .dh-dot, .dh-rail-fill{ animation:none }
