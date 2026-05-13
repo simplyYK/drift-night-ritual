@@ -633,6 +633,100 @@ function setupRitualCinema(){
   tick();
 }
 
+/* ----------- The Dusk Hour — nightly pricing window ----------- */
+function setupDuskHour(){
+  const root = document.getElementById('dusk-hour');
+  if(!root) return;
+
+  const $h    = document.getElementById('dh-h');
+  const $m    = document.getElementById('dh-m');
+  const $s    = document.getElementById('dh-s');
+  const $fill = document.getElementById('dh-fill');
+  const $line = document.getElementById('dh-line');
+  const $copy = document.getElementById('dh-copy');
+
+  const WINDOW_OPEN  = 21;             // 9 PM local
+  const WINDOW_HOURS = 3;              // 9 PM → midnight
+  const WINDOW_MS    = WINDOW_HOURS * 3600 * 1000;
+  const pad = (n) => String(Math.max(0, n)).padStart(2, '0');
+
+  function tick(){
+    const now = new Date();
+    const hour = now.getHours();
+    const active = hour >= WINDOW_OPEN;
+    let remainingMs;
+
+    if(active){
+      // Countdown to midnight tonight
+      const midnight = new Date(now);
+      midnight.setHours(24, 0, 0, 0);
+      remainingMs = midnight - now;
+    } else {
+      // Countdown to next opening (9 PM today, your local time)
+      const nextOpen = new Date(now);
+      nextOpen.setHours(WINDOW_OPEN, 0, 0, 0);
+      if(nextOpen <= now) nextOpen.setDate(nextOpen.getDate() + 1);
+      remainingMs = nextOpen - now;
+    }
+
+    const totalSec = Math.floor(remainingMs / 1000);
+    const hh = Math.floor(totalSec / 3600);
+    const mm = Math.floor((totalSec % 3600) / 60);
+    const ss = totalSec % 60;
+    if($h) $h.textContent = pad(hh);
+    if($m) $m.textContent = pad(mm);
+    if($s) $s.textContent = pad(ss);
+
+    const wasActive = root.dataset.active === 'true';
+    root.dataset.active = active ? 'true' : 'false';
+
+    if(active){
+      if($line) $line.innerHTML = "Tonight's pricing is held<br/>until <em>midnight</em>, your local time.";
+      if($fill){
+        const p = Math.max(0, Math.min(1, remainingMs / WINDOW_MS));
+        $fill.style.transform = `scaleX(${p.toFixed(4)})`;
+      }
+      // Silently apply the promo while the window is open
+      if(window.Cart && Cart.promo !== 'DUSK10'){
+        Cart.applyPromo('DUSK10');
+      }
+    } else {
+      if($line) $line.innerHTML = "The next Dusk Hour opens at <em>9 PM</em>,<br/>your local time.";
+      if($fill) $fill.style.transform = 'scaleX(0)';
+    }
+
+    return wasActive !== active;
+  }
+
+  if($copy){
+    $copy.addEventListener('click', async () => {
+      let ok = false;
+      try{
+        if(navigator.clipboard && navigator.clipboard.writeText){
+          await navigator.clipboard.writeText('DUSK10');
+          ok = true;
+        } else {
+          // Fallback for non-secure contexts
+          const ta = document.createElement('textarea');
+          ta.value = 'DUSK10'; ta.style.position = 'fixed'; ta.style.opacity = '0';
+          document.body.appendChild(ta); ta.select();
+          ok = document.execCommand('copy');
+          document.body.removeChild(ta);
+        }
+      } catch(e){ ok = false; }
+
+      if(ok){
+        $copy.classList.add('is-copied');
+        setTimeout(() => $copy.classList.remove('is-copied'), 2400);
+        if(typeof toast === 'function') toast('Code DUSK10 copied', 'check');
+      }
+    });
+  }
+
+  tick();
+  setInterval(tick, 1000);
+}
+
 /* ----------- Sticky mobile add-to-cart ----------- */
 function setupStickyCart(){
   const bar = document.getElementById('sticky-cart');
@@ -682,6 +776,7 @@ function init(){
   setupMarquee();
   setupStickyCart();
   setupRitualCinema();
+  setupDuskHour();
 
   // Cart icon
   const cartBtn = document.getElementById('cart-btn');

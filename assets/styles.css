@@ -2796,3 +2796,175 @@ body.cinema-on .ritual-grid-fallback{ display:none }
   body.cinema-on .ritual-grid-fallback{ display:grid !important }
 }
 
+/* =========================================================
+   THE DUSK HOUR — nightly pricing window
+   ========================================================= */
+.dusk-hour{
+  position:relative;
+  background:
+    radial-gradient(70% 110% at 50% 0%, rgba(232,154,44,0.06), transparent 65%),
+    linear-gradient(180deg, var(--ink), var(--ink-2));
+  color:var(--bone);
+  isolation:isolate;
+}
+.dh-rail{
+  position:absolute; left:0; right:0; height:1px;
+  background:var(--hairline);
+  overflow:hidden;
+}
+.dh-rail-top{ top:0 }
+.dh-rail-bot{ bottom:0 }
+.dh-rail-fill{
+  display:block; position:absolute; left:0; top:0; bottom:0; right:0;
+  background:linear-gradient(90deg, var(--amber-soft), var(--amber));
+  transform-origin:left;
+  transform: scaleX(var(--dh-p, 0));
+  transition: transform .9s linear;
+  box-shadow: 0 0 18px rgba(232,154,44,0.55);
+}
+.dusk-hour[data-active="false"] .dh-rail-fill{ display:none }
+
+.dh-inner{
+  display:grid;
+  grid-template-columns: 1fr 1.35fr 1fr;
+  gap: clamp(28px, 5vw, 80px);
+  align-items:center;
+  padding: clamp(56px, 8vw, 104px) 0;
+  position:relative;
+}
+
+/* Left column — mark + mythos */
+.dh-mark{ display:flex; flex-direction:column; gap:18px }
+.dh-eyebrow{
+  font-family:var(--mono); font-size:11px; letter-spacing:.28em;
+  text-transform:uppercase; color:var(--amber-soft);
+  display:inline-flex; align-items:center; gap:11px;
+}
+.dh-orb{
+  width:8px; height:8px; border-radius:99px;
+  background:var(--amber);
+  box-shadow:0 0 14px rgba(232,154,44,0.75);
+  animation:dhPulse 2.4s ease-in-out infinite;
+  flex:none;
+}
+@keyframes dhPulse{
+  0%,100%{ transform:scale(1);    box-shadow:0 0 12px rgba(232,154,44,0.6) }
+  50%   { transform:scale(1.22);  box-shadow:0 0 22px rgba(232,154,44,0.95) }
+}
+.dusk-hour[data-active="false"] .dh-orb{
+  background:var(--muted); box-shadow:none; animation:none;
+}
+.dh-line{
+  font-family:var(--serif);
+  font-size: clamp(22px, 2.1vw, 32px);
+  font-variation-settings: "opsz" 36, "SOFT" 80, "wght" 380;
+  letter-spacing:-0.025em; line-height:1.18;
+  color:var(--bone);
+  max-width:24ch; margin:0;
+}
+.dh-line em{
+  font-style:italic; color:var(--amber-soft);
+  font-variation-settings: "opsz" 36, "SOFT" 100, "wght" 340;
+}
+
+/* Center — countdown */
+.dh-clock-col{
+  display:flex; flex-direction:column; align-items:center; gap:10px;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.dh-clock-row{
+  display:flex; align-items:baseline; gap:14px;
+  font-family:var(--serif);
+  font-size: clamp(64px, 9vw, 132px);
+  line-height:0.92;
+  font-variation-settings: "opsz" 144, "SOFT" 30, "wght" 320;
+  letter-spacing:-0.045em;
+  color:var(--bone);
+}
+.dh-num{
+  display:inline-block; min-width:1.6ch; text-align:center;
+}
+.dh-dot{
+  color:var(--amber-soft); font-style:italic; opacity:.6;
+  animation: dhTick 1s steps(2, end) infinite;
+}
+@keyframes dhTick{ 50%{ opacity:.18 } }
+.dusk-hour[data-active="false"] .dh-dot{ animation:none; opacity:.4 }
+.dh-clock-lbl{
+  display:flex; gap: clamp(42px, 7vw, 88px);
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.26em;
+  text-transform:uppercase; color:var(--muted);
+  margin-top:6px;
+}
+
+/* Right — offer + copy */
+.dh-offer{
+  display:flex; flex-direction:column; align-items:flex-end; gap:10px;
+  text-align:right;
+}
+.dh-pct{
+  font-family:var(--serif);
+  font-size: clamp(52px, 6.4vw, 96px);
+  font-variation-settings: "opsz" 144, "SOFT" 80, "wght" 350;
+  color:var(--amber);
+  letter-spacing:-0.045em; line-height:0.95;
+}
+.dh-pct span{
+  font-size:0.45em; vertical-align: top;
+  opacity:.7; margin-left:2px;
+}
+.dusk-hour[data-active="false"] .dh-pct{ color:var(--bone-dim) }
+.dh-tag{
+  font-family:var(--sans); font-size:13.5px; color:var(--bone-dim);
+  line-height:1.55; margin:0; font-weight:300;
+}
+.dh-tag strong{
+  color:var(--amber-soft); font-weight:500;
+  font-family:var(--mono); font-size:12px;
+  letter-spacing:.16em; margin-left:2px;
+}
+.dh-copy{
+  margin-top:10px;
+  font-family:var(--mono); font-size:10.5px;
+  letter-spacing:.22em; text-transform:uppercase;
+  border:1px solid var(--hairline-strong);
+  padding:11px 22px; border-radius:99px;
+  color:var(--bone); background:transparent;
+  position:relative; overflow:hidden;
+  transition: border-color .25s var(--ease), background .25s var(--ease);
+  min-width:160px; min-height:44px;
+}
+.dh-copy:hover{ border-color:var(--bone); background:rgba(248,245,242,0.04) }
+.dh-copy:active{ transform:scale(.98) }
+.dh-copy-default,
+.dh-copy-done{
+  display:inline-block;
+  transition: transform .38s var(--ease-out), opacity .25s var(--ease);
+}
+.dh-copy-done{
+  position:absolute; left:0; right:0; top:50%;
+  transform: translateY(40%); opacity:0;
+  color:var(--amber-soft); pointer-events:none;
+}
+.dh-copy.is-copied .dh-copy-default{ transform:translateY(-160%); opacity:0 }
+.dh-copy.is-copied .dh-copy-done{ transform:translateY(-50%); opacity:1 }
+
+/* Mobile / narrow */
+@media (max-width: 880px){
+  .dh-inner{
+    grid-template-columns:1fr;
+    gap:30px;
+    padding: 56px 0 48px;
+    text-align:center;
+  }
+  .dh-mark{ align-items:center }
+  .dh-line{ max-width:32ch }
+  .dh-offer{ align-items:center; text-align:center }
+  .dh-clock-row{ font-size: clamp(56px, 16vw, 88px); gap:8px }
+  .dh-clock-lbl{ gap: clamp(32px, 10vw, 56px); font-size:9.5px }
+  .dh-pct{ font-size: clamp(48px, 14vw, 72px) }
+}
+@media (prefers-reduced-motion: reduce){
+  .dh-orb, .dh-dot, .dh-rail-fill{ animation:none }
+}
+
