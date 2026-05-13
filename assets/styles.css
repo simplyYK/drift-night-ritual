@@ -2797,191 +2797,146 @@ body.cinema-on .ritual-grid-fallback{ display:none }
 }
 
 /* =========================================================
-   THE DUSK HOUR — nightly pricing window
+   HELD FOR YOU — slim conversion ribbon (single row)
    ========================================================= */
 .dusk-hour{
   position:relative;
   background:
-    radial-gradient(70% 110% at 50% 0%, rgba(232,154,44,0.06), transparent 65%),
-    linear-gradient(180deg, var(--ink), var(--ink-2));
+    radial-gradient(50% 220% at 50% 50%, rgba(232,154,44,0.05), transparent 70%),
+    linear-gradient(180deg, var(--ink-2), var(--ink));
+  border-top:1px solid var(--hairline);
+  border-bottom:1px solid var(--hairline);
   color:var(--bone);
   isolation:isolate;
 }
 .dh-rail{
   position:absolute; left:0; right:0; height:1px;
-  background:var(--hairline);
-  overflow:hidden;
+  pointer-events:none;
 }
-.dh-rail-top{ top:0 }
-.dh-rail-bot{ bottom:0 }
+.dh-rail-top{ top:-1px; background:transparent; overflow:hidden }
 .dh-rail-fill{
   display:block; position:absolute; left:0; top:0; bottom:0; right:0;
   background:linear-gradient(90deg, var(--amber-soft), var(--amber));
   transform-origin:left;
-  transform: scaleX(var(--dh-p, 0));
+  transform: scaleX(var(--dh-p, 1));
   transition: transform .9s linear;
   box-shadow: 0 0 18px rgba(232,154,44,0.55);
 }
-.dusk-hour[data-state="extended"] .dh-rail-fill{ background:var(--hairline-strong); box-shadow:none; transform:scaleX(0) }
+.dusk-hour[data-state="extended"] .dh-rail-fill{
+  background:var(--hairline-strong); box-shadow:none; transform:scaleX(0);
+}
 
 .dh-inner{
-  display:grid;
-  grid-template-columns: 1fr 1.35fr 1fr;
-  gap: clamp(28px, 5vw, 80px);
+  display:flex;
   align-items:center;
-  padding: clamp(56px, 8vw, 104px) 0;
-  position:relative;
+  justify-content:center;
+  gap: clamp(14px, 2.4vw, 28px);
+  padding: 18px 0;
+  flex-wrap:wrap;
 }
 
-/* Left column — mark + mythos */
-.dh-mark{ display:flex; flex-direction:column; gap:18px }
-.dh-eyebrow{
-  font-family:var(--mono); font-size:11px; letter-spacing:.28em;
-  text-transform:uppercase; color:var(--amber-soft);
-  display:inline-flex; align-items:center; gap:11px;
+.dh-sep{
+  width:1px; height:18px;
+  background:var(--hairline);
+  flex:none;
+}
+.dh-sep-thin{
+  width:3px; height:3px; border-radius:99px;
+  background:var(--muted-2);
+  flex:none; margin:0 6px;
+}
+
+/* Mark */
+.dh-mark{
+  display:inline-flex; align-items:center; gap:10px;
+  font-family:var(--mono); font-size:11px;
+  letter-spacing:.26em; text-transform:uppercase;
+  color:var(--amber-soft);
+  white-space:nowrap;
 }
 .dh-orb{
-  width:8px; height:8px; border-radius:99px;
+  width:7px; height:7px; border-radius:99px;
   background:var(--amber);
-  box-shadow:0 0 14px rgba(232,154,44,0.75);
+  box-shadow:0 0 12px rgba(232,154,44,0.75);
   animation:dhPulse 2.4s ease-in-out infinite;
   flex:none;
 }
 @keyframes dhPulse{
-  0%,100%{ transform:scale(1);    box-shadow:0 0 12px rgba(232,154,44,0.6) }
-  50%   { transform:scale(1.22);  box-shadow:0 0 22px rgba(232,154,44,0.95) }
+  0%,100%{ transform:scale(1);    box-shadow:0 0 10px rgba(232,154,44,0.6) }
+  50%   { transform:scale(1.28);  box-shadow:0 0 18px rgba(232,154,44,0.95) }
 }
 .dusk-hour[data-state="extended"] .dh-orb{
-  background:var(--amber-soft); box-shadow:0 0 8px rgba(232,197,138,0.5); animation:none;
-}
-.dh-line{
-  font-family:var(--serif);
-  font-size: clamp(22px, 2.1vw, 32px);
-  font-variation-settings: "opsz" 36, "SOFT" 80, "wght" 380;
-  letter-spacing:-0.025em; line-height:1.18;
-  color:var(--bone);
-  max-width:24ch; margin:0;
-}
-.dh-line em{
-  font-style:italic; color:var(--amber-soft);
-  font-variation-settings: "opsz" 36, "SOFT" 100, "wght" 340;
+  background:var(--amber-soft); box-shadow:0 0 8px rgba(232,197,138,0.45);
+  animation:none;
 }
 
-/* Center — countdown */
-.dh-clock-col{
-  display:flex; flex-direction:column; align-items:center; gap:10px;
-  font-variant-numeric: tabular-nums lining-nums;
-}
-.dh-clock-row{
-  display:flex; align-items:baseline; gap:18px;
+/* Clock */
+.dh-clock{
+  display:inline-flex; align-items:baseline; gap:4px;
   font-family:var(--serif);
-  font-size: clamp(80px, 11vw, 156px);
-  line-height:0.9;
-  font-variation-settings: "opsz" 144, "SOFT" 30, "wght" 320;
-  letter-spacing:-0.05em;
+  font-size: clamp(26px, 2.4vw, 32px);
+  line-height:1;
+  font-variation-settings: "opsz" 36, "SOFT" 40, "wght" 360;
+  letter-spacing:-0.025em;
   color:var(--bone);
+  font-variant-numeric: tabular-nums lining-nums;
+  white-space:nowrap;
 }
-.dh-num{
-  display:inline-block; min-width:1.6ch; text-align:center;
-}
+.dh-num{ display:inline-block; min-width:1.55ch; text-align:center }
 .dh-dot{
-  color:var(--amber-soft); font-style:italic; opacity:.6;
+  color:var(--amber-soft); opacity:.65;
   animation: dhTick 1s steps(2, end) infinite;
+  margin: 0 2px;
 }
-@keyframes dhTick{ 50%{ opacity:.18 } }
-.dusk-hour[data-state="extended"] .dh-dot{ animation:none; opacity:.4 }
-.dh-clock-lbl{
-  display:flex; gap: clamp(56px, 9vw, 112px);
-  font-family:var(--mono); font-size:10.5px; letter-spacing:.26em;
-  text-transform:uppercase; color:var(--muted);
-  margin-top:6px;
-}
+@keyframes dhTick{ 50%{ opacity:.2 } }
+.dusk-hour[data-state="extended"] .dh-dot{ animation:none; opacity:.35 }
 
-/* Social proof — left col footer */
-.dh-social{
-  font-family:var(--mono); font-size:10.5px; letter-spacing:.18em;
-  text-transform:uppercase; color:var(--muted);
-  margin:6px 0 0;
-}
-.dh-social strong{
-  color:var(--bone-dim); font-weight:500;
-  font-variant-numeric: tabular-nums lining-nums;
-  margin-right:2px;
-}
-
-/* Right — anchored pricing + bonuses + CTA */
+/* Offer (inline) */
 .dh-offer{
-  display:flex; flex-direction:column; align-items:flex-end; gap:10px;
-  text-align:right; min-width:0;
+  display:inline-flex; align-items:baseline; gap:9px;
+  white-space:nowrap;
 }
-.dh-price-row{
-  display:flex; align-items:baseline; gap:14px;
-  flex-wrap:wrap; justify-content:flex-end;
-}
-.dh-price-now{
+.dh-price{
   font-family:var(--serif);
-  font-size: clamp(40px, 4.6vw, 64px);
-  font-variation-settings: "opsz" 96, "SOFT" 80, "wght" 360;
+  font-size: clamp(20px, 1.8vw, 24px);
+  font-variation-settings: "opsz" 36, "SOFT" 60, "wght" 420;
   color:var(--bone);
-  letter-spacing:-0.035em; line-height:0.95;
+  letter-spacing:-0.02em;
   font-variant-numeric: tabular-nums lining-nums;
 }
-.dh-price-now small{
-  font-family:var(--mono); font-size:0.30em;
+.dh-was{
+  font-family:var(--mono); font-size:11px;
   letter-spacing:.16em; text-transform:uppercase;
-  color:var(--bone-dim); margin-left:4px;
-  vertical-align:middle;
+  color:var(--muted-2);
 }
-.dh-price-was{
+.dh-bonus{
   font-family:var(--mono); font-size:10.5px;
   letter-spacing:.18em; text-transform:uppercase;
-  color:var(--muted);
-}
-.dh-price-was s{ color:var(--muted-2); margin-left:4px }
-
-.dh-bonus{
-  margin:2px 0 4px;
-  font-family:var(--mono); font-size:10.5px;
-  letter-spacing:.14em; text-transform:uppercase;
   color:var(--amber-soft);
-  display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end;
-}
-.dh-bonus-tag{ white-space:nowrap }
-.dh-bonus-sep{ color:var(--muted-2); opacity:.7 }
-
-.dh-actions{
-  display:flex; gap:10px; align-items:center; flex-wrap:wrap;
-  justify-content:flex-end; margin-top:6px;
 }
 
-/* Primary conversion CTA */
+/* CTA */
 .dh-cta{
-  display:inline-flex; align-items:center; gap:10px;
-  padding:15px 24px;
+  display:inline-flex; align-items:center; gap:9px;
+  padding:11px 20px;
   background:var(--amber); color:var(--ink);
   border:none; border-radius:99px;
-  font-family:var(--mono); font-size:11px;
+  font-family:var(--mono); font-size:10.5px;
   letter-spacing:.22em; text-transform:uppercase;
   font-weight:500;
   cursor:pointer;
   position:relative; overflow:hidden;
   transition: transform .2s var(--ease), box-shadow .25s var(--ease);
-  box-shadow: 0 18px 40px -14px rgba(232,154,44,0.55);
+  box-shadow: 0 14px 30px -12px rgba(232,154,44,0.55);
+  white-space:nowrap;
 }
 .dh-cta:hover{
   transform: translateY(-1px);
-  box-shadow: 0 24px 56px -14px rgba(232,154,44,0.7), 0 0 0 1px rgba(232,154,44,0.35) inset;
+  box-shadow: 0 18px 40px -12px rgba(232,154,44,0.7), 0 0 0 1px rgba(232,154,44,0.35) inset;
 }
 .dh-cta:active{ transform:scale(.98) }
-.dh-cta-price{
-  font-family:var(--serif); font-size:14px;
-  letter-spacing:-0.02em;
-  font-variation-settings: "opsz" 36, "SOFT" 60, "wght" 420;
-  text-transform:none;
-}
 .dh-cta .arr{ transition: transform .3s var(--ease) }
 .dh-cta:hover .arr{ transform: translateX(3px) }
-/* Subtle shimmer like the existing btn-primary */
 .dh-cta::after{
   content:""; position:absolute; top:-30%; left:-30%; width:30%; height:160%;
   background:linear-gradient(120deg, transparent, rgba(255,255,255,0.18), transparent);
@@ -2991,56 +2946,21 @@ body.cinema-on .ritual-grid-fallback{ display:none }
 }
 .dh-cta:hover::after{ left:130% }
 
-/* Secondary copy — ghost / mini variant */
-.dh-copy-mini{
-  margin-top:0;
-  padding:9px 18px; font-size:10px; letter-spacing:.20em;
-  min-width:auto; min-height:0;
-}
-.dh-copy{
-  margin-top:10px;
-  font-family:var(--mono); font-size:10.5px;
-  letter-spacing:.22em; text-transform:uppercase;
-  border:1px solid var(--hairline-strong);
-  padding:11px 22px; border-radius:99px;
-  color:var(--bone); background:transparent;
-  position:relative; overflow:hidden;
-  transition: border-color .25s var(--ease), background .25s var(--ease);
-  min-width:160px; min-height:44px;
-}
-.dh-copy:hover{ border-color:var(--bone); background:rgba(248,245,242,0.04) }
-.dh-copy:active{ transform:scale(.98) }
-.dh-copy-default,
-.dh-copy-done{
-  display:inline-block;
-  transition: transform .38s var(--ease-out), opacity .25s var(--ease);
-}
-.dh-copy-done{
-  position:absolute; left:0; right:0; top:50%;
-  transform: translateY(40%); opacity:0;
-  color:var(--amber-soft); pointer-events:none;
-}
-.dh-copy.is-copied .dh-copy-default{ transform:translateY(-160%); opacity:0 }
-.dh-copy.is-copied .dh-copy-done{ transform:translateY(-50%); opacity:1 }
-
-/* Mobile / narrow */
+/* Mobile / narrow → wrap to 2 rows; clock + offer on row 1, CTA full-width row 2 */
 @media (max-width: 880px){
   .dh-inner{
-    grid-template-columns:1fr;
-    gap:28px;
-    padding: 56px 0 48px;
-    text-align:center;
+    gap:12px 16px;
+    padding: 16px var(--gutter);
   }
-  .dh-mark{ align-items:center }
-  .dh-social{ text-align:center }
-  .dh-line{ max-width:32ch }
-  .dh-offer{ align-items:center; text-align:center }
-  .dh-clock-row{ font-size: clamp(64px, 18vw, 104px); gap:10px }
-  .dh-clock-lbl{ gap: clamp(36px, 12vw, 64px); font-size:9.5px }
-  .dh-price-row{ justify-content:center }
-  .dh-bonus{ justify-content:center }
-  .dh-actions{ justify-content:center; width:100% }
-  .dh-cta{ flex:1 1 auto; justify-content:center }
+  .dh-sep{ display:none }
+  .dh-mark{ font-size:10px; letter-spacing:.22em }
+  .dh-clock{ font-size:24px }
+  .dh-offer{ font-size:12px }
+  .dh-price{ font-size:18px }
+  .dh-cta{
+    width:100%; justify-content:center; order:99;
+    padding:13px 22px;
+  }
 }
 @media (prefers-reduced-motion: reduce){
   .dh-orb, .dh-dot, .dh-rail-fill{ animation:none }
