@@ -58,7 +58,12 @@ const Cart = {
     return this.items.reduce((s,i)=>{ const p = PRODUCTS[i.productId]; return p ? s + (p.price * i.qty) : s; }, 0);
   },
   discount(){ return this.promo === PROMO_CODE ? Math.round(this.subtotal() * 0.10 * 100)/100 : 0; },
-  shipping(){ if(this.items.length === 0) return 0; return this.subtotal() - this.discount() >= FREE_SHIP_THRESHOLD ? 0 : 5; },
+  shipping(){
+    if(this.items.length === 0) return 0;
+    // First-night bonus: DUSK10 also waives shipping on the first box
+    if(this.promo === PROMO_CODE) return 0;
+    return this.subtotal() - this.discount() >= FREE_SHIP_THRESHOLD ? 0 : 5;
+  },
   tax(){ return Math.round((this.subtotal() - this.discount()) * 0.085 * 100) / 100; },
   total(){ return Math.max(0, this.subtotal() - this.discount() + this.shipping() + this.tax()); },
   summary(){
@@ -633,80 +638,91 @@ function setupRitualCinema(){
   tick();
 }
 
-/* ----------- The Dusk Hour — nightly pricing window ----------- */
+/* ----------- Your First Night — reservation hold + conversion CTA ----------- */
 function setupDuskHour(){
   const root = document.getElementById('dusk-hour');
   if(!root) return;
 
-  const $h    = document.getElementById('dh-h');
   const $m    = document.getElementById('dh-m');
   const $s    = document.getElementById('dh-s');
   const $fill = document.getElementById('dh-fill');
   const $line = document.getElementById('dh-line');
   const $copy = document.getElementById('dh-copy');
+  const $cta  = document.getElementById('dh-cta');
 
-  const WINDOW_OPEN  = 21;             // 9 PM local
-  const WINDOW_HOURS = 3;              // 9 PM → midnight
-  const WINDOW_MS    = WINDOW_HOURS * 3600 * 1000;
+  const HOLD_MIN = 15;
+  const HOLD_MS  = HOLD_MIN * 60 * 1000;
+  const SS_KEY   = 'drift_first_night_start';
   const pad = (n) => String(Math.max(0, n)).padStart(2, '0');
 
-  function tick(){
-    const now = new Date();
-    const hour = now.getHours();
-    const active = hour >= WINDOW_OPEN;
-    let remainingMs;
-
-    if(active){
-      // Countdown to midnight tonight
-      const midnight = new Date(now);
-      midnight.setHours(24, 0, 0, 0);
-      remainingMs = midnight - now;
-    } else {
-      // Countdown to next opening (9 PM today, your local time)
-      const nextOpen = new Date(now);
-      nextOpen.setHours(WINDOW_OPEN, 0, 0, 0);
-      if(nextOpen <= now) nextOpen.setDate(nextOpen.getDate() + 1);
-      remainingMs = nextOpen - now;
+  // Get (or initialise) the reservation start for this tab session.
+  // sessionStorage persists across reloads but resets on new tabs/sessions
+  // → demos always start fresh on a new tab, survive a mid-demo refresh.
+  function getStart(){
+    let start = 0;
+    try { start = parseInt(sessionStorage.getItem(SS_KEY) || '0', 10); } catch(e){}
+    if(!start || (Date.now() - start) >= HOLD_MS){
+      start = Date.now();
+      try { sessionStorage.setItem(SS_KEY, String(start)); } catch(e){}
     }
+    return start;
+  }
 
-    const totalSec = Math.floor(remainingMs / 1000);
-    const hh = Math.floor(totalSec / 3600);
-    const mm = Math.floor((totalSec % 3600) / 60);
+  // Escalating copy as the hold drains — premium urgency, never aggressive.
+  function lineCopy(remainingMs, state){
+    if(state === 'extended'){
+      return "We've extended your hold.<br/>The price is still <em>yours</em>.";
+    }
+    const sec = remainingMs / 1000;
+    if(sec > 10 * 60) return "Your introduction price is held<br/>for the next <em>fifteen minutes</em>.";
+    if(sec >  5 * 60) return "Your introduction price is held<br/>for a few more <em>minutes</em>.";
+    return "Your introduction price is held<br/>for these <em>final minutes</em>.";
+  }
+
+  function tick(){
+    const start     = getStart();
+    const elapsed   = Date.now() - start;
+    const remaining = Math.max(0, HOLD_MS - elapsed);
+    const state     = remaining > 0 ? 'active' : 'extended';
+    root.dataset.state = state;
+
+    const totalSec = Math.floor(remaining / 1000);
+    const mm = Math.floor(totalSec / 60);
     const ss = totalSec % 60;
-    if($h) $h.textContent = pad(hh);
     if($m) $m.textContent = pad(mm);
     if($s) $s.textContent = pad(ss);
 
-    const wasActive = root.dataset.active === 'true';
-    root.dataset.active = active ? 'true' : 'false';
+    if($line) $line.innerHTML = lineCopy(remaining, state);
+    if($fill) $fill.style.transform = `scaleX(${(remaining / HOLD_MS).toFixed(4)})`;
 
-    if(active){
-      if($line) $line.innerHTML = "Tonight's pricing is held<br/>until <em>midnight</em>, your local time.";
-      if($fill){
-        const p = Math.max(0, Math.min(1, remainingMs / WINDOW_MS));
-        $fill.style.transform = `scaleX(${p.toFixed(4)})`;
-      }
-      // Silently apply the promo while the window is open
-      if(window.Cart && Cart.promo !== 'DUSK10'){
-        Cart.applyPromo('DUSK10');
-      }
-    } else {
-      if($line) $line.innerHTML = "The next Dusk Hour opens at <em>9 PM</em>,<br/>your local time.";
-      if($fill) $fill.style.transform = 'scaleX(0)';
+    // Silently apply the promo regardless of timer state — the hold is real
+    // through the whole session, then the offer continues as "extended."
+    // (Cart is in the same script scope, not on window.)
+    if(typeof Cart !== 'undefined' && Cart.promo !== 'DUSK10'){
+      Cart.applyPromo('DUSK10');
     }
-
-    return wasActive !== active;
   }
 
+  // Primary conversion CTA: apply promo + add subscription + open cart
+  if($cta){
+    $cta.addEventListener('click', () => {
+      if(typeof Cart === 'undefined' || typeof PRODUCTS === 'undefined') return;
+      Cart.applyPromo('DUSK10');
+      Cart.add('dusk-sub', { flavor: 'Honey Lavender' });
+      if(typeof toast === 'function') toast('Your first night is reserved · 10% off applied', 'moon');
+      if(typeof openCart === 'function') openCart();
+    });
+  }
+
+  // Copy-to-clipboard with non-secure-context fallback
   if($copy){
     $copy.addEventListener('click', async () => {
       let ok = false;
-      try{
+      try {
         if(navigator.clipboard && navigator.clipboard.writeText){
           await navigator.clipboard.writeText('DUSK10');
           ok = true;
         } else {
-          // Fallback for non-secure contexts
           const ta = document.createElement('textarea');
           ta.value = 'DUSK10'; ta.style.position = 'fixed'; ta.style.opacity = '0';
           document.body.appendChild(ta); ta.select();
