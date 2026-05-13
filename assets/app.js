@@ -638,7 +638,7 @@ function setupRitualCinema(){
   tick();
 }
 
-/* ----------- Your First Night — reservation hold + conversion CTA ----------- */
+/* ----------- Held for you — slim reservation ribbon + 1-click CTA ----------- */
 function setupDuskHour(){
   const root = document.getElementById('dusk-hour');
   if(!root) return;
@@ -646,8 +646,7 @@ function setupDuskHour(){
   const $m    = document.getElementById('dh-m');
   const $s    = document.getElementById('dh-s');
   const $fill = document.getElementById('dh-fill');
-  const $line = document.getElementById('dh-line');
-  const $copy = document.getElementById('dh-copy');
+  const $mark = document.getElementById('dh-mark-text');
   const $cta  = document.getElementById('dh-cta');
 
   const HOLD_MIN = 15;
@@ -655,9 +654,7 @@ function setupDuskHour(){
   const SS_KEY   = 'drift_first_night_start';
   const pad = (n) => String(Math.max(0, n)).padStart(2, '0');
 
-  // Get (or initialise) the reservation start for this tab session.
-  // sessionStorage persists across reloads but resets on new tabs/sessions
-  // → demos always start fresh on a new tab, survive a mid-demo refresh.
+  // Reservation start lives in sessionStorage → fresh per tab, survives refresh.
   function getStart(){
     let start = 0;
     try { start = parseInt(sessionStorage.getItem(SS_KEY) || '0', 10); } catch(e){}
@@ -668,15 +665,12 @@ function setupDuskHour(){
     return start;
   }
 
-  // Escalating copy as the hold drains — premium urgency, never aggressive.
-  function lineCopy(remainingMs, state){
-    if(state === 'extended'){
-      return "We've extended your hold.<br/>The price is still <em>yours</em>.";
-    }
+  // Mark text escalates subtly as the hold drains.
+  function markCopy(remainingMs, state){
+    if(state === 'extended') return 'Hold extended';
     const sec = remainingMs / 1000;
-    if(sec > 10 * 60) return "Your introduction price is held<br/>for the next <em>fifteen minutes</em>.";
-    if(sec >  5 * 60) return "Your introduction price is held<br/>for a few more <em>minutes</em>.";
-    return "Your introduction price is held<br/>for these <em>final minutes</em>.";
+    if(sec <= 5 * 60) return 'Final minutes';
+    return 'Held for you';
   }
 
   function tick(){
@@ -692,50 +686,23 @@ function setupDuskHour(){
     if($m) $m.textContent = pad(mm);
     if($s) $s.textContent = pad(ss);
 
-    if($line) $line.innerHTML = lineCopy(remaining, state);
+    if($mark) $mark.textContent = markCopy(remaining, state);
     if($fill) $fill.style.transform = `scaleX(${(remaining / HOLD_MS).toFixed(4)})`;
 
-    // Silently apply the promo regardless of timer state — the hold is real
-    // through the whole session, then the offer continues as "extended."
-    // (Cart is in the same script scope, not on window.)
+    // Promo stays applied for the whole session, even after "extended."
     if(typeof Cart !== 'undefined' && Cart.promo !== 'DUSK10'){
       Cart.applyPromo('DUSK10');
     }
   }
 
-  // Primary conversion CTA: apply promo + add subscription + open cart
+  // One-click conversion: apply promo + add subscription + open cart
   if($cta){
     $cta.addEventListener('click', () => {
       if(typeof Cart === 'undefined' || typeof PRODUCTS === 'undefined') return;
       Cart.applyPromo('DUSK10');
       Cart.add('dusk-sub', { flavor: 'Honey Lavender' });
-      if(typeof toast === 'function') toast('Your first night is reserved · 10% off applied', 'moon');
+      if(typeof toast === 'function') toast('Reserved · 10% off + free shipping applied', 'moon');
       if(typeof openCart === 'function') openCart();
-    });
-  }
-
-  // Copy-to-clipboard with non-secure-context fallback
-  if($copy){
-    $copy.addEventListener('click', async () => {
-      let ok = false;
-      try {
-        if(navigator.clipboard && navigator.clipboard.writeText){
-          await navigator.clipboard.writeText('DUSK10');
-          ok = true;
-        } else {
-          const ta = document.createElement('textarea');
-          ta.value = 'DUSK10'; ta.style.position = 'fixed'; ta.style.opacity = '0';
-          document.body.appendChild(ta); ta.select();
-          ok = document.execCommand('copy');
-          document.body.removeChild(ta);
-        }
-      } catch(e){ ok = false; }
-
-      if(ok){
-        $copy.classList.add('is-copied');
-        setTimeout(() => $copy.classList.remove('is-copied'), 2400);
-        if(typeof toast === 'function') toast('Code DUSK10 copied', 'check');
-      }
     });
   }
 
